@@ -60,6 +60,7 @@ return Response(data)  # 클라이언트가 요청한 content type으로 렌더�
 REST Framework는 상태 모듈에서 HTTP_400_BAD_REQUEST와 같이 각 상태 코드에 대해 더욱 명시적인 식별자를 제공하고 있습니다.
 
 숫자 식별자를 사용하지 않고 이를 사용하시는 것을 추천합니다.
+
 <br/>
 
 ### Wrapping API views
@@ -73,6 +74,7 @@ REST Framework는 API views를 작성하는 데 사용할 수 있는 두 개의 
 이러한 wrapper는 view에서 Request 인스턴스를 수신하는지 확인하고, content negotiation을 수행할 수 있도록 Response 객체에 context를 추가하는 등의 몇 가지 기능을 제공합니다.
 
 또한 wrapper는 적절한 경우 405 Method Not Allowed 응답을 반환하고, 잘못된 형식의 이름으로 request.data에 액세스할 때 발생하는 ParseError 예외를 처리하는 등의 동작을 진행합니다.
+
 <br/>
 
 ### Pulling it all together
