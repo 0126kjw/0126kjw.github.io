@@ -12,6 +12,8 @@ tags: Django DRF
 
 ---
 
+<br/>
+
 공식 문서를 참고하여 Django REST Framework를 설치하는 과정을 알아보겠습니다.
 
 공식 문서에서 Django REST Framework는 웹 API 구축을 위한 강력하고 유연한 툴킷이라고 소개하고 있습니다.
@@ -25,6 +27,8 @@ tags: Django DRF
 - 광범위한 문서 및 [훌륭한 커뮤니티 지원](https://groups.google.com/forum/?fromgroups#!forum/django-rest-framework) .
 - [Mozilla](https://www.mozilla.org/en-US/about/) , [Red Hat](https://www.redhat.com/) , [Heroku](https://www.heroku.com/) 및 [Eventbrite](https://www.eventbrite.co.uk/about/) 를 비롯한 국제적으로 인정받는 회사에서 사용하고 신뢰합니다 .
 
+<br/>
+
 ### 요구사항
 
 REST Framework를 사용하기 위해서는 다음과 같은 준비물이 필요합니다.
@@ -33,6 +37,8 @@ REST Framework를 사용하기 위해서는 다음과 같은 준비물이 필요
 - Django (2.2, 3.0, 3.1, 3.2, 4.0, 4.1)
 
 REST Framework는 공식적으로 각 파이썬과 장고 시리즈의 최신 패치 릴리스를 지원한다고 합니다.
+
+<br/>
 
 ### 설치
 
@@ -82,7 +88,11 @@ INSTALLED_APPS = [
 혹시라도 추가할 부분이나 수정할 부분이 있다면 언제든지 댓글 부탁드립니다.
 
 본 게시물은 Django REST Framework의 공식 문서 내용을 정리한 내용입니다.
-<br/><br/><br/><br/>
+
+<br/>
+<br/>
+<br/>
+
 추가적인 정보를 원하신다면 아래의 링크를 참고하시길 바랍니다.
 
 [https://www.django-rest-framework.org/](https://www.django-rest-framework.org/)
