@@ -30,7 +30,7 @@ tags: Django DRF
 
 <br/>
 
-### Rewriting our API using class-based views(클래스 기반 뷰를 사용하여 API 재작성)
+### Rewriting our API using class-based views
 
 우선 root view를 클래스 기반 뷰로 다시 작성해보겠습니다.
 
@@ -121,7 +121,7 @@ urlpatterns = format_suffix_patterns(urlpatterns)
 
 <br/>
 
-### Using mixins(믹스인 사용)
+### Using mixins
 
 클래스 기반 뷰를 사용하는 가장 큰 이점 중 하나는 재사용이 가능한 동작 비트를 구성할 수 있다는 점입니다.
 
@@ -182,7 +182,7 @@ GenericAPIView 클래스를 사용하여 핵심 기능을 제공하고 mix
 
 <br/>
 
-### Using generic class-based views(일반 클래스 기반 뷰 사용)
+### Using generic class-based views
 
 mixin 클래스를 사용하여 이전보다 약간 적은 코드를 사용하도록 뷰를 다시 작성했지만 한 단계 더 나아갈 수 있습니다.
 
