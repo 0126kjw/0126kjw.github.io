@@ -13,6 +13,7 @@ tags: Django DRF
 ---
 
 <br/>
+
 이제부터 본격적인 Django REST Framework의 튜토리얼 시작입니다.
 
 첫 번째 챕터는 Serialization 입니다.
@@ -118,7 +119,9 @@ class Snippet(models.Model):
 ```
 
 참고로 공식 문서에서 이야기하는 바로는 좋은 프로그래밍 방법에는 주석이 포함되지만 코드 자체에 집중하기 위해서 이 예제에서는 주석을 생략했다고 하니 참고해주시면 감사하겠습니다.
+
 <br/>
+
 다음으로 snippet 모델에 대한 초기 migration을 생성하고 처음으로 데이터베이스를 동기화합니다.
 
 ```
@@ -187,6 +190,7 @@ required, max_length 및 default와 같은 다양한 필드에 유사한 유효�
 이 기능은 나중에 진행될 튜토리얼에서 확인할 수 있듯이 탐색 가능한 API를 표시하는 방법을 제어하는 데 특히 유용하다고 합니다.
 
 나중에 배우게 될 ModelSerializer 클래스를 사용하면 시간을 절약할 수 있지만, 지금은 serializer 정의를 명시적으로 유지하며 진행하도록 하겠습니다.
+
 <br/>
 
 ### Working with Serializers
@@ -420,6 +424,7 @@ urlpatterns = [
 잘못된 형식의 json을 보내거나 view에서 처리할 수 없는 방법으로 요청이 이루어진 경우 500(서버 오류) 응답이 발생합니다.
 
 그렇지만 지금은 이것으로 충분합니다.
+
 <br/>
 
 ### Testing our first attempt at a Web API(Web API에 대한 첫 번째 테스트)
