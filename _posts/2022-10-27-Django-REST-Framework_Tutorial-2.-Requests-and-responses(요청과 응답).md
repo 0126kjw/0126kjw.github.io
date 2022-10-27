@@ -24,7 +24,7 @@ tags: Django DRF
 
 <br/>
 
-### Request objects(요청 객체)
+### Request objects
 
 REST Framework는 일반 HTTP Request를 확장하고 보다 유연한 요청 구문 분석을 제공하는 Request 객체를 제공합니다.
 
@@ -39,7 +39,7 @@ request.data  # 임의의 데이터를 처리합니다.  'POST', 'PUT' 및 'PATC
 
 <br/>
 
-### Response objects(응답 객체)
+### Response objects
 
 REST Framework는 또한 렌더링되지 않은 content를 가져오고 content negotiation을 사용하여
 
@@ -53,7 +53,7 @@ return Response(data)  # 클라이언트가 요청한 content type으로 렌더�
 
 <br/>
 
-### Status codes(상태 코드)
+### Status codes
 
 숫자 HTTP 상태 코드를 사용한다고 해서 항상 명확하게 읽을 수 있는 것은 아니며 오류 코드가 잘못 되었을 경우 쉽게 알아차릴 수 없습니다.
 
@@ -154,7 +154,7 @@ request.data는 들어오는 json 요청을 처리할 수 있지만 다른 형�
 
 <br/>
 
-### Adding optional format suffixes to our URLs(URL에 선택적 형식 접미사 추가)
+### Adding optional format suffixes to our URLs
 
 응답이 더 이상 단일 콘텐츠 유형에 고정되어 있지 않다는 사실을 활용하기 위해 API endpoints에 형식 접미사에 대한 지원을 추가하겠습니다.
 
@@ -272,7 +272,7 @@ $ http --json POST http://127.0.0.1:8000/snippets/ code="print(456)"
 
 <br/>
 
-### Browsability(검색 가능성)
+### Browsability
 
 API는 클라이언트 요청을 기반으로 응답의 콘텐츠 유형을 선택하기 때문에 기본적으로 웹 브라우저에서 해당 리소스를 요청할 때 HTML 형식의 리소스 표현을 반환합니다.
 

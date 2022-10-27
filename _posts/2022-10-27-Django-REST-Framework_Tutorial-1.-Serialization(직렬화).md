@@ -29,7 +29,7 @@ Serialization 즉, 직렬화는 컴퓨터 과학의 데이터 스토리지 문�
 그러면 본격적으로 공식 문서의 내용을 따라가면서 학습해보도록 하겠습니다.
 <br/>
 
-## Setting up a new environment(새로운 환경 설정)
+## Setting up a new environment
 
 다른 작업을 수행하기 전에 venv를 사용하여 새로운 가상 환경을 만들도록 이야기하고 있습니다.
 
@@ -60,7 +60,7 @@ $ pip3 install pygments  # 코드 강조를 위해 이것을 사용한다고 합
 
 <br/>
 
-### Getting started(시작하기)
+### Getting started
 
 이제 코딩할 준비가 다 되었으니 작업한 새로운 프로젝트를 만들어 보겠습니다.
 
@@ -90,7 +90,7 @@ INSTALLED_APPS = [
 
 <br/>
 
-### Creating a model to work with(작업할 모델 만들기)
+### Creating a model to work with
 
 이 튜토리얼의 목적을 위해서 코드 스니펫을 저장하는 데 사용되는 간단한 Snippet 모델을 만들어 보겠습니다.
 
@@ -135,7 +135,7 @@ migration(마이그레이션)에 대한 자세한 내용은 아래 링크에서 
 
 <br/>
 
-### Creating a Serializer class(Serializer 클래스 만들기)
+### Creating a Serializer class
 
 Web API에서 시작해야 할 첫 번째 사항은 snippet 인스턴스를 json과 같은 표현으로 직렬화하고 역직렬화하는 방법을 제공하는 것입니다.
 
@@ -277,7 +277,7 @@ serializer.data
 
 <br/>
 
-### Using ModelSerializers(ModelSerializers 사용하기)
+### Using ModelSerializers
 
 SnippetSerializer 클래스는 Snippet 모델에 포함된 많은 정보를 복제하고 있습니다.
 
@@ -317,7 +317,7 @@ ModelSerializer 클래스는 특별히 마법같은 일을 하지 않는다는 �
 
 <br/>
 
-### Writing regular Django views using our Serializer(Serializer를 사용하여 일반 Django views 작성하기)
+### Writing regular Django views using our Serializer
 
 새로운 Serializer 클래스를 사용하여 몇 가지 API views를 작성하는 방법을 살펴보겠습니다.
 
@@ -427,7 +427,7 @@ urlpatterns = [
 
 <br/>
 
-### Testing our first attempt at a Web API(Web API에 대한 첫 번째 테스트)
+### Testing our first attempt at a Web API
 
 이제 snippet을 제공하는 샘플 서버를 시작할 수 있습니다.
 
