@@ -181,8 +181,8 @@ google_analytics: [G-L72WRP127J]
 # paginate: 5
 
 # Disqus comments
-disqus:
-  shortname: "0126kjw-github-io"
+# disqus:
+#   shortname: "0126kjw-github-io"
 
 # Gitment comments
 # gitment:
@@ -196,12 +196,12 @@ disqus:
 # See https://utteranc.es/
 # set follow_site_theme true to make utterances' theme follow the site's
 
-# utterances:
-#   repo: "owner/repo"
-#   issue_term: "title"
-#   label: "utterances comment"
-#   theme: "github-light"
-#   follow_site_theme: true
+utterances:
+  repo: "0126kjw/0126kjw.github.io"
+  issue_term: "title"
+  label: "utterances comment"
+  theme: "github-light"
+  follow_site_theme: true
 
 # Build settings
 # highlighter: none
