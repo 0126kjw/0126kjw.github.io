@@ -115,7 +115,7 @@ tags: jekyll google analytics
 google_analytics: G-L72W******
 ```
 
-를 추가하시면 됩니다.
+와 같은 코드를 추가해주시면 됩니다.
 
 추가하는 코드의 양식은 블로그 테마에 따라 다르기 때문에
 
@@ -123,7 +123,7 @@ google_analytics: G-L72W******
 
 <br/>
 
-### setting head tag
+### Setting Head Tag
 
 만약 위 과정에서 ga로 이루어진 코드의 테마를 사용하시는 분이라면 다음 과정을 따라오시면 됩니다.
 
@@ -132,6 +132,8 @@ google_analytics: G-L72W******
 구글 애널리틱스의 관리 - 속성 - 데이터 스트림을 클릭해 웹 스트림 세부정보를 확인합니다.
 
 아래로 스크롤 하면 Google 태그의 ‘태그 안내 보기’가 보이실 텐데 그걸 클릭해줍니다.
+
+<br/>
 
 ![Untitled](https://i.ibb.co/TkpCtVN/Untitled.png)
 
@@ -169,11 +171,15 @@ google_analytics: G-L72W******
 
 정상적으로 페이지에 접속이 된다면 구글 애널리틱스에서 확인해봅니다.
 
+<br/>
+
 ![Untitled](https://i.ibb.co/VVx1xY0/Untitled-1.png)
 
 위 사진처럼 사용자 수가 올라가있다면 성공입니다!
 
 ---
+
+<br/>
 
 이렇게 깃허브 블로그에서 방문자를 확인할 수 있도록 구글 애널리틱스를 적용해보았습니다.
 
