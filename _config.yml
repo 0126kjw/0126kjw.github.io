@@ -181,8 +181,8 @@ google_analytics: [G-L72WRP127J]
 # paginate: 5
 
 # Disqus comments
-# disqus:
-#   shortname: "Your Disqus username"
+disqus:
+  shortname: "disqus_bjkp2gWOqv"
 
 # Gitment comments
 # gitment:
