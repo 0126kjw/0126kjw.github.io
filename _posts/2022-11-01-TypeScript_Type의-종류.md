@@ -54,6 +54,8 @@ let color: string = "blue";
 color = "red";
 ```
 
+<br/>
+
 또한 템플릿 문자열을 사용하면 여러 줄에 걸쳐 문자열을 작성할 수 있으며, 표현식을 포함시킬 수 있습니다.
 
 이 문자열은 백틱(`) 문자로 감싸지며, `${ expr }` 과 같은 형태로 표현식을 포함시킬 수 있습니다.
@@ -79,6 +81,8 @@ TypeScript는 JavaScipt처럼 값들을 배열로 다룰 수 있게 해줍니다
 let list: number[] = [1, 2, 3];
 ```
 
+<br/>
+
 두 번째 방법은, 제네릭 배열 타입`(Array<elemType>)`을 쓰는 것입니다.
 
 ```tsx
@@ -102,12 +106,16 @@ x = ["hello", 10]; // 성공
 x = [10, "hello"]; // 오류
 ```
 
+<br/>
+
 정해진 인덱스에 위치한 요소에 접근하면 해당 타입이 나타납니다.
 
 ```tsx
 console.log(x[0].substring(1)); // 성공
 console.log(x[1].substring(1)); // 오류, 'number'에는 'substring'이 없습니다.
 ```
+
+<br/>
 
 정해진 인덱스 외에 다른 인덱스에 있는 요소에 접근하면, 오류가 발생하며 실패합니다.
 
@@ -134,6 +142,8 @@ enum Color {
 let c: Color = Color.Green;
 ```
 
+<br/>
+
 기본적으로 `enum`은 0 부터 시작하여 멤버들의 번호를 매깁니다.
 
 멤버 중 하나의 값을 수동으로 설정하여 번호를 바꿀 수 있습니다.
@@ -149,6 +159,8 @@ enum Color {
 let c: Color = Color.Green;
 ```
 
+<br/>
+
 또한, 모든 값을 수동으로 설정할 수 있습니다.
 
 ```tsx
@@ -159,6 +171,8 @@ enum Color {
 }
 let c: Color = Color.Green;
 ```
+
+<br/>
 
 `enum`의 유용한 기능 중 하나는 매겨진 값을 사용해 enum 멤버의 이름을 알아낼 수 있다는 것입니다.
 
@@ -193,6 +207,8 @@ notSure = "maybe a string instead";
 notSure = false; // 성공
 ```
 
+<br/>
+
 `any` 타입은 기존의 JavaScript로 작업할 수 있는 강력한 방법으로, 컴파일 중에 점진적으로 타입 검사를 하거나 하지 않을 수 있습니다.
 
 이때 `Object` 가 비슷한 역할을 할 수 있을 것 같다고 생각할 수 있습니다.
@@ -207,6 +223,8 @@ notSure.toFixed(); // 성공, toFixed 는 존재합니다. (하지만 컴파일�
 let prettySure: Object = 4;
 prettySure.toFixed(); // 오류: 프로퍼티 'toFixed'는 'Object'에 존재하지 않습니다.
 ```
+
+<br/>
 
 또한, any 타입은 타입의 일부만 알고 전체를 알지 못할 때 유용합니다.
 
@@ -232,6 +250,8 @@ function warnUser(): void {
 }
 ```
 
+<br/>
+
 `void`를 타입 변수로 선언하는 것은 유용하지 않은데, 왜냐하면 그 변수에는 `null`( —strictNullChecks 을 사용하지 않을 때만 해당) 또는 `undefined` 만 할당할 수 있기 때문입니다.
 
 ```tsx
@@ -250,6 +270,8 @@ TypeScript는 `undefined` 와 `null` 은 각각 자신의 타입 이름으로 `u
 let u: undefined = undefined;
 let n: null = null;
 ```
+
+<br/>
 
 기본적으로 `null` 과 `undefined` 는 다른 모든 타입의 하위 타입입니다.
 
@@ -324,6 +346,8 @@ create(undefined); // 오류
 
 TypeScript는 개발자가 필요한 어떤 특정 검사를 수행했다고 인지합니다.
 
+<br/>
+
 타입 단언에는 두 가지의 형태가 있습니다.
 
 하나는, `angle-bracket` 문법입니다.
@@ -333,12 +357,16 @@ let someValue: any = "this is a string";
 let strLength: number = (<string>someValue).length;
 ```
 
+<br/>
+
 다른 하나는 `as` 문법입니다.
 
 ```tsx
 let someValue: any = "this is a string";
 let strLength: number = (someValue as string).length;
 ```
+
+<br/>
 
 이 두 예제는 동일하게 작동합니다.
 
