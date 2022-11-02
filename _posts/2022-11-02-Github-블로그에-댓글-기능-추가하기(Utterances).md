@@ -143,7 +143,6 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
   const placeholder = document.getElementById("utterances-placeholder");
   placeholder.parentNode.replaceChild(utterancesScript, placeholder);
 </script>
-{%- else -%}
 <script
   async
   crossorigin="anonymous"
