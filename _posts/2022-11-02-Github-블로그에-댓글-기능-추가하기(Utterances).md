@@ -93,7 +93,7 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
 해당 코드는 다음과 같습니다.
 
 ```html
-{%- if site.utterances.follow_site_theme -%}
+<!-- {%- if site.utterances.follow_site_theme -%} -->
 <div id="utterances-placeholder"></div>
 <script>
   const utterancesThemeFromDataTheme = () => {
@@ -154,21 +154,31 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
   src="https://utteranc.es/client.js"
   theme="{{ site.utterances.theme }}"
 ></script>
-{%- endif -%}
+<!-- {%- endif -%} -->
 ```
 
 <br/>
 
 또한 게시물의 하단에 댓글을 작성할 수 있도록 \_layouts/post.html 파일의 하단에 다음과 같이 코드를 추가해둔 모습을 확인할 수 있었습니다.
 
+주석 처리는 코드를 확인하실 수 있도록 따로 한 것입니다.
+
+기존 코드는 주석이 없는 상태입니다.
+
 ```html
 ...
 <div class="post-comments">
-  {%- if page.comments != false -%} {%- if site.disqus.shortname -%} {%- include
-  extensions/comments/disqus.html -%} {%- endif -%} {%- if site.gitment.username
-  -%} {%- include extensions/comments/gitment.html -%} {%- endif -%} {%- if
-  site.utterances.repo -%} {%- include extensions/comments/utterances.html -%}
-  {%- endif -%} {%- endif -%}
+  <!-- {%- if page.comments != false -%} 
+  {%- if site.disqus.shortname -%} 
+  {%- include extensions/comments/disqus.html -%}
+  {%- endif -%} 
+  {%- if site.gitment.username-%} 
+  {%- include extensions/comments/gitment.html -%}
+  {%- endif -%} 
+  {%- if site.utterances.repo -%}
+  {%- include extensions/comments/utterances.html -%}
+  {%- endif -%}
+  {%- endif -%} -->
 </div>
 ...
 ```
