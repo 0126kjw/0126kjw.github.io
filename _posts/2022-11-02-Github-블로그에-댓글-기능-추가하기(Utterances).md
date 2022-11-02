@@ -93,6 +93,7 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
 해당 코드는 다음과 같습니다.
 
 ```html
+{% raw %} {%- if site.utterances.follow_site_theme -%}
 <div id="utterances-placeholder"></div>
 <script>
   const utterancesThemeFromDataTheme = () => {
@@ -143,6 +144,7 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
   const placeholder = document.getElementById("utterances-placeholder");
   placeholder.parentNode.replaceChild(utterancesScript, placeholder);
 </script>
+{%- else -%}
 <script
   async
   crossorigin="anonymous"
@@ -152,13 +154,24 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
   src="https://utteranc.es/client.js"
   theme="{{ site.utterances.theme }}"
 ></script>
+{%- endif -%} {% endraw %}
 ```
 
 <br/>
 
 또한 게시물의 하단에 댓글을 작성할 수 있도록 \_layouts/post.html 파일의 하단에 다음과 같이 코드를 추가해둔 모습을 확인할 수 있었습니다.
 
-![code](https://i.ibb.co/XZ599j8/code.png)
+```html
+{% raw %}
+<div class="post-comments">
+  {%- if page.comments != false -%} {%- if site.disqus.shortname -%} {%- include
+  extensions/comments/disqus.html -%} {%- endif -%} {%- if site.gitment.username
+  -%} {%- include extensions/comments/gitment.html -%} {%- endif -%} {%- if
+  site.utterances.repo -%} {%- include extensions/comments/utterances.html -%}
+  {%- endif -%} {%- endif -%}
+</div>
+{% endraw %}
+```
 
 <br/>
 
