@@ -164,11 +164,21 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
 ```html
 {% raw %}
 <div class="post-comments">
-  {%- if page.comments != false -%} {%- if site.disqus.shortname -%} {%- include
-  extensions/comments/disqus.html -%} {%- endif -%} {%- if site.gitment.username
-  -%} {%- include extensions/comments/gitment.html -%} {%- endif -%} {%- if
-  site.utterances.repo -%} {%- include extensions/comments/utterances.html -%}
-  {%- endif -%} {%- endif -%}
+  {%- if page.comments != false -%}
+  
+  {%- if site.disqus.shortname -%}
+  {%- include extensions/comments/disqus.html -%}
+  {%- endif -%}
+  
+  {%- if site.gitment.username -%}
+  {%- include extensions/comments/gitment.html -%}\
+  {%- endif -%}
+  
+  {%- if site.utterances.repo -%}
+  {%- include extensions/comments/utterances.html -%}
+  {%- endif -%} 
+  
+  {%- endif -%}
 </div>
 {% endraw %}
 ```
