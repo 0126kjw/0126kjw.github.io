@@ -74,7 +74,7 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
 
 아래 사진과 같이 utterances가 추가되어있는 모습을 확인하실 수 있습니다.
 
-![utterances](https://i.ibb.co/ynJFVmb/2022-11-02-4-33-30.png)
+![utterances](https://user-images.githubusercontent.com/108377235/199655800-68c39da1-6b25-401b-8167-f8a1934c3c0e.png)
 
 <br/>
 
@@ -164,21 +164,11 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
 ```html
 {% raw %}
 <div class="post-comments">
-  {%- if page.comments != false -%}
-  
-  {%- if site.disqus.shortname -%}
-  {%- include extensions/comments/disqus.html -%}
-  {%- endif -%}
-  
-  {%- if site.gitment.username -%}
-  {%- include extensions/comments/gitment.html -%}\
-  {%- endif -%}
-  
-  {%- if site.utterances.repo -%}
-  {%- include extensions/comments/utterances.html -%}
-  {%- endif -%} 
-  
-  {%- endif -%}
+  {%- if page.comments != false -%} {%- if site.disqus.shortname -%} {%- include
+  extensions/comments/disqus.html -%} {%- endif -%} {%- if site.gitment.username
+  -%} {%- include extensions/comments/gitment.html -%}\ {%- endif -%} {%- if
+  site.utterances.repo -%} {%- include extensions/comments/utterances.html -%}
+  {%- endif -%} {%- endif -%}
 </div>
 {% endraw %}
 ```
