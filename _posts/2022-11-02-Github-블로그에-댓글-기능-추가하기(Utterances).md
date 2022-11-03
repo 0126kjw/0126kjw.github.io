@@ -18,11 +18,11 @@ tags: jekyll comment utterances
 
 제가 지금 사용하고 있는 블로그의 테마에서는
 
-Disqus, Gitment, utterances 총 3가지를 지원하고 있었습니다.
+Disqus, Gitment, Utterances 총 3가지를 지원하고 있었습니다.
 
-저는 이 중에서 광고가 없고 디자인이 깔끔한 utterances를 선택하였습니다.
+저는 이 중에서 광고가 없고 디자인이 깔끔한 Utterances를 선택하였습니다.
 
-이 외에도 utterances는 다음과 같은 장점들이 있습니다.
+이 외에도 Utterances는 다음과 같은 장점들이 있습니다.
 
 - 오픈 소스입니다.
 - 추적X, 광고X, 항상 무료입니다.
@@ -32,7 +32,7 @@ Disqus, Gitment, utterances 총 3가지를 지원하고 있었습니다.
 
 <br/>
 
-### utterances
+### Utterances
 
 기능을 추가하기에 앞서 우선적으로 해주어야 할 설정이 있습니다.
 
@@ -40,11 +40,11 @@ Disqus, Gitment, utterances 총 3가지를 지원하고 있었습니다.
 
 <br/>
 
-utterances는 깃허브 레포지토리에 연동되어 작동합니다.
+Utterances는 깃허브 레포지토리에 연동되어 작동합니다.
 
 누군가가 어느 게시물에 댓글을 작성하게 된다면 그 댓글이 해당 게시물의 이슈에 저장되고 그것을 불러오는 방식으로 작동합니다.
 
-만약 처음으로 작성된 댓글일 시 utterances는 자동으로 이슈를 생성해줍니다.
+만약 처음으로 작성된 댓글일 시 Utterances는 자동으로 이슈를 생성해줍니다.
 
 그렇기에 우선적으로 댓글을 저장할 레포지토리를 설정해야 합니다.
 
@@ -60,7 +60,7 @@ utterances는 깃허브 레포지토리에 연동되어 작동합니다.
 
 [https://github.com/apps/utterances](https://github.com/apps/utterances)
 
-위 링크에 접속하게 되면 GitHub App인 utterances를 설정할 수 있습니다.
+위 링크에 접속하게 되면 GitHub App인 Utterances를 설정할 수 있습니다.
 
 설정을 하실 때에는 본인이 원하는 레포지토리에 App을 설치해주시면 됩니다.
 
@@ -72,7 +72,7 @@ utterances는 깃허브 레포지토리에 연동되어 작동합니다.
 
 Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
 
-아래 사진과 같이 utterances가 추가되어있는 모습을 확인하실 수 있습니다.
+아래 사진과 같이 Utterances가 추가되어있는 모습을 확인하실 수 있습니다.
 
 ![utterances](https://user-images.githubusercontent.com/108377235/199655800-68c39da1-6b25-401b-8167-f8a1934c3c0e.png)
 
@@ -80,20 +80,21 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
 
 ### \_config.yml
 
-레포지토리에 정상적으로 utterances가 설치되었으면 이제 \_config.yml을 설정해주어야 할 차례입니다.
+레포지토리에 정상적으로 Utterances가 설치되었으면 이제 \_config.yml을 설정해주어야 할 차례입니다.
 
-그 이전에 utterances를 사용하는 파일의 구조를 먼저 살펴본 후 진행해보겠습니다.
+그 이전에 Utterances를 사용하는 파일의 구조를 먼저 살펴본 후 진행해보겠습니다.
 
 <br/>
 
-현재 제가 사용하고 있는 테마에서 utterances에 관한 코드는
+현재 제가 사용하고 있는 테마에서 Utterances에 관한 코드는
 
 \_includes/extensions/comments/utterances.html에 있었습니다.
 
 해당 코드는 다음과 같습니다.
 
 ```html
-{% raw %} {%- if site.utterances.follow_site_theme -%}
+{% raw %} 
+{%- if site.utterances.follow_site_theme -%}
 <div id="utterances-placeholder"></div>
 <script>
   const utterancesThemeFromDataTheme = () => {
@@ -154,7 +155,8 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
   src="https://utteranc.es/client.js"
   theme="{{ site.utterances.theme }}"
 ></script>
-{%- endif -%} {% endraw %}
+{%- endif -%}
+{% endraw %}
 ```
 
 <br/>
@@ -164,20 +166,32 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
 ```html
 {% raw %}
 <div class="post-comments">
-  {%- if page.comments != false -%} {%- if site.disqus.shortname -%} {%- include
-  extensions/comments/disqus.html -%} {%- endif -%} {%- if site.gitment.username
-  -%} {%- include extensions/comments/gitment.html -%}\ {%- endif -%} {%- if
-  site.utterances.repo -%} {%- include extensions/comments/utterances.html -%}
-  {%- endif -%} {%- endif -%}
+  {%- if page.comments != false -%}
+  
+  {%- if site.disqus.shortname -%}
+  {%- include extensions/comments/disqus.html -%} 
+  {%- endif -%}
+  
+  {%- if site.gitment.username -%}
+  {%- include extensions/comments/gitment.html -%}
+  {%- endif -%} 
+  
+  {%- if site.utterances.repo -%}
+  {%- include extensions/comments/utterances.html -%}
+  {%- endif -%}
+  
+  {%- endif -%}
 </div>
 {% endraw %}
 ```
 
 <br/>
 
+disqus, gitment, utterances를 post 하단 부분에서 사용할 수 있도록 코드가 구성되어 있는 것을 확인할 수 있습니다.
+
 이처럼 기능을 추가할 때 단순히 \_config.yml에 코드만 바꾸는 것이 아니라
 
-내 블로그의 구조가 어떻게 이루어져있고 어떤 방식으로 작동하는지 확인하는 습관을 기르게 된다면 많은 도움이 될 것입니다.
+블로그의 구조가 어떻게 이루어져있고 어떤 방식으로 작동하는지 확인하는 습관을 기르게 된다면 앞으로 기능 수정 및 추가를 시도할 때 많은 도움이 될 것입니다.
 
 <br/>
 
@@ -214,7 +228,7 @@ utterances:
 
 <br/>
 
-이렇게 utterances 설정이 끝났습니다.
+이렇게 Utterances 설정이 끝났습니다.
 
 정상적으로 잘 설정되었다면 이 게시물의 하단에 있는 댓글 창과 같은 모습을 확인하실 수 있을 것입니다.
 
