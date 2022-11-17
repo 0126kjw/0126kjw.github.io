@@ -1,6 +1,6 @@
 ---
 layout: post
-title: [NestJS] MongoDB 연결하기
+title: \[NestJS] MongoDB 연결하기
 categories: NestJS
 tags: MongoDB
 ---
