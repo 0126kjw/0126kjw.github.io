@@ -1,5 +1,6 @@
 ---
 layout: post
+title: "[TypeScript] 타입의 종류"
 categories: TypeScript
 tags: TypeScript
 ---

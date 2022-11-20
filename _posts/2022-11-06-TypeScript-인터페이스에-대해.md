@@ -1,5 +1,6 @@
 ---
 layout: post
+title: "[TypeScript] 인터페이스에 대해"
 categories: TypeScript
 tags: TypeScript
 ---

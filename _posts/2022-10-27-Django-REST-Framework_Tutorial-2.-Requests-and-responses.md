@@ -1,5 +1,6 @@
 ---
 layout: post
+title: "[Django-REST-Framework] 2.Requests and responses"
 categories: Django
 tags: Django DRF
 ---

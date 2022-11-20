@@ -1,5 +1,6 @@
 ---
 layout: post
+title: "[Django-REST-Framework] Postman으로 CSRF Token 다루기"
 categories: Django
 tags: Django DRF Postman
 ---

@@ -1,5 +1,6 @@
 ---
 layout: post
+title: "[Django-REST-Framework] 3.Class based views"
 categories: Django
 tags: Django DRF
 ---

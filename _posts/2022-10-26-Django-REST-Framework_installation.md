@@ -1,5 +1,6 @@
 ---
 layout: post
+title: "[Django-REST-Framework] Installation"
 categories: Django
 tags: Django DRF
 ---

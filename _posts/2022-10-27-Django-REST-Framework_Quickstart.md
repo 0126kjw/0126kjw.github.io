@@ -1,5 +1,6 @@
 ---
 layout: post
+title: "[Django-REST-Framework] Quickstart"
 categories: Django
 tags: Django DRF
 ---
