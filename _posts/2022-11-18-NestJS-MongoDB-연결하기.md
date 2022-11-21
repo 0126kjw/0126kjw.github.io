@@ -2,7 +2,7 @@
 layout: post
 title: "[NestJS] MongoDB 연결하기"
 categories: NestJS
-tags: MongoDB
+tags: NestJS MongoDB
 ---
 
 ![1*k4mDCvHq5LlRgSRCs69c2Q](https://user-images.githubusercontent.com/108377235/202498521-23b991a2-fd16-4adf-b733-25c9b80f9296.jpeg)
