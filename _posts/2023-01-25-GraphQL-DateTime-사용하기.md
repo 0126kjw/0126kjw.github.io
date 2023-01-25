@@ -9,17 +9,19 @@ tags: GraphQL DateTime
 
 <br/>
 
-## Intro
+## Problem
 
-GraphQL을 사용해 댓글 기능을 구현하는 중에 문제가 생겼었습니다.
+`GraphQL`을 사용해 댓글 기능을 구현하는 중에 문제가 생겼었습니다.
 
-댓글을 작성할 때 자동으로 생성되게 설정해둔 CreatedAt과 UpdatedAt이
+댓글을 작성할 때 자동으로 생성되게 설정해둔 `CreatedAt`과 `UpdatedAt`이
 
 데이터베이스 상에는 Date Type으로 정상적으로 입력되는데
 
-GraphQL Playground에서 확인을 하려니 잘 확인되지 않았습니다.
+`GraphQL Playground`에서 확인을 하려니 잘 확인되지 않았습니다.
 
-String Type으로 해보니 숫자 문자열로 다음과 같이 나왔는데
+<br/>
+
+`Type`을 `String`으로 설정 후 GraphQL Playground로 요청해보니
 
 ```json
 {
@@ -33,13 +35,15 @@ String Type으로 해보니 숫자 문자열로 다음과 같이 나왔는데
 }
 ```
 
+다음과 같은 값을 응답하는 것을 확인하였습니다.
+
+이 값은 Date Type으로 변환되기 이전의 값이므로 Type 설정에 문제가 있다는 것을 알게되었습니다.
+
 <br/>
 
-이것은 Date Type으로 변환되기 이전의 값이므로 Type 설정이 잘못되었다는 것을 알았습니다.
+그 후 GraphQL 문서에서 Type 관련 부분을 확인해보니 `Scalar Type`을 찾을 수 있었습니다.
 
-GraphQL 문서에서 Type 관련 부분을 확인해보니 Scalar Type을 찾을 수 있었습니다.
-
-이것은 간단하게 GraphQL에 내장된 기본타입 이외의 타입을 선언할 수 있도록 해주는 것입니다.
+이것은 간단하게 **GraphQL에 내장된 기본타입 이외의 타입을 선언할 수 있도록** 해주는 것입니다.
 
 구글링을 해보니 Custom해서 사용하는 것도 가능하였습니다.
 
@@ -49,7 +53,7 @@ GraphQL 문서에서 Type 관련 부분을 확인해보니 Scalar Type을 찾을
 
 ## Solve
 
-해결법은 GraphQL 파일에
+해결법은 `*.GraphQL` 에
 
 ```graphql
 scalar DateTime
@@ -57,19 +61,21 @@ scalar DateTime
 
 을 추가한 다음
 
+<br/>
+
 Date type으로 표시해야 할 부분에 다음과 같이 입력합니다.
 
 ```graphql
 type Comment {
 	...
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 ```
 
 <br/>
 
-그리고 Playground에서 확인해보니 정상적으로 Date Type으로 보여주는 것을 확인할 수 있었습니다.
+그리고 GraphQL Playground에서 확인해보니 `Date Type`으로 변환되는 것을 확인할 수 있었습니다.
 
 ![Untitled](https://user-images.githubusercontent.com/108377235/215277536-0fdc9e2a-7ee8-4230-ad26-1d7f32ddf1fc.png)
 
