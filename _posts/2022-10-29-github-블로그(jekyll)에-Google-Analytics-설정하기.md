@@ -4,6 +4,10 @@ categories: Blog
 tags: jekyll google analytics
 ---
 
+![Logo_Google_Analytics svg](https://user-images.githubusercontent.com/108377235/216560871-2c5a869e-adff-4c66-aad3-a8334fe05d7c.png)
+
+<br/>
+
 ## Intro
 
 좋은 기회로 깃허브 블로그를 만들게 되면서 이것저것 설정해보면서 알게된 점을 정리해보려 합니다.

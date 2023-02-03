@@ -5,6 +5,10 @@ categories: TypeScript
 tags: TypeScript
 ---
 
+![2560px-TypeScript_Logo_(Blue) svg](https://user-images.githubusercontent.com/108377235/216560590-a3b01972-1296-4ac5-9440-d9b0f641260e.png)
+
+<br/>
+
 본 게시물은 TypeScript-Handbook 한글 문서의 내용을 정리한 내용입니다.
 
 추가적인 정보를 원하신다면 아래의 링크를 참고하시길 바랍니다.

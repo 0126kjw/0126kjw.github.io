@@ -4,6 +4,10 @@ categories: Blog
 tags: jekyll comment utterances
 ---
 
+<img width="564" alt="123" src="https://user-images.githubusercontent.com/108377235/216560135-a131ccc0-6b1a-4259-9e1c-03725b17a7cf.png">
+
+<br/>
+
 ## Intro
 
 깃허브 블로그에 google analytics를 설정하는 것에 이어서
@@ -93,8 +97,7 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
 해당 코드는 다음과 같습니다.
 
 ```html
-{% raw %} 
-{%- if site.utterances.follow_site_theme -%}
+{% raw %} {%- if site.utterances.follow_site_theme -%}
 <div id="utterances-placeholder"></div>
 <script>
   const utterancesThemeFromDataTheme = () => {
@@ -155,8 +158,7 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
   src="https://utteranc.es/client.js"
   theme="{{ site.utterances.theme }}"
 ></script>
-{%- endif -%}
-{% endraw %}
+{%- endif -%} {% endraw %}
 ```
 
 <br/>
@@ -166,21 +168,11 @@ Integrations - GitHub apps 설정을 확인해보시면 설치된 GitHub Apps에
 ```html
 {% raw %}
 <div class="post-comments">
-  {%- if page.comments != false -%}
-  
-  {%- if site.disqus.shortname -%}
-  {%- include extensions/comments/disqus.html -%} 
-  {%- endif -%}
-  
-  {%- if site.gitment.username -%}
-  {%- include extensions/comments/gitment.html -%}
-  {%- endif -%} 
-  
-  {%- if site.utterances.repo -%}
-  {%- include extensions/comments/utterances.html -%}
-  {%- endif -%}
-  
-  {%- endif -%}
+  {%- if page.comments != false -%} {%- if site.disqus.shortname -%} {%- include
+  extensions/comments/disqus.html -%} {%- endif -%} {%- if site.gitment.username
+  -%} {%- include extensions/comments/gitment.html -%} {%- endif -%} {%- if
+  site.utterances.repo -%} {%- include extensions/comments/utterances.html -%}
+  {%- endif -%} {%- endif -%}
 </div>
 {% endraw %}
 ```
