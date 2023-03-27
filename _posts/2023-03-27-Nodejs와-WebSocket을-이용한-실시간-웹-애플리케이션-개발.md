@@ -7,6 +7,10 @@ tags: Node.js WebSocket
 
 ![https://user-images.githubusercontent.com/108377235/232225371-67c6eeb9-0e48-4ba2-91f7-3bad415fd887.png](https://user-images.githubusercontent.com/108377235/232225371-67c6eeb9-0e48-4ba2-91f7-3bad415fd887.png)
 
+<br/>
+
+## Intro
+
 `WebSocket`은 HTTP와 달리 서버와 클라이언트 간 양방향 통신을 지원하는 프로토콜입니다.
 
 이를 이용하면 실시간으로 데이터를 주고받는 웹 애플리케이션을 쉽게 개발할 수 있습니다.
@@ -15,7 +19,9 @@ tags: Node.js WebSocket
 
 이번 게시물에서는 `Node.js`와 `WebSocket`을 이용하여 간단한 실시간 채팅 애플리케이션을 만드는 방법과 예제 코드를 작성해보겠습니다.
 
-## **WebSocket이란?**
+<br/>
+
+## WebSocket?
 
 WebSocket은 서버와 클라이언트 간 양방향 통신을 지원하는 프로토콜입니다.
 
@@ -23,13 +29,17 @@ HTTP와는 달리 연결을 유지하며, 서버와 클라이언트가 데이터
 
 이를 이용하면 실시간으로 데이터를 주고받는 웹 애플리케이션을 쉽게 개발할 수 있습니다.
 
-## **Node.js에서 WebSocket 사용하기**
+<br/>
+
+## Using WebSocket in Node.js
 
 Node.js에서 WebSocket을 사용하기 위해서는 **`ws`** 모듈을 설치해야 합니다.
 
 ```bash
 npm install ws
 ```
+
+<br/>
 
 WebSocket 서버를 생성하려면 다음과 같이 **`WebSocket.Server`** 클래스를 이용합니다.
 
@@ -41,6 +51,8 @@ const wss = new WebSocket.Server({ port: 8080 });
 
 이제 클라이언트와 연결이 이루어졌을 때의 이벤트를 처리할 수 있습니다.
 
+<br/>
+
 ```jsx
 wss.on("connection", function connection(ws) {
   console.log("client connected");
@@ -48,6 +60,8 @@ wss.on("connection", function connection(ws) {
 ```
 
 이제 클라이언트와 연결이 이루어졌을 때 **`client connected`** 메시지가 출력됩니다.
+
+<br/>
 
 이제 클라이언트가 보낸 메시지를 수신하고, 다른 클라이언트에게 전송하는 기능을 구현해보겠습니다.
 
@@ -74,6 +88,8 @@ wss.on("connection", function connection(ws) {
 
 **`wss.clients.forEach()`**를 이용하여 WebSocket 서버에 연결된 모든 클라이언트에게 메시지를 전송합니다.
 
+<br/>
+
 이제 클라이언트 측에서도 WebSocket을 이용하여 서버와 연결할 수 있습니다.
 
 ```jsx
@@ -98,9 +114,13 @@ ws.send("hello");
 
 **`send()`** 메서드를 이용하여 서버에 메시지를 전송합니다.
 
+<br/>
+
 이제 Node.js와 WebSocket을 이용하여 간단한 실시간 채팅 애플리케이션을 만들어보겠습니다.
 
-## **실시간 채팅 애플리케이션 만들기**
+<br/>
+
+## Create a real-time chat application
 
 Express를 이용하여 HTTP 서버를 구현하고, WebSocket을 이용하여 실시간 채팅 애플리케이션을 구현해보겠습니다.
 
@@ -124,6 +144,8 @@ app.listen(3000, function () {
 ```
 
 위 코드에서는 Express 애플리케이션을 생성하고, 루트 URL('/')에 접속했을 때 **`index.html`** 파일을 반환하도록 합니다.
+
+<br/>
 
 이제 **`index.html`** 파일에서 WebSocket을 이용하여 서버와 연결하고, 채팅 기능을 구현합니다.
 
@@ -170,9 +192,13 @@ app.listen(3000, function () {
 
 **`click`** 이벤트에서는 **`input`** 요소에 입력된 값을 서버로 전송하고, **`input`** 요소를 초기화합니다.
 
+<br/>
+
 이제 WebSocket을 이용하여 클라이언트와 서버가 실시간으로 통신할 수 있습니다.
 
 서버에서는 WebSocket을 이용하여 모든 클라이언트에게 메시지를 전송하면 되며, 클라이언트에서는 WebSocket을 이용하여 서버로부터 메시지를 수신하고, 채팅창에 해당 메시지를 출력하면 됩니다.
+
+<br/>
 
 ```jsx
 const WebSocket = require("ws");
@@ -199,8 +225,12 @@ wss.on("connection", function (ws) {
 
 **`on('message')`** 이벤트에서는 클라이언트로부터 메시지를 수신하면 해당 메시지를 모든 클라이언트에게 전송합니다.
 
+<br/>
+
 ---
 
 지금까지 `Node.js`와 `WebSocket`을 이용하여 실시간 채팅 애플리케이션을 구현하는 방법을 알아보았습니다.
 
 `WebSocket`을 이용하면 클라이언트와 서버 간에 실시간으로 데이터를 주고받을 수 있으며, 이를 이용하여 다양한 실시간 애플리케이션을 구현할 수 있습니다.
+
+다음 포스팅에서는 `socket.io`에 대한 내용을 다뤄보도록 하겠습니다.
