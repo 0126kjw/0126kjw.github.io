@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Node.js와 WebSocket을 이용한 실시간 웹 애플리케이션 개발"
+title: "WebSocket을 이용한 실시간 웹 애플리케이션 개발"
 categories: Node.js
 tags: Node.js WebSocket
 ---
