@@ -206,6 +206,8 @@ export class AppModule {}
 
 이제 애플리케이션을 실행하고 브라우저에서 **`http://localhost:3000/graphql`**에 접속하면 GraphQL Playground를 사용할 수 있습니다.
 
+<br/>
+
 ![https://user-images.githubusercontent.com/108377235/232286782-d5839d34-ad7f-4371-913a-712c2ad187f7.png](https://user-images.githubusercontent.com/108377235/232286782-d5839d34-ad7f-4371-913a-712c2ad187f7.png)
 
 위 모습은 GraphQL Playgound에서의 예시입니다.
@@ -219,6 +221,8 @@ NestJS에서 GraphQL 모듈을 사용하여 GraphQL API를 쉽게 구축할 수 
 또한 **`playground`** 옵션을 활성화하면 GraphQL Playground를 사용하여 API를 시각적으로 탐색할 수 있는 것을 확인했습니다.
 
 GraphQL을 직접 사용해보니 매우 강력하고 유연한 API 디자인 도구라는 생각이 들었습니다.
+
+<br/>
 
 하지만 모든 경우에 GraphQL이 적합하지는 않을 수 있습니다.
 
