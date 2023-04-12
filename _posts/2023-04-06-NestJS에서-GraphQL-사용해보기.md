@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "NestJS에서 GraphQL 사용해보기"
+title: "[NestJS] GraphQL 사용해보기"
 categories: NestJS
 tags: NestJS GraphQL
 ---
