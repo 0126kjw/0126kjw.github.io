@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>[Java] 자바(Java)의 자료형 | JIN’s SPACE</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="[Java] 자바(Java)의 자료형">
+<meta name="author" content="0126kjw">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Jin’s recording &amp; sharing Space.">
+<meta property="og:description" content="Jin’s recording &amp; sharing Space.">
+<link rel="canonical" href="https://0126kjw.github.io/jekyll-theme-yat/java/2023/04/01/java%EC%9D%98-%EC%9E%90%EB%A3%8C%ED%98%95.html">
+<meta property="og:url" content="https://0126kjw.github.io/jekyll-theme-yat/java/2023/04/01/java%EC%9D%98-%EC%9E%90%EB%A3%8C%ED%98%95.html">
+<meta property="og:site_name" content="JIN’s SPACE">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-04-01T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="[Java] 자바(Java)의 자료형">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"0126kjw"},"dateModified":"2023-04-01T00:00:00+00:00","datePublished":"2023-04-01T00:00:00+00:00","description":"Jin’s recording &amp; sharing Space.","headline":"[Java] 자바(Java)의 자료형","mainEntityOfPage":{"@type":"WebPage","@id":"https://0126kjw.github.io/jekyll-theme-yat/java/2023/04/01/java%EC%9D%98-%EC%9E%90%EB%A3%8C%ED%98%95.html"},"url":"https://0126kjw.github.io/jekyll-theme-yat/java/2023/04/01/java%EC%9D%98-%EC%9E%90%EB%A3%8C%ED%98%95.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="../assets/images/favicon/android-icon-192x192.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://0126kjw.github.io/jekyll-theme-yat/feed.xml" title="JIN's SPACE">
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack =
+      window.doNotTrack === "1" ||
+      navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" ||
+      navigator.msDoNotTrack === "1";
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      (function (i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r;
+        (i[r] =
+          i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(
+        window,
+        document,
+        "script",
+        "https://www.google-analytics.com/analytics.js",
+        "ga"
+      );
+
+      ga("create", "{ site.google_analytics }", "auto");
+      ga("send", "pageview");
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+</script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L72WRP127J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-L72WRP127J");
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5877350368014861" crossorigin="anonymous"></script>
+
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="57x57" href="../assets/images/favicon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="../assets/images/favicon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../assets/images/favicon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="../assets/images/favicon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../assets/images/favicon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="../assets/images/favicon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="../assets/images/favicon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="../assets/images/favicon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/favicon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/images/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="../assets/images/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="../assets/images/favicon/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="../assets/images/favicon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="JIN's SPACE" src="../assets/images/favicon/android-icon-192x192.png" onerror="this.style.display='none'">
+  JIN's SPACE
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">
+    [Java] 자바(Java)의 자료형
+  </h1>
+  <h2 class="post-subtitle">
+    
+  </h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-04-01T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Apr 01, 2023
+    </time>
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 mins</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Java">#Java</a></div>
+<a href="https://hits.sh/0126kjw.github.io/java/2023/04/01/java%EC%9D%98-%EC%9E%90%EB%A3%8C%ED%98%95.html"><img alt="Hits" src="https://hits.sh/0126kjw.github.io/java/2023/04/01/java%EC%9D%98-%EC%9E%90%EB%A3%8C%ED%98%95.html.svg?&style=flat-square&label=views&color=ff5100&labelColor=454545"></a>
+</header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p><img src="https://user-images.githubusercontent.com/108377235/232238718-734d82fe-fba7-4a44-b00a-948fd4d4365f.png" alt="java"></p>
+
+<p><br></p>
+
+<h2 id="intro">Intro</h2>
+
+<p>자바는 <code class="language-plaintext highlighter-rouge">기본 자료형(primitive data type)</code>과 <code class="language-plaintext highlighter-rouge">참조 자료형(reference data type)</code>으로 나뉘어지는 다양한 자료형을 지원합니다.</p>
+
+<p>이번 글에서는 각각의 <strong>자료형</strong>에 대해 알아보도록 하겠습니다.</p>
+
+<p>또한, 자주 사용하는 방법인 <code class="language-plaintext highlighter-rouge">형 변환</code>에 대한 내용도 다뤄보도록 하겠습니다.</p>
+
+<p><br></p>
+
+<h2 id="기본-자료형primitive-data-type"><strong>기본 자료형(primitive data type)</strong></h2>
+
+<h3 id="1-논리형boolean"><strong>1. 논리형(boolean)</strong></h3>
+
+<p><strong>true</strong> 또는 <strong>false</strong> 값을 가집니다. 논리형 변수를 선언하기 위해서는 <strong><code class="language-plaintext highlighter-rouge">boolean</code></strong> 키워드를 사용합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">boolean</span> <span class="n">flag</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h3 id="2-문자형char"><strong>2. 문자형(char)</strong></h3>
+
+<p>16비트 <strong>유니코드(Unicode)</strong> 문자를 저장합니다. 문자형 변수를 선언하기 위해서는 <strong><code class="language-plaintext highlighter-rouge">char</code></strong> 키워드를 사용합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="sc">'A'</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h3 id="3-정수형byte-short-int-long"><strong>3. 정수형(byte, short, int, long)</strong></h3>
+
+<p>각각 1바이트, 2바이트, 4바이트, 8바이트의 <strong>정수</strong> 값을 저장합니다. 정수형 변수를 선언하기 위해서는 <strong><code class="language-plaintext highlighter-rouge">byte</code></strong>, <strong><code class="language-plaintext highlighter-rouge">short</code></strong>, <strong><code class="language-plaintext highlighter-rouge">int</code></strong>, <strong><code class="language-plaintext highlighter-rouge">long</code></strong> 키워드를 사용합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">byte</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">127</span><span class="o">;</span>
+<span class="kt">short</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">32767</span><span class="o">;</span>
+<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2147483647</span><span class="o">;</span>
+<span class="kt">long</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">9223372036854775807L</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h3 id="4-실수형float-double"><strong>4. 실수형(float, double)</strong></h3>
+
+<p>각각 4바이트, 8바이트의 <strong>실수</strong> 값을 저장합니다. 실수형 변수를 선언하기 위해서는 <strong><code class="language-plaintext highlighter-rouge">float</code></strong>, <strong><code class="language-plaintext highlighter-rouge">double</code></strong> 키워드를 사용합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">f</span> <span class="o">=</span> <span class="mf">3.14f</span><span class="o">;</span>
+<span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="mf">3.14159265358979323846</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h2 id="참조-자료형reference-data-type"><strong>참조 자료형(reference data type)</strong></h2>
+
+<h3 id="1-클래스class"><strong>1. 클래스(class)</strong></h3>
+
+<p><strong>객체(object)</strong>를 생성하기 위한 템플릿(template)입니다. 클래스는 <strong><code class="language-plaintext highlighter-rouge">class</code></strong> 키워드를 사용하여 정의합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nc">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">(</span><span class="s">"John"</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h3 id="2-배열array"><strong>2. 배열(array)</strong></h3>
+
+<p>동일한 자료형의 값들을 <strong>연속적으로</strong> 저장할 수 있는 자료구조입니다. 배열은 대괄호([])를 사용하여 선언합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[]{</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">};</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h3 id="3-인터페이스interface"><strong>3. 인터페이스(interface)</strong></h3>
+
+<p>클래스와 유사하지만, 클래스가 정의한 메소드를 구현할 강제성을 가집니다. 인터페이스는 <strong><code class="language-plaintext highlighter-rouge">interface</code></strong> 키워드를 사용하여 정의합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Shape</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">draw</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Circle</span> <span class="kd">implements</span> <span class="nc">Shape</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Circle.draw()"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nc">Shape</span> <span class="n">shape</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Circle</span><span class="o">();</span>
+<span class="n">shape</span><span class="o">.</span><span class="na">draw</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h3 id="4-열거형enum"><strong>4. 열거형(enum)</strong></h3>
+
+<p>서로 연관된 상수(constant)들을 그룹화한 자료형입니다. 열거형은 <strong><code class="language-plaintext highlighter-rouge">enum</code></strong> 키워드를 사용하여 정의합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">enum</span> <span class="nc">Day</span> <span class="o">{</span>
+    <span class="no">MONDAY</span><span class="o">,</span> <span class="no">TUESDAY</span><span class="o">,</span> <span class="no">WEDNESDAY</span><span class="o">,</span> <span class="no">THURSDAY</span><span class="o">,</span> <span class="no">FRIDAY</span><span class="o">,</span> <span class="no">SATURDAY</span><span class="o">,</span> <span class="no">SUNDAY</span>
+<span class="o">}</span>
+
+<span class="nc">Day</span> <span class="n">today</span> <span class="o">=</span> <span class="nc">Day</span><span class="o">.</span><span class="na">MONDAY</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h2 id="형-변환type-casting">형 변환(Type Casting)</h2>
+
+<p>형 변환(Type Casting)은 변수나 값의 자료형을 다른 자료형으로 변환하는 것을 말합니다.</p>
+
+<p><strong>자동 형 변환(Automatic Casting)</strong>과 <strong>강제 형 변환(Explicit Casting)</strong> 두 가지 방법이 있습니다.</p>
+
+<p><br></p>
+
+<h3 id="1-자동-형-변환automatic-casting"><strong>1. 자동 형 변환(Automatic Casting)</strong></h3>
+
+<p><strong>자동 형 변환</strong>은 작은 크기의 자료형에서 큰 크기의 자료형으로 자동으로 변환됩니다.</p>
+
+<p>이는 데이터 손실 없이 형 변환이 가능하기 때문입니다.</p>
+
+<p><br></p>
+
+<p>다음은 자동 형 변환의 예시입니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+<span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span> <span class="c1">// 자동 형 변환 발생</span>
+</code></pre></div></div>
+
+<p>위 코드에서 <strong><code class="language-plaintext highlighter-rouge">int</code></strong> 타입 변수 <strong><code class="language-plaintext highlighter-rouge">i</code></strong>가 <strong><code class="language-plaintext highlighter-rouge">double</code></strong> 타입 변수 <strong><code class="language-plaintext highlighter-rouge">d</code></strong>로 자동 형 변환됩니다.</p>
+
+<p><br></p>
+
+<h3 id="2-강제-형-변환explicit-casting"><strong>2. 강제 형 변환(Explicit Casting)</strong></h3>
+
+<p><strong>강제 형 변환</strong>은 큰 크기의 자료형에서 작은 크기의 자료형으로 형 변환하는 것입니다.</p>
+
+<p>이는 데이터 손실이 발생할 수 있기 때문에 명시적으로 형 변환을 지정해야 합니다.</p>
+
+<p><br></p>
+
+<p>다음은 강제 형 변환의 예시입니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="mf">3.141592</span><span class="o">;</span>
+<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="n">d</span><span class="o">;</span> <span class="c1">// 강제 형 변환 발생</span>
+</code></pre></div></div>
+
+<p>위 코드에서 <strong><code class="language-plaintext highlighter-rouge">double</code></strong> 타입 변수 <strong><code class="language-plaintext highlighter-rouge">d</code></strong>가 <strong><code class="language-plaintext highlighter-rouge">int</code></strong> 타입 변수 <strong><code class="language-plaintext highlighter-rouge">i</code></strong>로 강제 형 변환됩니다.</p>
+
+<p>이때 소수점 이하의 데이터는 손실됩니다.</p>
+
+<hr>
+
+<p><br></p>
+
+<p>자바는 기본 자료형과 참조 자료형으로 다양한 자료형을 지원합니다.</p>
+
+<p>기본 자료형은 논리형, 문자형, 정수형, 실수형으로 구성되며, 참조 자료형은 클래스, 배열, 인터페이스, 열거형으로 구성됩니다.</p>
+
+<p>이러한 자료형을 적절하게 활용하여 다양한 프로그램을 개발할 수 있습니다.</p>
+
+<p>typescript에서 타입 선언을 하기 때문에 크게 어렵지 않았던 개념이었던 것 같습니다.</p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/java/2023/03/30/java-hello-world.html" title="[Java] Hello, World!">[Java] Hello, World!</a><a class="next" href="/jekyll-theme-yat/cs/2023/04/02/%EC%84%9C%EB%B2%84-%EA%B0%9C%EB%B0%9C-%EB%AC%B8%EC%A0%9C%EC%A0%90-%EB%B0%8F-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95.html" title="서버 개발 시 주의해야 할 대표적인 문제점과 해결 방법">서버 개발 시 주의해야 할 대표적인...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/django/2022/10/27/Django-REST-Framework_Tutorial-3.-Class-based-views.html" title="서버 개발 시 주의해야 할 대표적인 문제점과 해결 방법">[Django-REST-Framework] 3.Class based views</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/cs/2022/11/16/%EC%9D%B8%EC%A6%9D%EA%B3%BC-%EC%9D%B8%EA%B0%80%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90.html" title="서버 개발 시 주의해야 할 대표적인 문제점과 해결 방법">인증과 인가의 차이점</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/django/2022/10/27/Django-REST-Framework_Tutorial-2.-Requests-and-responses.html" title="서버 개발 시 주의해야 할 대표적인 문제점과 해결 방법">[Django-REST-Framework] 2.Requests and responses</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/cs/2023/03/09/%EB%B0%B1%EC%97%94%EB%93%9C-%EA%B8%B0%EC%88%A0-%EB%A9%B4%EC%A0%91-%EC%98%88%EC%83%81-%EC%A7%88%EB%AC%B8-Part1.html" title="서버 개발 시 주의해야 할 대표적인 문제점과 해결 방법">[CS] 백엔드 기술 면접 예상 질문 Part1</a></li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+  const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'title');
+  utterancesScript.setAttribute('label', 'utterances comment');
+  utterancesScript.setAttribute('repo', '0126kjw/0126kjw.github.io');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2022-2023 0126kjw</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+      <div><a href="https://github.com/0126kjw">0126kjw Github</a></div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

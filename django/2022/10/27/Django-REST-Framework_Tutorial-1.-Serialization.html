@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>[Django-REST-Framework] 1.Serialization | JIN’s SPACE</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="[Django-REST-Framework] 1.Serialization">
+<meta name="author" content="0126kjw">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="본 게시물은 Django REST Framework의 공식 문서 내용을 정리한 내용입니다.">
+<meta property="og:description" content="본 게시물은 Django REST Framework의 공식 문서 내용을 정리한 내용입니다.">
+<link rel="canonical" href="https://0126kjw.github.io/jekyll-theme-yat/django/2022/10/27/Django-REST-Framework_Tutorial-1.-Serialization.html">
+<meta property="og:url" content="https://0126kjw.github.io/jekyll-theme-yat/django/2022/10/27/Django-REST-Framework_Tutorial-1.-Serialization.html">
+<meta property="og:site_name" content="JIN’s SPACE">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-10-27T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="[Django-REST-Framework] 1.Serialization">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"0126kjw"},"dateModified":"2022-10-27T00:00:00+00:00","datePublished":"2022-10-27T00:00:00+00:00","description":"본 게시물은 Django REST Framework의 공식 문서 내용을 정리한 내용입니다.","headline":"[Django-REST-Framework] 1.Serialization","mainEntityOfPage":{"@type":"WebPage","@id":"https://0126kjw.github.io/jekyll-theme-yat/django/2022/10/27/Django-REST-Framework_Tutorial-1.-Serialization.html"},"url":"https://0126kjw.github.io/jekyll-theme-yat/django/2022/10/27/Django-REST-Framework_Tutorial-1.-Serialization.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="../assets/images/favicon/android-icon-192x192.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://0126kjw.github.io/jekyll-theme-yat/feed.xml" title="JIN's SPACE">
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack =
+      window.doNotTrack === "1" ||
+      navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" ||
+      navigator.msDoNotTrack === "1";
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      (function (i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r;
+        (i[r] =
+          i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(
+        window,
+        document,
+        "script",
+        "https://www.google-analytics.com/analytics.js",
+        "ga"
+      );
+
+      ga("create", "{ site.google_analytics }", "auto");
+      ga("send", "pageview");
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+</script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L72WRP127J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-L72WRP127J");
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5877350368014861" crossorigin="anonymous"></script>
+
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="57x57" href="../assets/images/favicon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="../assets/images/favicon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../assets/images/favicon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="../assets/images/favicon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../assets/images/favicon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="../assets/images/favicon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="../assets/images/favicon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="../assets/images/favicon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/favicon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/images/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="../assets/images/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="../assets/images/favicon/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="../assets/images/favicon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="JIN's SPACE" src="../assets/images/favicon/android-icon-192x192.png" onerror="this.style.display='none'">
+  JIN's SPACE
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">
+    [Django-REST-Framework] 1.Serialization
+  </h1>
+  <h2 class="post-subtitle">
+    
+  </h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2022-10-27T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Oct 27, 2022
+    </time>
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 16 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Django">#Django</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#DRF">#DRF</a>
+</div>
+<a href="https://hits.sh/0126kjw.github.io/django/2022/10/27/Django-REST-Framework_Tutorial-1.-Serialization.html"><img alt="Hits" src="https://hits.sh/0126kjw.github.io/django/2022/10/27/Django-REST-Framework_Tutorial-1.-Serialization.html.svg?&style=flat-square&label=views&color=ff5100&labelColor=454545"></a>
+</header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>본 게시물은 Django REST Framework의 공식 문서 내용을 정리한 내용입니다.</p>
+
+<p>추가적인 정보를 원하신다면 아래의 링크를 참고하시길 바랍니다.</p>
+
+<p><a href="https://www.django-rest-framework.org/">https://www.django-rest-framework.org/</a></p>
+
+<hr>
+
+<p><br></p>
+
+<p>이제부터 본격적인 Django REST Framework의 튜토리얼 시작입니다.</p>
+
+<p>첫 번째 챕터는 Serialization 입니다.</p>
+
+<p>Serialization 즉, 직렬화는 컴퓨터 과학의 데이터 스토리지 문맥에서 데이터 구조나 오브젝트 상태를 동일하거나 다른 컴퓨터 환경에 저장하고 나중에 재구성할 수 있는 포맷으로 변환하는 과정이라고 합니다. (출처: 위키백과)</p>
+
+<p>간단하게 메모리를 디스크에 저장하거나 네트워크 통신에 사용하기 위한 형식으로 변환하는 것을 의미한다고 이해하시면 좋습니다.</p>
+
+<p>공식 문서에서 소개하는 말로 이 튜토리얼은 상당히 심도있는 내용이기 때문에 시작하기 전 쿠키와 좋아하는 술 한잔을 준비해야 한다고 적혀 있습니다.</p>
+
+<p>우스갯소리로 소개를 했지만 튜토리얼의 첫 번째 챕터가 Serialization인 만큼 굉장히 중요하고 심도깊게 다루는 요소라고 이해할 수 있습니다.</p>
+
+<p>그러면 본격적으로 공식 문서의 내용을 따라가면서 학습해보도록 하겠습니다.
+<br></p>
+
+<h2 id="setting-up-a-new-environment">Setting up a new environment</h2>
+
+<p>다른 작업을 수행하기 전에 venv를 사용하여 새로운 가상 환경을 만들도록 이야기하고 있습니다.</p>
+
+<p>이 방법을 사용한다면 패키지의 구성이 작업 중인 다른 프로젝트와 잘 분리되어 유지할 수 있다고 합니다.</p>
+
+<p>이 방법은 콘솔창에서 다음과 같은 코드를 사용해 진행할 수 있습니다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python3 <span class="nt">-m</span> venv <span class="nb">env</span>
+<span class="nv">$ </span><span class="nb">source env</span>/bin/activate
+</code></pre></div></div>
+
+<p>이 과정을 수행하면 현재 가상 환경에 있는 것 입니다.</p>
+
+<p>다음으로 패키지에서 필요로 하는 것들을 설치해줍니다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>pip3 <span class="nb">install </span>django
+<span class="nv">$ </span>pip3 <span class="nb">install </span>djangorestframework
+<span class="nv">$ </span>pip3 <span class="nb">install </span>pygments  <span class="c"># 코드 강조를 위해 이것을 사용한다고 합니다.</span>
+</code></pre></div></div>
+
+<p>가상 환경을 종료하기 위해서는 deactivate를 사용하면 됩니다.</p>
+
+<p>자세한 내용을 원하시면 아래 링크에서 확인하실 수 있습니다.</p>
+
+<p><a href="https://docs.python.org/3/library/venv.html">https://docs.python.org/3/library/venv.html</a></p>
+
+<p><br></p>
+
+<h3 id="getting-started">Getting started</h3>
+
+<p>이제 코딩할 준비가 다 되었으니 작업한 새로운 프로젝트를 만들어 보겠습니다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd</span> ~
+<span class="nv">$ </span>django-admin startproject tutorial
+<span class="nv">$ </span><span class="nb">cd </span>tutorial
+</code></pre></div></div>
+
+<p>완료되면 간단한 Web API를 만드는 데 사용할 앱을 만들 수 있습니다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python3 manage.py startapp snippets
+</code></pre></div></div>
+
+<p>이렇게 만들어진 snippets 앱과 rest_framework 앱을 INSTALLED_APPS에 추가해야 합니다.</p>
+
+<p>그러기 위해선 tutorial/settings.py 파일의 INSTALLED_APPS 부분을 아래와 같이 수정합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">...</span>
+    <span class="s">'rest_framework'</span><span class="p">,</span>
+    <span class="s">'snippets'</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h3 id="creating-a-model-to-work-with">Creating a model to work with</h3>
+
+<p>이 튜토리얼의 목적을 위해서 코드 스니펫을 저장하는 데 사용되는 간단한 Snippet 모델을 만들어 보겠습니다.</p>
+
+<p>snippets/model.py 파일을 아래와 같이 작성합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="n">pygments.lexers</span> <span class="kn">import</span> <span class="n">get_all_lexers</span>
+<span class="kn">from</span> <span class="n">pygments.styles</span> <span class="kn">import</span> <span class="n">get_all_styles</span>
+
+<span class="n">LEXERS</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nf">get_all_lexers</span><span class="p">()</span> <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">LANGUAGE_CHOICES</span> <span class="o">=</span> <span class="nf">sorted</span><span class="p">([(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">LEXERS</span><span class="p">])</span>
+<span class="n">STYLE_CHOICES</span> <span class="o">=</span> <span class="nf">sorted</span><span class="p">([(</span><span class="n">item</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nf">get_all_styles</span><span class="p">()])</span>
+
+
+<span class="k">class</span> <span class="nc">Snippet</span><span class="p">(</span><span class="n">models</span><span class="p">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="nc">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="nc">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="nc">TextField</span><span class="p">()</span>
+    <span class="n">linenos</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="nc">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">language</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="nc">CharField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">LANGUAGE_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">'python'</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">style</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="nc">CharField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">STYLE_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">'friendly'</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">'created'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>참고로 공식 문서에서 이야기하는 바로는 좋은 프로그래밍 방법에는 주석이 포함되지만 코드 자체에 집중하기 위해서 이 예제에서는 주석을 생략했다고 하니 참고해주시면 감사하겠습니다.</p>
+
+<p><br></p>
+
+<p>다음으로 snippet 모델에 대한 초기 migration을 생성하고 처음으로 데이터베이스를 동기화합니다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 manage.py makemigrations snippets
+$ python3 manage.py migrate snippets
+</code></pre></div></div>
+
+<p>migration(마이그레이션)에 대한 자세한 내용은 아래 링크에서 확인하실 수 있습니다.</p>
+
+<p><a href="https://docs.djangoproject.com/en/4.1/topics/migrations/">https://docs.djangoproject.com/en/4.1/topics/migrations/</a></p>
+
+<p><br></p>
+
+<h3 id="creating-a-serializer-class">Creating a Serializer class</h3>
+
+<p>Web API에서 시작해야 할 첫 번째 사항은 snippet 인스턴스를 json과 같은 표현으로 직렬화하고 역직렬화하는 방법을 제공하는 것입니다.</p>
+
+<p>Django의 양식과 매우 유사하게 작동하는 Serializer를 선언하여 이를 수행할 수 있습니다.</p>
+
+<p>snippets 라는 경로에 serializers.py 라는 파일을 생성 후 다음과 같은 코드를 추가합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
+<span class="kn">from</span> <span class="n">snippets.models</span> <span class="kn">import</span> <span class="n">Snippet</span><span class="p">,</span> <span class="n">LANGUAGE_CHOICES</span><span class="p">,</span> <span class="n">STYLE_CHOICES</span>
+
+
+<span class="k">class</span> <span class="nc">SnippetSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="p">.</span><span class="n">Serializer</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">serializers</span><span class="p">.</span><span class="nc">IntegerField</span><span class="p">(</span><span class="n">read_only</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">serializers</span><span class="p">.</span><span class="nc">CharField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">allow_blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">serializers</span><span class="p">.</span><span class="nc">CharField</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s">'base_template'</span><span class="p">:</span> <span class="s">'textarea.html'</span><span class="p">})</span>
+    <span class="n">linenos</span> <span class="o">=</span> <span class="n">serializers</span><span class="p">.</span><span class="nc">BooleanField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">language</span> <span class="o">=</span> <span class="n">serializers</span><span class="p">.</span><span class="nc">ChoiceField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">LANGUAGE_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">'python'</span><span class="p">)</span>
+    <span class="n">style</span> <span class="o">=</span> <span class="n">serializers</span><span class="p">.</span><span class="nc">ChoiceField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">STYLE_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">'friendly'</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">):</span>
+        <span class="s">"""
+        Create and return a new `Snippet` instance, given the validated data.
+        """</span>
+        <span class="k">return</span> <span class="n">Snippet</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="o">**</span><span class="n">validated_data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">):</span>
+        <span class="s">"""
+        Update and return an existing `Snippet` instance, given the validated data.
+        """</span>
+        <span class="n">instance</span><span class="p">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">validated_data</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s">'title'</span><span class="p">,</span> <span class="n">instance</span><span class="p">.</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">instance</span><span class="p">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">validated_data</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s">'code'</span><span class="p">,</span> <span class="n">instance</span><span class="p">.</span><span class="n">code</span><span class="p">)</span>
+        <span class="n">instance</span><span class="p">.</span><span class="n">linenos</span> <span class="o">=</span> <span class="n">validated_data</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s">'linenos'</span><span class="p">,</span> <span class="n">instance</span><span class="p">.</span><span class="n">linenos</span><span class="p">)</span>
+        <span class="n">instance</span><span class="p">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">validated_data</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s">'language'</span><span class="p">,</span> <span class="n">instance</span><span class="p">.</span><span class="n">language</span><span class="p">)</span>
+        <span class="n">instance</span><span class="p">.</span><span class="n">style</span> <span class="o">=</span> <span class="n">validated_data</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s">'style'</span><span class="p">,</span> <span class="n">instance</span><span class="p">.</span><span class="n">style</span><span class="p">)</span>
+        <span class="n">instance</span><span class="p">.</span><span class="nf">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">instance</span>
+</code></pre></div></div>
+
+<p>serializer 클래스의 첫 번째 부분에는 직렬화/역직렬화되는 필드를 정의합니다.</p>
+
+<p>create() 및 update() 메서드는 serializer.save()를 호출할 때 완전히 분리된 인스턴스를 만들거나 수정하는 방법을 정의합니다.</p>
+
+<p>serializer 클래스는 Django Form 클래스와 매우 유사하며</p>
+
+<p>required, max_length 및 default와 같은 다양한 필드에 유사한 유효성 검사 플래그를 포함하고 있습니다.</p>
+
+<p>필드 플래그는 HTML로 렌더링할 때와 같은 특정한 상황에서 serializer를 표시하는 방법도 제어할 수 있습니다.</p>
+
+<p>그리고 {‘base_widget’: ‘textarea.widget’} 플래그는 Django의 Form 클래스에서 widget = widget을 사용하는 것과 동일하게 동작합니다.</p>
+
+<p>이 기능은 나중에 진행될 튜토리얼에서 확인할 수 있듯이 탐색 가능한 API를 표시하는 방법을 제어하는 데 특히 유용하다고 합니다.</p>
+
+<p>나중에 배우게 될 ModelSerializer 클래스를 사용하면 시간을 절약할 수 있지만, 지금은 serializer 정의를 명시적으로 유지하며 진행하도록 하겠습니다.</p>
+
+<p><br></p>
+
+<h3 id="working-with-serializers">Working with Serializers</h3>
+
+<p>더 나아가기 전에 새로운 Serializer 클래스를 사용하는 방법에 대해 알아보도록 하겠습니다.</p>
+
+<p>Django의 shell로 진입해보겠습니다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python3 manage.py shell
+</code></pre></div></div>
+
+<p>이제 몇 가지 가져오기를 완료하고 나면 몇 가지의 코드 스니펫을 만들어 보도록 하겠습니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">snippets.models</span> <span class="kn">import</span> <span class="n">Snippet</span>
+<span class="kn">from</span> <span class="n">snippets.serializers</span> <span class="kn">import</span> <span class="n">SnippetSerializer</span>
+<span class="kn">from</span> <span class="n">rest_framework.renderers</span> <span class="kn">import</span> <span class="n">JSONRenderer</span>
+<span class="kn">from</span> <span class="n">rest_framework.parsers</span> <span class="kn">import</span> <span class="n">JSONParser</span>
+
+<span class="n">snippet</span> <span class="o">=</span> <span class="nc">Snippet</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s">'foo = "bar"</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+<span class="n">snippet</span><span class="p">.</span><span class="nf">save</span><span class="p">()</span>
+
+<span class="n">snippet</span> <span class="o">=</span> <span class="nc">Snippet</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s">'print("hello, world")</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+<span class="n">snippet</span><span class="p">.</span><span class="nf">save</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>이제 몇 가지의 스니펫 인스턴스를 사용할 수 있습니다.</p>
+
+<p>이러한 인스턴스 중 하나를 직렬화하는 방법을 알아보겠습니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">serializer</span> <span class="o">=</span> <span class="nc">SnippetSerializer</span><span class="p">(</span><span class="n">snippet</span><span class="p">)</span>
+<span class="n">serializer</span><span class="p">.</span><span class="n">data</span>
+<span class="c1"># {'id': 2, 'title': '', 'code': 'print("hello, world")\n', 'linenos': False, 'language': 'python', 'style': 'friendly'}
+</span></code></pre></div></div>
+
+<p>이 시점에서 모델 인스턴스를 Python native datatypes로 변환했습니다.</p>
+
+<p>serialization 프로세스를 완료하기 위해서 데이터를 json으로 렌더링합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">content</span> <span class="o">=</span> <span class="nc">JSONRenderer</span><span class="p">().</span><span class="nf">render</span><span class="p">(</span><span class="n">serializer</span><span class="p">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">content</span>
+<span class="c1"># b'{"id": 2, "title": "", "code": "print(\\"hello, world\\")\\n", "linenos": false, "language": "python", "style": "friendly"}'
+</span></code></pre></div></div>
+
+<p>역직렬화도 비슷합니다.</p>
+
+<p>먼저 스트림을 Python native datatypes로 구분 분석합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">io</span>
+
+<span class="n">stream</span> <span class="o">=</span> <span class="n">io</span><span class="p">.</span><span class="nc">BytesIO</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="nc">JSONParser</span><span class="p">().</span><span class="nf">parse</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>그런 다음 이러한 native datatypes를 완전히 채워진 개체 인스턴스로 복원합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">serializer</span> <span class="o">=</span> <span class="nc">SnippetSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="n">serializer</span><span class="p">.</span><span class="nf">is_valid</span><span class="p">()</span>
+<span class="c1"># True
+</span><span class="n">serializer</span><span class="p">.</span><span class="n">validated_data</span>
+<span class="c1"># OrderedDict([('title', ''), ('code', 'print("hello, world")\n'), ('linenos', False), ('language', 'python'), ('style', 'friendly')])
+</span><span class="n">serializer</span><span class="p">.</span><span class="nf">save</span><span class="p">()</span>
+<span class="c1"># &lt;Snippet: Snippet object
+</span></code></pre></div></div>
+
+<p>API가 Form 작업과 얼마나 유사한지 확인할 수 있습니다.</p>
+
+<p>serializer를 사용하는 뷰를 작성하기 시작하면 유사성이 훨씬 더 분명해질 것입니다.</p>
+
+<p>모델 인스턴스 대신 querysets를 직렬화할 수도 있습니다.</p>
+
+<p>그렇게 하려면 간단하게 many = True 플래그를 serialzer 인수에 추가하면 됩니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">serializer</span> <span class="o">=</span> <span class="nc">SnippetSerializer</span><span class="p">(</span><span class="n">Snippet</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="nf">all</span><span class="p">(),</span> <span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">serializer</span><span class="p">.</span><span class="n">data</span>
+<span class="c1"># [OrderedDict([('id', 1), ('title', ''), ('code', 'foo = "bar"\n'), ('linenos', False), ('language', 'python'), ('style', 'friendly')]), OrderedDict([('id', 2), ('title', ''), ('code', 'print("hello, world")\n'), ('linenos', False), ('language', 'python'), ('style', 'friendly')]), OrderedDict([('id', 3), ('title', ''), ('code', 'print("hello, world")'), ('linenos', False), ('language', 'python'), ('style', 'friendly')])]
+</span></code></pre></div></div>
+
+<p><br></p>
+
+<h3 id="using-modelserializers">Using ModelSerializers</h3>
+
+<p>SnippetSerializer 클래스는 Snippet 모델에 포함된 많은 정보를 복제하고 있습니다.</p>
+
+<p>Django가 Form 클래스와 ModelForm 클래스를 모두 제공하는 것과 마찬가지로 REST Framework는 Serializer 클래스와 ModelSerializer 클래스를 모두 포함하고 있습니다.</p>
+
+<p>ModelSerializer 클래스를 사용하여 serializer를 리팩터링하는 방법을 알아보겠습니다.</p>
+
+<p>snippets/serializers.py을 다시 열고 SnippetSerializer 클래스를 다음과 같이 수정합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">SnippetSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="p">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Snippet</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s">'id'</span><span class="p">,</span> <span class="s">'title'</span><span class="p">,</span> <span class="s">'code'</span><span class="p">,</span> <span class="s">'linenos'</span><span class="p">,</span> <span class="s">'language'</span><span class="p">,</span> <span class="s">'style'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>serializer의 좋은 특성 중 하나는 serializer 인스턴스의 모든 필드를 print 하여 검사할 수 있다는 것입니다.</p>
+
+<p>python manage.py shell을 사용해 Django shell을 열고 아래 코드를 작성하십시오.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">snippets.serializers</span> <span class="kn">import</span> <span class="n">SnippetSerializer</span>
+<span class="n">serializer</span> <span class="o">=</span> <span class="nc">SnippetSerializer</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">repr</span><span class="p">(</span><span class="n">serializer</span><span class="p">))</span>
+<span class="c1"># SnippetSerializer():
+#    id = IntegerField(label='ID', read_only=True)
+#    title = CharField(allow_blank=True, max_length=100, required=False)
+#    code = CharField(style={'base_template': 'textarea.html'})
+#    linenos = BooleanField(required=False)
+#    language = ChoiceField(choices=[('Clipper', 'FoxPro'), ('Cucumber', 'Gherkin'), ('RobotFramework', 'RobotFramework'), ('abap', 'ABAP'), ('ada', 'Ada')...
+#    style = ChoiceField(choices=[('autumn', 'autumn'), ('borland', 'borland'), ('bw', 'bw'), ('colorful', 'colorful')...
+</span></code></pre></div></div>
+
+<p>ModelSerializer 클래스는 특별히 마법같은 일을 하지 않는다는 것을 기억하는 것이 중요합니다.</p>
+
+<p>단순히 직렬화된 클래스를 생성하기 위한 지름길입니다.</p>
+
+<p><br></p>
+
+<h3 id="writing-regular-django-views-using-our-serializer">Writing regular Django views using our Serializer</h3>
+
+<p>새로운 Serializer 클래스를 사용하여 몇 가지 API views를 작성하는 방법을 살펴보겠습니다.</p>
+
+<p>당분간 REST Framework의 다른 기능을 사용하지 않고, Django의 일반적인 views로 작성하겠습니다.</p>
+
+<p>snippets/views.py 파일을 수정해야 하는데 다음 코드를 추가합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">JsonResponse</span>
+<span class="kn">from</span> <span class="n">django.views.decorators.csrf</span> <span class="kn">import</span> <span class="n">csrf_exempt</span>
+<span class="kn">from</span> <span class="n">rest_framework.parsers</span> <span class="kn">import</span> <span class="n">JSONParser</span>
+<span class="kn">from</span> <span class="n">snippets.models</span> <span class="kn">import</span> <span class="n">Snippet</span>
+<span class="kn">from</span> <span class="n">snippets.serializers</span> <span class="kn">import</span> <span class="n">SnippetSerializer</span>
+</code></pre></div></div>
+
+<p>이 API 경로는 기존의 모든 snippets를 나열하거나 새로운 snippets를 만드는 것을 지원하는 views가 될 것입니다.</p>
+
+<p>그리고 다음 코드를 추가합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@csrf_exempt</span>
+<span class="k">def</span> <span class="nf">snippet_list</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="s">"""
+    List all code snippets, or create a new snippet.
+    """</span>
+    <span class="k">if</span> <span class="n">request</span><span class="p">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'GET'</span><span class="p">:</span>
+        <span class="n">snippets</span> <span class="o">=</span> <span class="n">Snippet</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="nf">all</span><span class="p">()</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="nc">SnippetSerializer</span><span class="p">(</span><span class="n">snippets</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nc">JsonResponse</span><span class="p">(</span><span class="n">serializer</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">request</span><span class="p">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'POST'</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nc">JSONParser</span><span class="p">().</span><span class="nf">parse</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="nc">SnippetSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="p">.</span><span class="nf">is_valid</span><span class="p">():</span>
+            <span class="n">serializer</span><span class="p">.</span><span class="nf">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="nc">JsonResponse</span><span class="p">(</span><span class="n">serializer</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nc">JsonResponse</span><span class="p">(</span><span class="n">serializer</span><span class="p">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>CSRF 토큰이 없는 클라이언트에서 이 view에 POST 할 수 있도록 하려면 view를 csrf_exempt로 표시해야 합니다.</p>
+
+<p>이는 보통 원하는 작업이 아닙니다.</p>
+
+<p>또한 REST Framework views는 실제로 이것보다 더욱 합리적인 행동을 사용하지만, 지금은 목적을 위해 이렇게 진행합니다.</p>
+
+<p>우리는 개별 snippet에 해당하는 view가 필요하며, snippet을 검색, 수정 또는 삭제하는 데 사용할 수 있습니다.</p>
+
+<p>다음 코드를 추가해줍니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@csrf_exempt</span>
+<span class="k">def</span> <span class="nf">snippet_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+    <span class="s">"""
+    Retrieve, update or delete a code snippet.
+    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">snippet</span> <span class="o">=</span> <span class="n">Snippet</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Snippet</span><span class="p">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nc">HttpResponse</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">404</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="p">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'GET'</span><span class="p">:</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="nc">SnippetSerializer</span><span class="p">(</span><span class="n">snippet</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nc">JsonResponse</span><span class="p">(</span><span class="n">serializer</span><span class="p">.</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">request</span><span class="p">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'PUT'</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nc">JSONParser</span><span class="p">().</span><span class="nf">parse</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="nc">SnippetSerializer</span><span class="p">(</span><span class="n">snippet</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="p">.</span><span class="nf">is_valid</span><span class="p">():</span>
+            <span class="n">serializer</span><span class="p">.</span><span class="nf">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="nc">JsonResponse</span><span class="p">(</span><span class="n">serializer</span><span class="p">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nc">JsonResponse</span><span class="p">(</span><span class="n">serializer</span><span class="p">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">request</span><span class="p">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'DELETE'</span><span class="p">:</span>
+        <span class="n">snippet</span><span class="p">.</span><span class="nf">delete</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nc">HttpResponse</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">204</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>마지막으로 우리는 이 views를 정리할 필요가 있습니다.</p>
+
+<p>snippets/urls.py 파일을 생성한 다음 아래와 같은 코드를 추가합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">django.urls</span> <span class="kn">import</span> <span class="n">path</span>
+<span class="kn">from</span> <span class="n">snippets</span> <span class="kn">import</span> <span class="n">views</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nf">path</span><span class="p">(</span><span class="s">'snippets/'</span><span class="p">,</span> <span class="n">views</span><span class="p">.</span><span class="n">snippet_list</span><span class="p">),</span>
+    <span class="nf">path</span><span class="p">(</span><span class="s">'snippets/&lt;int:pk&gt;/'</span><span class="p">,</span> <span class="n">views</span><span class="p">.</span><span class="n">snippet_detail</span><span class="p">),</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<p>snippet 앱의 URLs를 include하기 위해 tutorial/urls.py 파일에 urlconf를 연결해야 합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">django.urls</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">include</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nf">path</span><span class="p">(</span><span class="s">''</span><span class="p">,</span> <span class="nf">include</span><span class="p">(</span><span class="s">'snippets.urls'</span><span class="p">)),</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<p>주목할 점은 현재 여기에서 제대로 다루지 못하고 있는 몇가지 엣지 케이스가 있다는 것입니다.</p>
+
+<p>잘못된 형식의 json을 보내거나 view에서 처리할 수 없는 방법으로 요청이 이루어진 경우 500(서버 오류) 응답이 발생합니다.</p>
+
+<p>그렇지만 지금은 이것으로 충분합니다.</p>
+
+<p><br></p>
+
+<h3 id="testing-our-first-attempt-at-a-web-api">Testing our first attempt at a Web API</h3>
+
+<p>이제 snippet을 제공하는 샘플 서버를 시작할 수 있습니다.</p>
+
+<p>우선 shell에서 나갑니다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>quit<span class="o">()</span>
+</code></pre></div></div>
+
+<p>그리고 Django의 개발 서버를 시작합니다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python manage.py runserver
+
+Validating models...
+
+0 errors found
+Django version 4.0,1 using settings <span class="s1">'tutorial.settings'</span>
+Starting Development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+</code></pre></div></div>
+
+<p>다른 터미널 창에서 서버를 테스트할 수 있습니다.</p>
+
+<p>저희는 여기에서 curl 이나 httpie를 사용하여 API를 테스트할 수 있습니다.</p>
+
+<p>Httpie는 파이썬으로 작성된 사용자 친화적인 http 클라이언트입니다.</p>
+
+<p>한번 설치해봅시다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>pip3 <span class="nb">install </span>httpie
+</code></pre></div></div>
+
+<p>마지막으로 모든 snippet 목록을 얻을 수 있습니다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>http http://127.0.0.1:8000/snippets/
+
+HTTP/1.1 200 OK
+...
+<span class="o">[</span>
+  <span class="o">{</span>
+    <span class="s2">"id"</span>: 1,
+    <span class="s2">"title"</span>: <span class="s2">""</span>,
+    <span class="s2">"code"</span>: <span class="s2">"foo = </span><span class="se">\"</span><span class="s2">bar</span><span class="se">\"\n</span><span class="s2">"</span>,
+    <span class="s2">"linenos"</span>: <span class="nb">false</span>,
+    <span class="s2">"language"</span>: <span class="s2">"python"</span>,
+    <span class="s2">"style"</span>: <span class="s2">"friendly"</span>
+  <span class="o">}</span>,
+  <span class="o">{</span>
+    <span class="s2">"id"</span>: 2,
+    <span class="s2">"title"</span>: <span class="s2">""</span>,
+    <span class="s2">"code"</span>: <span class="s2">"print(</span><span class="se">\"</span><span class="s2">hello, world</span><span class="se">\"</span><span class="s2">)</span><span class="se">\n</span><span class="s2">"</span>,
+    <span class="s2">"linenos"</span>: <span class="nb">false</span>,
+    <span class="s2">"language"</span>: <span class="s2">"python"</span>,
+    <span class="s2">"style"</span>: <span class="s2">"friendly"</span>
+  <span class="o">}</span>
+<span class="o">]</span>
+</code></pre></div></div>
+
+<p>또는 ID를 참조하여 특정 snippet을 얻을 수 있습니다.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>http http://127.0.0.1:8000/snippets/2/
+
+HTTP/1.1 200 OK
+...
+<span class="o">{</span>
+  <span class="s2">"id"</span>: 2,
+  <span class="s2">"title"</span>: <span class="s2">""</span>,
+  <span class="s2">"code"</span>: <span class="s2">"print(</span><span class="se">\"</span><span class="s2">hello, world</span><span class="se">\"</span><span class="s2">)</span><span class="se">\n</span><span class="s2">"</span>,
+  <span class="s2">"linenos"</span>: <span class="nb">false</span>,
+  <span class="s2">"language"</span>: <span class="s2">"python"</span>,
+  <span class="s2">"style"</span>: <span class="s2">"friendly"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>마찬가지로 웹 브라우저에서 이러한 URL에 접속하여 동일한 json을 표시할 수 있습니다.</p>
+
+<hr>
+
+<p>지금까지 Django REST Framework의 첫 번째 튜토리얼 Serializations를 진행해보았습니다.</p>
+
+<p>튜토리얼을 진행하면서 작성된 API views는 현재 json 응답을 제공하는 것 외에 특별하게 특별한 것은 하고 있지 않습니다.</p>
+
+<p>현재 여전히 정리하고 싶은 일부의 오류 처리 에지 케이스가 있지만 우선은 잘 작동하는 WEB API 입니다.</p>
+
+<p>다음에 진행할 튜토리얼 2부에서 이를 개선할 방법을 알아보도록 하겠습니다.</p>
+
+<p><br>
+<br>
+<br></p>
+
+<p>본 게시물은 Django REST Framework의 공식 문서 내용을 정리한 내용입니다.</p>
+
+<p>추가적인 정보를 원하신다면 아래의 링크를 참고하시길 바랍니다.</p>
+
+<p><a href="https://www.django-rest-framework.org/">https://www.django-rest-framework.org/</a></p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/django/2022/10/27/Django-REST-Framework_Quickstart.html" title="[Django-REST-Framework] Quickstart">[Django-REST-Framework] Quickstart</a><a class="next" href="/jekyll-theme-yat/django/2022/10/27/Django-REST-Framework_Tutorial-2.-Requests-and-responses.html" title="[Django-REST-Framework] 2.Requests and responses">[Django-REST-Framework] 2.Requests and responses</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/nestjs/2023/04/13/NestJS-Socketio%EB%A1%9C-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EC%B1%84%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="[Django-REST-Framework] 2.Requests and responses">[NestJS] Socket.io로 실시간 채팅 서비스 만들기</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/django/2022/10/27/Django-REST-Framework_Tutorial-3.-Class-based-views.html" title="[Django-REST-Framework] 2.Requests and responses">[Django-REST-Framework] 3.Class based views</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/django/2022/10/27/Django-REST-Framework_Tutorial-2.-Requests-and-responses.html" title="[Django-REST-Framework] 2.Requests and responses">[Django-REST-Framework] 2.Requests and responses</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/nestjs/2023/01/12/NestJS-TypeORM-MySQL-Seeding_Error.html" title="[Django-REST-Framework] 2.Requests and responses">[NestJS] TypeORM-MySQL Seeding Error</a></li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+  const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'title');
+  utterancesScript.setAttribute('label', 'utterances comment');
+  utterancesScript.setAttribute('repo', '0126kjw/0126kjw.github.io');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2022-2023 0126kjw</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+      <div><a href="https://github.com/0126kjw">0126kjw Github</a></div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

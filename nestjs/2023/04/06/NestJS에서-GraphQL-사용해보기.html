@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>[NestJS] GraphQL 사용해보기 | JIN’s SPACE</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="[NestJS] GraphQL 사용해보기">
+<meta name="author" content="0126kjw">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Jin’s recording &amp; sharing Space.">
+<meta property="og:description" content="Jin’s recording &amp; sharing Space.">
+<link rel="canonical" href="https://0126kjw.github.io/jekyll-theme-yat/nestjs/2023/04/06/NestJS%EC%97%90%EC%84%9C-GraphQL-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html">
+<meta property="og:url" content="https://0126kjw.github.io/jekyll-theme-yat/nestjs/2023/04/06/NestJS%EC%97%90%EC%84%9C-GraphQL-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html">
+<meta property="og:site_name" content="JIN’s SPACE">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-04-06T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="[NestJS] GraphQL 사용해보기">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"0126kjw"},"dateModified":"2023-04-06T00:00:00+00:00","datePublished":"2023-04-06T00:00:00+00:00","description":"Jin’s recording &amp; sharing Space.","headline":"[NestJS] GraphQL 사용해보기","mainEntityOfPage":{"@type":"WebPage","@id":"https://0126kjw.github.io/jekyll-theme-yat/nestjs/2023/04/06/NestJS%EC%97%90%EC%84%9C-GraphQL-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html"},"url":"https://0126kjw.github.io/jekyll-theme-yat/nestjs/2023/04/06/NestJS%EC%97%90%EC%84%9C-GraphQL-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="../assets/images/favicon/android-icon-192x192.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://0126kjw.github.io/jekyll-theme-yat/feed.xml" title="JIN's SPACE">
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack =
+      window.doNotTrack === "1" ||
+      navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" ||
+      navigator.msDoNotTrack === "1";
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      (function (i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r;
+        (i[r] =
+          i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(
+        window,
+        document,
+        "script",
+        "https://www.google-analytics.com/analytics.js",
+        "ga"
+      );
+
+      ga("create", "{ site.google_analytics }", "auto");
+      ga("send", "pageview");
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+</script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L72WRP127J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-L72WRP127J");
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5877350368014861" crossorigin="anonymous"></script>
+
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="57x57" href="../assets/images/favicon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="../assets/images/favicon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../assets/images/favicon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="../assets/images/favicon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../assets/images/favicon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="../assets/images/favicon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="../assets/images/favicon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="../assets/images/favicon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/favicon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/images/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="../assets/images/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="../assets/images/favicon/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="../assets/images/favicon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="JIN's SPACE" src="../assets/images/favicon/android-icon-192x192.png" onerror="this.style.display='none'">
+  JIN's SPACE
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">
+    [NestJS] GraphQL 사용해보기
+  </h1>
+  <h2 class="post-subtitle">
+    
+  </h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-04-06T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Apr 06, 2023
+    </time>
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 6 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#NestJS">#NestJS</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#GraphQL">#GraphQL</a>
+</div>
+<a href="https://hits.sh/0126kjw.github.io/nestjs/2023/04/06/NestJS%EC%97%90%EC%84%9C-GraphQL-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html"><img alt="Hits" src="https://hits.sh/0126kjw.github.io/nestjs/2023/04/06/NestJS%EC%97%90%EC%84%9C-GraphQL-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html.svg?&style=flat-square&label=views&color=ff5100&labelColor=454545"></a>
+</header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p><img src="https://user-images.githubusercontent.com/108377235/232286594-f0d9e031-0824-4782-95a7-9e55f2abddc9.png" alt="https://user-images.githubusercontent.com/108377235/232286594-f0d9e031-0824-4782-95a7-9e55f2abddc9.png"></p>
+
+<p><br></p>
+
+<h2 id="intro">Intro</h2>
+
+<p>이전에 GraphQL을 다루면서 Datetime에 대해 헤맨적이 있어서 그 관련 글을 포스팅했던 적이 있었습니다.</p>
+
+<p>생각해보니 GraphQL이 정확히 무엇이고 어떤 특징을 가지는 지에 대해 막연히 알고만 있어 이를 글로 작성해보고 싶어졌습니다.</p>
+
+<p>그렇기에 이번 포스팅에서는 <strong>GraphQL</strong>을 간단히 소개하고 가지는 특성과 모든 언어의 첫 시작이 되는 <code class="language-plaintext highlighter-rouge">"Hello, World!"</code>를 구현하는 코드 예시를 작성해보겠습니다.</p>
+
+<p><br></p>
+
+<h2 id="graphql">GraphQL?</h2>
+
+<p><code class="language-plaintext highlighter-rouge">GraphQL</code>은 <strong>Facebook</strong>에서 개발된 쿼리 언어 및 런타임입니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">RESTful API</code>와 달리 GraphQL은 클라이언트가 데이터를 요청할 때 필요한 데이터만을 포함하여 정확히 원하는 데이터를 가져올 수 있도록합니다.</p>
+
+<p><strong>GraphQL</strong>은 또한 다양한 데이터 소스에서 데이터를 가져와서 일관된 인터페이스를 제공하므로 개발자가 데이터 가져오기를 단순화하고 관리하기 쉽게 만듭니다.</p>
+
+<p>이를 통해 개발자는 어떠한 제약 없이 데이터를 가져올 수 있으며, 개발 및 유지 보수 비용을 낮출 수 있습니다.</p>
+
+<p><br></p>
+
+<p>GraphQL은 REST API와는 다른 몇 가지 <strong>독특한 특징</strong>을 가지고 있습니다.</p>
+
+<p>그 특징들은 다음과 같습니다.</p>
+
+<h3 id="강력한-타입-시스템">강력한 타입 시스템</h3>
+
+<p>GraphQL은 <strong>강력한 타입 시스템</strong>을 제공합니다.</p>
+
+<p>모든 쿼리와 뮤테이션은 사전에 정의된 타입과 인터페이스에 따라 작성됩니다.</p>
+
+<p>이러한 타입 시스템은 API 사용자에게 API의 데이터 구조와 기능에 대한 명확하고 직관적인 이해를 제공합니다.</p>
+
+<h3 id="유연성">유연성</h3>
+
+<p>GraphQL은 REST API보다 <strong>유연</strong>합니다.</p>
+
+<p>REST API에서는 클라이언트가 서버에서 반환하는 데이터 구조를 결정합니다.</p>
+
+<p>하지만 GraphQL에서는 클라이언트가 필요한 데이터만 요청할 수 있습니다.</p>
+
+<p>따라서 클라이언트는 필요한 데이터만 가져와서 불필요한 데이터를 가져오지 않을 수 있습니다.</p>
+
+<h3 id="단일-엔드포인트">단일 엔드포인트</h3>
+
+<p>GraphQL은 <strong>단일 엔드포인트</strong>를 제공합니다.</p>
+
+<p>이는 여러 엔드포인트를 사용하는 REST API와는 대조적입니다.</p>
+
+<p>GraphQL에서는 클라이언트가 필요한 데이터만 요청하면 됩니다.</p>
+
+<p>이는 HTTP 요청 횟수를 줄이고 네트워크 대역폭을 절약하는 데 도움이 됩니다.</p>
+
+<h3 id="자동-문서화">자동 문서화</h3>
+
+<p>GraphQL은 API를 <strong>자동으로 문서화</strong>할 수 있습니다.</p>
+
+<p>GraphQL 스키마는 API의 데이터 구조와 기능을 정의합니다.</p>
+
+<p>이러한 스키마를 사용하면 API를 자동으로 문서화하고 새로운 기능을 추가할 때마다 문서를 업데이트하는 데 필요한 작업을 줄일 수 있습니다.</p>
+
+<h3 id="데이터-가져오기-성능-최적화">데이터 가져오기 성능 최적화</h3>
+
+<p>GraphQL은 데이터 가져오기 성능을 <strong>최적화</strong>할 수 있습니다.</p>
+
+<p>REST API에서는 데이터를 가져오기 위해 여러 번의 요청이 필요할 수 있습니다.</p>
+
+<p>하지만 GraphQL에서는 클라이언트가 필요한 데이터만 요청하면 됩니다.</p>
+
+<p>따라서 클라이언트는 필요한 데이터만 가져와서 불필요한 데이터를 가져오지 않아도 됩니다.</p>
+
+<p><br></p>
+
+<h2 id="with-nestjs">With NestJS?</h2>
+
+<p><strong>NestJS</strong>에서는 <code class="language-plaintext highlighter-rouge">GraphQL</code> 모듈이 제공되며, 이를 사용하여 <strong>GraphQL API</strong>를 빠르고 쉽게 구축할 수 있습니다.</p>
+
+<p>NestJS의 GraphQL 모듈은 <code class="language-plaintext highlighter-rouge">Apollo Server</code> 기반으로 작동하며, 다양한 GraphQL 기능을 제공합니다.</p>
+
+<p>NestJS는 또한 <code class="language-plaintext highlighter-rouge">TypeORM</code> 등의 ORM(Object Relational Mapper)을 지원하므로, 데이터베이스에서 데이터를 가져와서 GraphQL API를 제공하는 애플리케이션을 쉽게 구축할 수 있습니다.</p>
+
+<p><br></p>
+
+<h3 id="install-graphql-module">Install GraphQL Module</h3>
+
+<p>이제 본격적으로 코드를 작성해보겠습니다.</p>
+
+<p>먼저, <strong>NestJS</strong> 애플리케이션에서 <strong>GraphQL 모듈</strong>을 설치해야합니다.</p>
+
+<p>이를 위해 다음 명령어를 실행해보겠습니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">--save</span> @nestjs/graphql apollo-server-express graphql-tools graphql
+</code></pre></div></div>
+
+<p><br></p>
+
+<h3 id="setting-graphql">Setting GraphQL</h3>
+
+<p>다음으로, NestJS 애플리케이션에서 GraphQL 모듈을 설정해야합니다.</p>
+
+<p>이를 위해 <strong><code class="language-plaintext highlighter-rouge">app.module.ts</code></strong> 파일에서 <strong><code class="language-plaintext highlighter-rouge">GraphQLModule</code></strong>을 import하고, <strong><code class="language-plaintext highlighter-rouge">GraphQLModule.forRoot()</code></strong> 메서드를 사용하여 GraphQL 설정을 구성해야합니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Module</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">GraphQLModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/graphql</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Module</span><span class="p">({</span>
+  <span class="na">imports</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">GraphQLModule</span><span class="p">.</span><span class="nf">forRoot</span><span class="p">({</span>
+      <span class="na">autoSchemaFile</span><span class="p">:</span> <span class="dl">"</span><span class="s2">schema.gql</span><span class="dl">"</span><span class="p">,</span>
+    <span class="p">}),</span>
+  <span class="p">],</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>위 예시 코드에서는 <strong><code class="language-plaintext highlighter-rouge">autoSchemaFile</code></strong> 옵션을 사용하여 스키마 파일을 자동으로 생성하도록 설정하였습니다.</p>
+
+<p><br></p>
+
+<h3 id="graphql-resolver"><strong>GraphQL Resolver</strong></h3>
+
+<p>이제 GraphQL 서비스를 만들어야합니다.</p>
+
+<p>이를 위해, <strong><code class="language-plaintext highlighter-rouge">graphql.service.ts</code></strong> 파일을 생성하고, <strong><code class="language-plaintext highlighter-rouge">@Resolver()</code></strong> 데코레이터를 사용하여 Resolver 클래스를 정의할 수 있습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Resolver</span><span class="p">,</span> <span class="nx">Query</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/graphql</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Resolver</span><span class="p">()</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">HelloResolver</span> <span class="p">{</span>
+  <span class="p">@</span><span class="nd">Query</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">String</span><span class="p">)</span>
+  <span class="k">async</span> <span class="nf">hello</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="dl">"</span><span class="s2">Hello, World!</span><span class="dl">"</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>위 예시 코드에서는 <strong><code class="language-plaintext highlighter-rouge">@Resolver()</code></strong> 데코레이터를 사용하여 Resolver 클래스를 정의하였습니다.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">@Query()</code></strong> 데코레이터를 사용하여 Query 메서드를 정의하고, <strong><code class="language-plaintext highlighter-rouge">async hello()</code></strong> 메서드를 정의하여 ‘Hello, World!’ 문자열을 반환하도록 설정하였습니다.</p>
+
+<p><br></p>
+
+<h3 id="setting-endpoint">Setting <strong>Endpoint</strong>
+</h3>
+
+<p>마지막으로, 애플리케이션의 엔드포인트를 설정해야합니다.</p>
+
+<p>이를 위해, <strong><code class="language-plaintext highlighter-rouge">main.ts</code></strong> 파일에서 Express 앱 객체를 가져와 <strong><code class="language-plaintext highlighter-rouge">app.use()</code></strong> 메서드를 사용하여 GraphQL 엔드포인트를 설정할 수 있습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">NestFactory</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/core</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">AppModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./app.module</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">express</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">express</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">async</span> <span class="kd">function</span> <span class="nf">bootstrap</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">NestFactory</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="nx">AppModule</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">server</span> <span class="o">=</span> <span class="nf">express</span><span class="p">();</span>
+  <span class="nx">app</span><span class="p">.</span><span class="nf">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">/graphql</span><span class="dl">"</span><span class="p">,</span> <span class="nx">server</span><span class="p">);</span>
+  <span class="k">await</span> <span class="nx">app</span><span class="p">.</span><span class="nf">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nf">bootstrap</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>위 예시 코드에서는 <strong><code class="language-plaintext highlighter-rouge">app.use('/graphql', server)</code></strong> 메서드를 사용하여 GraphQL 엔드포인트를 설정하였습니다.</p>
+
+<p>이제 NestJS 애플리케이션에서 GraphQL을 사용할 수 있습니다.</p>
+
+<p><br></p>
+
+<h3 id="graphql-playground"><strong>GraphQL Playground</strong></h3>
+
+<p>GraphQL Playground는 GraphQL API를 시각적으로 탐색할 수 있는 IDE입니다.</p>
+
+<p>이를 실행하려면 다음과 같이 <strong><code class="language-plaintext highlighter-rouge">app.module.ts</code></strong> 파일에서 <strong><code class="language-plaintext highlighter-rouge">GraphQLModule.forRoot()</code></strong> 메서드의 <strong><code class="language-plaintext highlighter-rouge">playground</code></strong> 옵션을 활성화해야합니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Module</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">GraphQLModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/graphql</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Module</span><span class="p">({</span>
+  <span class="na">imports</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">GraphQLModule</span><span class="p">.</span><span class="nf">forRoot</span><span class="p">({</span>
+      <span class="na">autoSchemaFile</span><span class="p">:</span> <span class="dl">"</span><span class="s2">schema.gql</span><span class="dl">"</span><span class="p">,</span>
+      <span class="na">playground</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="p">}),</span>
+  <span class="p">],</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>위 예시 코드에서는 <strong><code class="language-plaintext highlighter-rouge">playground</code></strong> 옵션을 <strong><code class="language-plaintext highlighter-rouge">true</code></strong>로 설정하여 GraphQL Playground를 활성화하였습니다.</p>
+
+<p>이제 애플리케이션을 실행하고 브라우저에서 <strong><code class="language-plaintext highlighter-rouge">http://localhost:3000/graphql</code></strong>에 접속하면 GraphQL Playground를 사용할 수 있습니다.</p>
+
+<p><br></p>
+
+<p><img src="https://user-images.githubusercontent.com/108377235/232286782-d5839d34-ad7f-4371-913a-712c2ad187f7.png" alt="https://user-images.githubusercontent.com/108377235/232286782-d5839d34-ad7f-4371-913a-712c2ad187f7.png"></p>
+
+<p>위 모습은 GraphQL Playgound에서의 예시입니다.</p>
+
+<p><br></p>
+
+<h2 id="end">End</h2>
+
+<p>NestJS에서 GraphQL 모듈을 사용하여 GraphQL API를 쉽게 구축할 수 있었습니다..</p>
+
+<p>또한 <strong><code class="language-plaintext highlighter-rouge">playground</code></strong> 옵션을 활성화하면 GraphQL Playground를 사용하여 API를 시각적으로 탐색할 수 있는 것을 확인했습니다.</p>
+
+<p>GraphQL을 직접 사용해보니 매우 강력하고 유연한 API 디자인 도구라는 생각이 들었습니다.</p>
+
+<p><br></p>
+
+<p>하지만 모든 경우에 GraphQL이 적합하지는 않을 수 있습니다.</p>
+
+<p>따라서 사용 시 장단점을 고려하여 적절하게 사용해야 하는 것이 좋다고 생각합니다.</p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/cs/2023/04/02/%EC%84%9C%EB%B2%84-%EA%B0%9C%EB%B0%9C-%EB%AC%B8%EC%A0%9C%EC%A0%90-%EB%B0%8F-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95.html" title="서버 개발 시 주의해야 할 대표적인 문제점과 해결 방법">서버 개발 시 주의해야 할 대표적인...</a><a class="next" href="/jekyll-theme-yat/nestjs/2023/04/13/NestJS-Socketio%EB%A1%9C-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EC%B1%84%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="[NestJS] Socket.io로 실시간 채팅 서비스 만들기">[NestJS] Socket.io로 실시간 채팅 서비스 만들기...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/nestjs/2023/04/13/NestJS-Socketio%EB%A1%9C-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EC%B1%84%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="[NestJS] Socket.io로 실시간 채팅 서비스 만들기">[NestJS] Socket.io로 실시간 채팅 서비스 만들기</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/story/2022/12/24/%EB%B6%80%ED%8A%B8%EC%BA%A0%ED%94%84-%EC%88%98%EB%A3%8C-%ED%9A%8C%EA%B3%A0%EB%A1%9D-%EC%97%98%EB%A6%AC%EC%8A%A4-AI-%ED%8A%B8%EB%9E%99-5%EA%B8%B0.html" title="[NestJS] Socket.io로 실시간 채팅 서비스 만들기">부트캠프 수료 회고록 - 엘리스 AI 트랙 5기</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/java/2023/03/30/java-hello-world.html" title="[NestJS] Socket.io로 실시간 채팅 서비스 만들기">[Java] Hello, World!</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/django/2022/10/27/Django-REST-Framework_Quickstart.html" title="[NestJS] Socket.io로 실시간 채팅 서비스 만들기">[Django-REST-Framework] Quickstart</a></li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+  const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'title');
+  utterancesScript.setAttribute('label', 'utterances comment');
+  utterancesScript.setAttribute('repo', '0126kjw/0126kjw.github.io');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2022-2023 0126kjw</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+      <div><a href="https://github.com/0126kjw">0126kjw Github</a></div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

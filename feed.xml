@@ -1,0 +1,1904 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://0126kjw.github.io/jekyll-theme-yat/feed.xml" rel="self" type="application/atom+xml" /><link href="https://0126kjw.github.io/jekyll-theme-yat/" rel="alternate" type="text/html" /><updated>2023-04-16T14:36:25+00:00</updated><id>https://0126kjw.github.io/jekyll-theme-yat/feed.xml</id><title type="html">JIN’s SPACE</title><subtitle>Jin's recording &amp; sharing Space.</subtitle><author><name>0126kjw</name></author><entry><title type="html">[NestJS] Socket.io로 실시간 채팅 서비스 만들기</title><link href="https://0126kjw.github.io/jekyll-theme-yat/nestjs/2023/04/13/NestJS-Socketio%EB%A1%9C-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EC%B1%84%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%A7%8C%EB%93%A4%EA%B8%B0.html" rel="alternate" type="text/html" title="[NestJS] Socket.io로 실시간 채팅 서비스 만들기" /><published>2023-04-13T00:00:00+00:00</published><updated>2023-04-13T00:00:00+00:00</updated><id>https://0126kjw.github.io/jekyll-theme-yat/nestjs/2023/04/13/NestJS-Socketio%EB%A1%9C-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EC%B1%84%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%A7%8C%EB%93%A4%EA%B8%B0</id><content type="html" xml:base="https://0126kjw.github.io/jekyll-theme-yat/nestjs/2023/04/13/NestJS-Socketio%EB%A1%9C-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EC%B1%84%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%A7%8C%EB%93%A4%EA%B8%B0.html"><![CDATA[<p><img src="https://user-images.githubusercontent.com/108377235/232318304-12b0d128-602b-4563-b337-de26c1f23aa4.png" alt="https://user-images.githubusercontent.com/108377235/232318304-12b0d128-602b-4563-b337-de26c1f23aa4.png" /></p>
+
+<p><br /></p>
+
+<h2 id="start">Start</h2>
+
+<p>실시간 채팅 서비스는 요즘 매우 인기 있는 기능 중 하나입니다.</p>
+
+<p>이번에는 <code class="language-plaintext highlighter-rouge">NestJS</code>와 <code class="language-plaintext highlighter-rouge">Socket.io</code>를 사용하여 아주 간단한 실시간 채팅 서비스를 만드는 방법을 알아보겠습니다.</p>
+
+<p><br /></p>
+
+<h3 id="nestjs-애플리케이션-생성">NestJS 애플리케이션 생성</h3>
+
+<p>먼저, <code class="language-plaintext highlighter-rouge">NestJS</code> 애플리케이션을 생성합니다. 터미널에서 다음과 같이 입력합니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nest new chat-app
+</code></pre></div></div>
+
+<p>이렇게 하면 새로운 NestJS 프로젝트가 생성됩니다.</p>
+
+<p><br /></p>
+
+<h3 id="socketio-설치">Socket.io 설치</h3>
+
+<p>다음으로, <code class="language-plaintext highlighter-rouge">Socket.io</code>를 설치합니다. 터미널에서 다음과 같이 입력합니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm <span class="nb">install</span> <span class="nt">--save</span> @nestjs/platform-socket.io socket.io
+</code></pre></div></div>
+
+<p>이렇게 하면 Socket.io와 NestJS용 Socket.io 모듈이 설치됩니다.</p>
+
+<p><br /></p>
+
+<h3 id="socketio-모듈-설정">Socket.io 모듈 설정</h3>
+
+<p>Socket.io 모듈을 NestJS 애플리케이션에 설정해야 합니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">app.module.ts</code> 파일에서 다음과 같이 추가합니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Module</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ChatModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./chat/chat.module</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Module</span><span class="p">({</span>
+  <span class="na">imports</span><span class="p">:</span> <span class="p">[</span><span class="nx">ChatModule</span><span class="p">],</span>
+  <span class="na">controllers</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="na">providers</span><span class="p">:</span> <span class="p">[],</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">AppController</code>와 <code class="language-plaintext highlighter-rouge">AppService</code>는 사용하지 않기 때문에 파일을 삭제하고 코드에서도 지워주시면 됩니다.</p>
+
+<p><br /></p>
+
+<h3 id="socketio-모듈-생성">Socket.io 모듈 생성</h3>
+
+<p>다음으로, <code class="language-plaintext highlighter-rouge">Socket.io</code> 모듈을 생성합니다. 터미널에서 다음과 같이 입력합니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nest g module chat
+</code></pre></div></div>
+
+<p>이렇게 하면 <code class="language-plaintext highlighter-rouge">chat</code>이라는 이름의 새로운 모듈이 생성됩니다.</p>
+
+<p><br /></p>
+
+<p>그리고 다음과 같이 <strong>채팅 서비스</strong>를 생성합니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nest generate service chat
+</code></pre></div></div>
+
+<p>그리고 <code class="language-plaintext highlighter-rouge">app.module.ts</code> 파일에서 <code class="language-plaintext highlighter-rouge">ChatModule</code>과 <code class="language-plaintext highlighter-rouge">ChatService</code>를 가져와서 추가합니다.</p>
+
+<p>또한 <code class="language-plaintext highlighter-rouge">@nestjs/platform-socket.io</code> 에서 <code class="language-plaintext highlighter-rouge">IoAdapter</code>를 가져와 추가합니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Module</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ChatGateway</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./chat.gateway</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ChatService</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./chat.service</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">IoAdapter</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/platform-socket.io</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Module</span><span class="p">({</span>
+  <span class="na">providers</span><span class="p">:</span> <span class="p">[</span><span class="nx">ChatGateway</span><span class="p">,</span> <span class="nx">ChatService</span><span class="p">,</span> <span class="nx">IoAdapter</span><span class="p">],</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">SocketModule</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="socketio-게이트웨이-생성">Socket.io 게이트웨이 생성</h3>
+
+<p>다음으로, Socket.io 게이트웨이를 생성합니다. 터미널에서 다음과 같이 입력합니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nest g gateway chat
+</code></pre></div></div>
+
+<p>이렇게 하면 <code class="language-plaintext highlighter-rouge">socket</code>이라는 이름의 새로운 게이트웨이가 생성됩니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">ChatGateway</code>는 Socket.io 이벤트 처리기를 포함합니다.</p>
+
+<p><br /></p>
+
+<h3 id="socketio-이벤트-처리기-생성">Socket.io 이벤트 처리기 생성</h3>
+
+<p><code class="language-plaintext highlighter-rouge">ChatGateway</code>에서 Socket.io 이벤트 처리기를 만듭니다. 다음과 같이 작성합니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span>
+  <span class="nx">SubscribeMessage</span><span class="p">,</span>
+  <span class="nx">WebSocketGateway</span><span class="p">,</span>
+  <span class="nx">WebSocketServer</span><span class="p">,</span>
+  <span class="nx">OnGatewayConnection</span><span class="p">,</span>
+  <span class="nx">OnGatewayDisconnect</span><span class="p">,</span>
+<span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/websockets</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Socket</span><span class="p">,</span> <span class="nx">Server</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">socket.io</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">ChatService</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./chat.service</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">WebSocketGateway</span><span class="p">()</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">ChatGateway</span> <span class="p">{</span>
+  <span class="nf">constructor</span><span class="p">(</span><span class="k">private</span> <span class="k">readonly</span> <span class="nx">chatService</span><span class="p">:</span> <span class="nx">ChatService</span><span class="p">)</span> <span class="p">{}</span>
+
+  <span class="p">@</span><span class="nd">WebSocketServer</span><span class="p">()</span> <span class="nx">server</span><span class="p">:</span> <span class="nx">Server</span><span class="p">;</span>
+
+  <span class="p">@</span><span class="nd">SubscribeMessage</span><span class="p">(</span><span class="dl">"</span><span class="s2">chat</span><span class="dl">"</span><span class="p">)</span>
+  <span class="nf">handleMessage</span><span class="p">(</span><span class="nx">client</span><span class="p">:</span> <span class="nx">Socket</span><span class="p">,</span> <span class="nx">payload</span><span class="p">:</span> <span class="kr">any</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">chatService</span><span class="p">.</span><span class="nf">addMessage</span><span class="p">(</span><span class="nx">payload</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">server</span><span class="p">.</span><span class="nf">emit</span><span class="p">(</span><span class="dl">"</span><span class="s2">chat</span><span class="dl">"</span><span class="p">,</span> <span class="nx">payload</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="p">@</span><span class="nd">SubscribeMessage</span><span class="p">(</span><span class="dl">"</span><span class="s2">getMessages</span><span class="dl">"</span><span class="p">)</span>
+  <span class="nf">handleGetMessages</span><span class="p">(</span><span class="nx">client</span><span class="p">:</span> <span class="nx">Socket</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">messages</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">chatService</span><span class="p">.</span><span class="nf">getMessages</span><span class="p">();</span>
+    <span class="nx">client</span><span class="p">.</span><span class="nf">emit</span><span class="p">(</span><span class="dl">"</span><span class="s2">messages</span><span class="dl">"</span><span class="p">,</span> <span class="nx">messages</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nf">handleConnection</span><span class="p">(</span><span class="nx">client</span><span class="p">:</span> <span class="nx">Socket</span><span class="p">,</span> <span class="p">...</span><span class="nx">args</span><span class="p">:</span> <span class="kr">any</span><span class="p">[]):</span> <span class="kr">any</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Client connected: </span><span class="p">${</span><span class="nx">client</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nf">handleDisconnect</span><span class="p">(</span><span class="nx">client</span><span class="p">:</span> <span class="nx">Socket</span><span class="p">):</span> <span class="kr">any</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="s2">`Client disconnected: </span><span class="p">${</span><span class="nx">client</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>위 코드에서 <code class="language-plaintext highlighter-rouge">@WebSocketGateway()</code> 데코레이터를 사용하여 ChatGateway 클래스를 WebSocket 게이트웨이로 정의합니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">@WebSocketServer()</code> 데코레이터를 사용하여 Socket.io 서버 인스턴스를 가져올 수 있습니다.</p>
+
+<p>그런 다음, <code class="language-plaintext highlighter-rouge">@SubscribeMessage()</code> 데코레이터를 사용하여 클라이언트로부터 수신한 ‘chat’ 및 ‘getMessages’ 이벤트를 처리합니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">'chat'</code> 이벤트를 수신하면 ChatService에서 메시지를 추가하고 모든 클라이언트에게 ‘chat’ 이벤트를 발행합니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">'getMessages'</code> 이벤트를 수신하면 ChatService에서 모든 메시지를 가져와 클라이언트에게 ‘messages’ 이벤트를 발행합니다.</p>
+
+<p><br /></p>
+
+<h3 id="채팅-서비스-작성">채팅 서비스 작성</h3>
+
+<p>마지막으로, <code class="language-plaintext highlighter-rouge">ChatService</code> 클래스를 작성합니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">ChatService</code>는 채팅 메시지를 저장하고 반환합니다. 다음과 같이 작성합니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Injectable</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">ChatService</span> <span class="p">{</span>
+  <span class="k">private</span> <span class="nx">messages</span><span class="p">:</span> <span class="kr">string</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[];</span>
+
+  <span class="nf">addMessage</span><span class="p">(</span><span class="nx">message</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">messages</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nf">getMessages</span><span class="p">():</span> <span class="kr">string</span><span class="p">[]</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">messages</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>ChatService 클래스에서는 <code class="language-plaintext highlighter-rouge">addMessage()</code> 메서드를 사용하여 채팅 메시지를 저장하고 <code class="language-plaintext highlighter-rouge">getMessages()</code> 메서드를 사용하여 모든 채팅 메시지를 반환합니다.</p>
+
+<p><br /></p>
+
+<h3 id="클라이언트-측-socketio-설정">클라이언트 측 Socket.io 설정</h3>
+
+<p>마지막으로, 클라이언트 측 Socket.io 설정을 추가합니다. <code class="language-plaintext highlighter-rouge">static</code> 폴더 생성 후 다음과 같이 <code class="language-plaintext highlighter-rouge">index.html</code> 파일을 만듭니다.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Chat App<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"messages"</span><span class="nt">&gt;&lt;/ul&gt;</span>
+    <span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"chat-form"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">id=</span><span class="s">"chat-input"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"submit"</span><span class="nt">&gt;</span>Send<span class="nt">&lt;/button&gt;</span>
+    <span class="nt">&lt;/form&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/socket.io/socket.io.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+      <span class="kd">const</span> <span class="nx">socket</span> <span class="o">=</span> <span class="nf">io</span><span class="p">();</span>
+
+      <span class="kd">const</span> <span class="nx">messages</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">messages</span><span class="dl">"</span><span class="p">);</span>
+      <span class="kd">const</span> <span class="nx">chatForm</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">chat-form</span><span class="dl">"</span><span class="p">);</span>
+      <span class="kd">const</span> <span class="nx">chatInput</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">chat-input</span><span class="dl">"</span><span class="p">);</span>
+
+      <span class="nx">chatForm</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">submit</span><span class="dl">"</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">event</span><span class="p">.</span><span class="nf">preventDefault</span><span class="p">();</span>
+        <span class="kd">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="nx">chatInput</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+        <span class="nx">socket</span><span class="p">.</span><span class="nf">emit</span><span class="p">(</span><span class="dl">"</span><span class="s2">chat</span><span class="dl">"</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+        <span class="nx">chatInput</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="dl">""</span><span class="p">;</span>
+      <span class="p">});</span>
+
+      <span class="nx">socket</span><span class="p">.</span><span class="nf">emit</span><span class="p">(</span><span class="dl">"</span><span class="s2">getMessages</span><span class="dl">"</span><span class="p">);</span>
+
+      <span class="nx">socket</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">chat</span><span class="dl">"</span><span class="p">,</span> <span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">li</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">li</span><span class="dl">"</span><span class="p">);</span>
+        <span class="nx">li</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="nx">message</span><span class="p">;</span>
+        <span class="nx">messages</span><span class="p">.</span><span class="nf">appendChild</span><span class="p">(</span><span class="nx">li</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">socket</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">messages</span><span class="dl">"</span><span class="p">,</span> <span class="p">(</span><span class="nx">messages</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">messages</span><span class="p">.</span><span class="nf">forEach</span><span class="p">((</span><span class="nx">message</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="kd">const</span> <span class="nx">li</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">li</span><span class="dl">"</span><span class="p">);</span>
+          <span class="nx">li</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="nx">message</span><span class="p">;</span>
+          <span class="nx">messages</span><span class="p">.</span><span class="nf">appendChild</span><span class="p">(</span><span class="nx">li</span><span class="p">);</span>
+        <span class="p">});</span>
+      <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>위 코드에서는 <a href="http://socket.io/">Socket.io</a> 클라이언트를 초기화하고 HTML 요소를 가져와서 이벤트 처리기를 등록합니다.</p>
+
+<p>‘chat-form’ 폼을 제출하면 클라이언트는 ‘chat’ 이벤트를 발행하고, ‘getMessages’ 이벤트를 발행하여 ChatService에서 모든 메시지를 가져옵니다.</p>
+
+<p>‘chat’ 이벤트 및 ‘messages’ 이벤트를 수신하면 채팅 메시지를 DOM에 추가합니다.</p>
+
+<p><br /></p>
+
+<h3 id="서버-실행">서버 실행</h3>
+
+<p>마지막으로, <code class="language-plaintext highlighter-rouge">NestJS</code> 서버를 실행합니다. 터미널에서 다음과 같이 입력합니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm run start
+</code></pre></div></div>
+
+<p>이렇게 하면 NestJS 서버가 실행됩니다.</p>
+
+<p><br /></p>
+
+<h3 id="결과-확인">결과 확인</h3>
+
+<p>웹 브라우저에서 다음 URL에 접속합니다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://localhost:3000/
+</code></pre></div></div>
+
+<p>이제 브라우저에서 메시지를 입력하고 전송 버튼을 클릭하면 서버로 메시지가 전송되며, 모든 클라이언트에게 메시지가 전송됩니다.</p>
+
+<p>또한 브라우저를 새로 고침하여 이전 메시지 목록을 확인할 수 있습니다.</p>
+
+<p><br /></p>
+
+<h2 id="end">End</h2>
+
+<p>이렇게 NestJS와 Socket.io를 사용하여 간단한 실시간 채팅 서비스를 만들어보았습니다.</p>
+
+<p>이 코드를 기반으로 더 복잡하고 더 가독성 좋은 실시간 애플리케이션을 만들 수 있을 것 같습니다.</p>
+
+<p><br /></p>
+
+<p>코드를 참고하시려면 아래 깃허브 레포지토리에서 확인하실 수 있습니다.</p>
+
+<p><a href="https://github.com/0126kjw/chat-app">GitHub - 0126kjw/chat-app: [NestJS] Socket.io로 간단한 실시간 채팅 서비스 만들기</a></p>]]></content><author><name>0126kjw</name></author><category term="NestJS" /><category term="NestJS" /><category term="Socket.io" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">[NestJS] GraphQL 사용해보기</title><link href="https://0126kjw.github.io/jekyll-theme-yat/nestjs/2023/04/06/NestJS%EC%97%90%EC%84%9C-GraphQL-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html" rel="alternate" type="text/html" title="[NestJS] GraphQL 사용해보기" /><published>2023-04-06T00:00:00+00:00</published><updated>2023-04-06T00:00:00+00:00</updated><id>https://0126kjw.github.io/jekyll-theme-yat/nestjs/2023/04/06/NestJS%EC%97%90%EC%84%9C-GraphQL-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0</id><content type="html" xml:base="https://0126kjw.github.io/jekyll-theme-yat/nestjs/2023/04/06/NestJS%EC%97%90%EC%84%9C-GraphQL-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html"><![CDATA[<p><img src="https://user-images.githubusercontent.com/108377235/232286594-f0d9e031-0824-4782-95a7-9e55f2abddc9.png" alt="https://user-images.githubusercontent.com/108377235/232286594-f0d9e031-0824-4782-95a7-9e55f2abddc9.png" /></p>
+
+<p><br /></p>
+
+<h2 id="intro">Intro</h2>
+
+<p>이전에 GraphQL을 다루면서 Datetime에 대해 헤맨적이 있어서 그 관련 글을 포스팅했던 적이 있었습니다.</p>
+
+<p>생각해보니 GraphQL이 정확히 무엇이고 어떤 특징을 가지는 지에 대해 막연히 알고만 있어 이를 글로 작성해보고 싶어졌습니다.</p>
+
+<p>그렇기에 이번 포스팅에서는 <strong>GraphQL</strong>을 간단히 소개하고 가지는 특성과 모든 언어의 첫 시작이 되는 <code class="language-plaintext highlighter-rouge">"Hello, World!"</code>를 구현하는 코드 예시를 작성해보겠습니다.</p>
+
+<p><br /></p>
+
+<h2 id="graphql">GraphQL?</h2>
+
+<p><code class="language-plaintext highlighter-rouge">GraphQL</code>은 <strong>Facebook</strong>에서 개발된 쿼리 언어 및 런타임입니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">RESTful API</code>와 달리 GraphQL은 클라이언트가 데이터를 요청할 때 필요한 데이터만을 포함하여 정확히 원하는 데이터를 가져올 수 있도록합니다.</p>
+
+<p><strong>GraphQL</strong>은 또한 다양한 데이터 소스에서 데이터를 가져와서 일관된 인터페이스를 제공하므로 개발자가 데이터 가져오기를 단순화하고 관리하기 쉽게 만듭니다.</p>
+
+<p>이를 통해 개발자는 어떠한 제약 없이 데이터를 가져올 수 있으며, 개발 및 유지 보수 비용을 낮출 수 있습니다.</p>
+
+<p><br /></p>
+
+<p>GraphQL은 REST API와는 다른 몇 가지 <strong>독특한 특징</strong>을 가지고 있습니다.</p>
+
+<p>그 특징들은 다음과 같습니다.</p>
+
+<h3 id="강력한-타입-시스템">강력한 타입 시스템</h3>
+
+<p>GraphQL은 <strong>강력한 타입 시스템</strong>을 제공합니다.</p>
+
+<p>모든 쿼리와 뮤테이션은 사전에 정의된 타입과 인터페이스에 따라 작성됩니다.</p>
+
+<p>이러한 타입 시스템은 API 사용자에게 API의 데이터 구조와 기능에 대한 명확하고 직관적인 이해를 제공합니다.</p>
+
+<h3 id="유연성">유연성</h3>
+
+<p>GraphQL은 REST API보다 <strong>유연</strong>합니다.</p>
+
+<p>REST API에서는 클라이언트가 서버에서 반환하는 데이터 구조를 결정합니다.</p>
+
+<p>하지만 GraphQL에서는 클라이언트가 필요한 데이터만 요청할 수 있습니다.</p>
+
+<p>따라서 클라이언트는 필요한 데이터만 가져와서 불필요한 데이터를 가져오지 않을 수 있습니다.</p>
+
+<h3 id="단일-엔드포인트">단일 엔드포인트</h3>
+
+<p>GraphQL은 <strong>단일 엔드포인트</strong>를 제공합니다.</p>
+
+<p>이는 여러 엔드포인트를 사용하는 REST API와는 대조적입니다.</p>
+
+<p>GraphQL에서는 클라이언트가 필요한 데이터만 요청하면 됩니다.</p>
+
+<p>이는 HTTP 요청 횟수를 줄이고 네트워크 대역폭을 절약하는 데 도움이 됩니다.</p>
+
+<h3 id="자동-문서화">자동 문서화</h3>
+
+<p>GraphQL은 API를 <strong>자동으로 문서화</strong>할 수 있습니다.</p>
+
+<p>GraphQL 스키마는 API의 데이터 구조와 기능을 정의합니다.</p>
+
+<p>이러한 스키마를 사용하면 API를 자동으로 문서화하고 새로운 기능을 추가할 때마다 문서를 업데이트하는 데 필요한 작업을 줄일 수 있습니다.</p>
+
+<h3 id="데이터-가져오기-성능-최적화">데이터 가져오기 성능 최적화</h3>
+
+<p>GraphQL은 데이터 가져오기 성능을 <strong>최적화</strong>할 수 있습니다.</p>
+
+<p>REST API에서는 데이터를 가져오기 위해 여러 번의 요청이 필요할 수 있습니다.</p>
+
+<p>하지만 GraphQL에서는 클라이언트가 필요한 데이터만 요청하면 됩니다.</p>
+
+<p>따라서 클라이언트는 필요한 데이터만 가져와서 불필요한 데이터를 가져오지 않아도 됩니다.</p>
+
+<p><br /></p>
+
+<h2 id="with-nestjs">With NestJS?</h2>
+
+<p><strong>NestJS</strong>에서는 <code class="language-plaintext highlighter-rouge">GraphQL</code> 모듈이 제공되며, 이를 사용하여 <strong>GraphQL API</strong>를 빠르고 쉽게 구축할 수 있습니다.</p>
+
+<p>NestJS의 GraphQL 모듈은 <code class="language-plaintext highlighter-rouge">Apollo Server</code> 기반으로 작동하며, 다양한 GraphQL 기능을 제공합니다.</p>
+
+<p>NestJS는 또한 <code class="language-plaintext highlighter-rouge">TypeORM</code> 등의 ORM(Object Relational Mapper)을 지원하므로, 데이터베이스에서 데이터를 가져와서 GraphQL API를 제공하는 애플리케이션을 쉽게 구축할 수 있습니다.</p>
+
+<p><br /></p>
+
+<h3 id="install-graphql-module">Install GraphQL Module</h3>
+
+<p>이제 본격적으로 코드를 작성해보겠습니다.</p>
+
+<p>먼저, <strong>NestJS</strong> 애플리케이션에서 <strong>GraphQL 모듈</strong>을 설치해야합니다.</p>
+
+<p>이를 위해 다음 명령어를 실행해보겠습니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">--save</span> @nestjs/graphql apollo-server-express graphql-tools graphql
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="setting-graphql">Setting GraphQL</h3>
+
+<p>다음으로, NestJS 애플리케이션에서 GraphQL 모듈을 설정해야합니다.</p>
+
+<p>이를 위해 <strong><code class="language-plaintext highlighter-rouge">app.module.ts</code></strong> 파일에서 <strong><code class="language-plaintext highlighter-rouge">GraphQLModule</code></strong>을 import하고, <strong><code class="language-plaintext highlighter-rouge">GraphQLModule.forRoot()</code></strong> 메서드를 사용하여 GraphQL 설정을 구성해야합니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Module</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">GraphQLModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/graphql</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Module</span><span class="p">({</span>
+  <span class="na">imports</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">GraphQLModule</span><span class="p">.</span><span class="nf">forRoot</span><span class="p">({</span>
+      <span class="na">autoSchemaFile</span><span class="p">:</span> <span class="dl">"</span><span class="s2">schema.gql</span><span class="dl">"</span><span class="p">,</span>
+    <span class="p">}),</span>
+  <span class="p">],</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>위 예시 코드에서는 <strong><code class="language-plaintext highlighter-rouge">autoSchemaFile</code></strong> 옵션을 사용하여 스키마 파일을 자동으로 생성하도록 설정하였습니다.</p>
+
+<p><br /></p>
+
+<h3 id="graphql-resolver"><strong>GraphQL Resolver</strong></h3>
+
+<p>이제 GraphQL 서비스를 만들어야합니다.</p>
+
+<p>이를 위해, <strong><code class="language-plaintext highlighter-rouge">graphql.service.ts</code></strong> 파일을 생성하고, <strong><code class="language-plaintext highlighter-rouge">@Resolver()</code></strong> 데코레이터를 사용하여 Resolver 클래스를 정의할 수 있습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Resolver</span><span class="p">,</span> <span class="nx">Query</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/graphql</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Resolver</span><span class="p">()</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">HelloResolver</span> <span class="p">{</span>
+  <span class="p">@</span><span class="nd">Query</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">String</span><span class="p">)</span>
+  <span class="k">async</span> <span class="nf">hello</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="dl">"</span><span class="s2">Hello, World!</span><span class="dl">"</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>위 예시 코드에서는 <strong><code class="language-plaintext highlighter-rouge">@Resolver()</code></strong> 데코레이터를 사용하여 Resolver 클래스를 정의하였습니다.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">@Query()</code></strong> 데코레이터를 사용하여 Query 메서드를 정의하고, <strong><code class="language-plaintext highlighter-rouge">async hello()</code></strong> 메서드를 정의하여 ‘Hello, World!’ 문자열을 반환하도록 설정하였습니다.</p>
+
+<p><br /></p>
+
+<h3 id="setting-endpoint">Setting <strong>Endpoint</strong></h3>
+
+<p>마지막으로, 애플리케이션의 엔드포인트를 설정해야합니다.</p>
+
+<p>이를 위해, <strong><code class="language-plaintext highlighter-rouge">main.ts</code></strong> 파일에서 Express 앱 객체를 가져와 <strong><code class="language-plaintext highlighter-rouge">app.use()</code></strong> 메서드를 사용하여 GraphQL 엔드포인트를 설정할 수 있습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">NestFactory</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/core</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">AppModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./app.module</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">express</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">express</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">async</span> <span class="kd">function</span> <span class="nf">bootstrap</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">NestFactory</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="nx">AppModule</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">server</span> <span class="o">=</span> <span class="nf">express</span><span class="p">();</span>
+  <span class="nx">app</span><span class="p">.</span><span class="nf">use</span><span class="p">(</span><span class="dl">"</span><span class="s2">/graphql</span><span class="dl">"</span><span class="p">,</span> <span class="nx">server</span><span class="p">);</span>
+  <span class="k">await</span> <span class="nx">app</span><span class="p">.</span><span class="nf">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nf">bootstrap</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>위 예시 코드에서는 <strong><code class="language-plaintext highlighter-rouge">app.use('/graphql', server)</code></strong> 메서드를 사용하여 GraphQL 엔드포인트를 설정하였습니다.</p>
+
+<p>이제 NestJS 애플리케이션에서 GraphQL을 사용할 수 있습니다.</p>
+
+<p><br /></p>
+
+<h3 id="graphql-playground"><strong>GraphQL Playground</strong></h3>
+
+<p>GraphQL Playground는 GraphQL API를 시각적으로 탐색할 수 있는 IDE입니다.</p>
+
+<p>이를 실행하려면 다음과 같이 <strong><code class="language-plaintext highlighter-rouge">app.module.ts</code></strong> 파일에서 <strong><code class="language-plaintext highlighter-rouge">GraphQLModule.forRoot()</code></strong> 메서드의 <strong><code class="language-plaintext highlighter-rouge">playground</code></strong> 옵션을 활성화해야합니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Module</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">GraphQLModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/graphql</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Module</span><span class="p">({</span>
+  <span class="na">imports</span><span class="p">:</span> <span class="p">[</span>
+    <span class="nx">GraphQLModule</span><span class="p">.</span><span class="nf">forRoot</span><span class="p">({</span>
+      <span class="na">autoSchemaFile</span><span class="p">:</span> <span class="dl">"</span><span class="s2">schema.gql</span><span class="dl">"</span><span class="p">,</span>
+      <span class="na">playground</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="p">}),</span>
+  <span class="p">],</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nc">AppModule</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>위 예시 코드에서는 <strong><code class="language-plaintext highlighter-rouge">playground</code></strong> 옵션을 <strong><code class="language-plaintext highlighter-rouge">true</code></strong>로 설정하여 GraphQL Playground를 활성화하였습니다.</p>
+
+<p>이제 애플리케이션을 실행하고 브라우저에서 <strong><code class="language-plaintext highlighter-rouge">http://localhost:3000/graphql</code></strong>에 접속하면 GraphQL Playground를 사용할 수 있습니다.</p>
+
+<p><br /></p>
+
+<p><img src="https://user-images.githubusercontent.com/108377235/232286782-d5839d34-ad7f-4371-913a-712c2ad187f7.png" alt="https://user-images.githubusercontent.com/108377235/232286782-d5839d34-ad7f-4371-913a-712c2ad187f7.png" /></p>
+
+<p>위 모습은 GraphQL Playgound에서의 예시입니다.</p>
+
+<p><br /></p>
+
+<h2 id="end">End</h2>
+
+<p>NestJS에서 GraphQL 모듈을 사용하여 GraphQL API를 쉽게 구축할 수 있었습니다..</p>
+
+<p>또한 <strong><code class="language-plaintext highlighter-rouge">playground</code></strong> 옵션을 활성화하면 GraphQL Playground를 사용하여 API를 시각적으로 탐색할 수 있는 것을 확인했습니다.</p>
+
+<p>GraphQL을 직접 사용해보니 매우 강력하고 유연한 API 디자인 도구라는 생각이 들었습니다.</p>
+
+<p><br /></p>
+
+<p>하지만 모든 경우에 GraphQL이 적합하지는 않을 수 있습니다.</p>
+
+<p>따라서 사용 시 장단점을 고려하여 적절하게 사용해야 하는 것이 좋다고 생각합니다.</p>]]></content><author><name>0126kjw</name></author><category term="NestJS" /><category term="NestJS" /><category term="GraphQL" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">서버 개발 시 주의해야 할 대표적인 문제점과 해결 방법</title><link href="https://0126kjw.github.io/jekyll-theme-yat/cs/2023/04/02/%EC%84%9C%EB%B2%84-%EA%B0%9C%EB%B0%9C-%EB%AC%B8%EC%A0%9C%EC%A0%90-%EB%B0%8F-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95.html" rel="alternate" type="text/html" title="서버 개발 시 주의해야 할 대표적인 문제점과 해결 방법" /><published>2023-04-02T00:00:00+00:00</published><updated>2023-04-02T00:00:00+00:00</updated><id>https://0126kjw.github.io/jekyll-theme-yat/cs/2023/04/02/%EC%84%9C%EB%B2%84-%EA%B0%9C%EB%B0%9C-%EB%AC%B8%EC%A0%9C%EC%A0%90-%EB%B0%8F-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95</id><content type="html" xml:base="https://0126kjw.github.io/jekyll-theme-yat/cs/2023/04/02/%EC%84%9C%EB%B2%84-%EA%B0%9C%EB%B0%9C-%EB%AC%B8%EC%A0%9C%EC%A0%90-%EB%B0%8F-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95.html"><![CDATA[<p><img src="https://user-images.githubusercontent.com/108377235/232244731-3e31f25b-9394-4ebc-94a6-c4de3aac9cc5.png" alt="error" /></p>
+
+<p><br /></p>
+
+<h2 id="intro">Intro</h2>
+
+<p>서버 개발을 하면서 발생할 수 있는 다양한 문제들은 많은 개발자들이 공통적으로 겪는 문제입니다.</p>
+
+<p>이번에는 서버 개발 시 주의해야 할 대표적인 문제점과 그에 대한 해결 방법에 대해 알아보겠습니다.</p>
+
+<p><br /></p>
+
+<h2 id="1-보안security-문제"><strong>1. 보안(Security) 문제</strong></h2>
+
+<p>서버 개발 시 <strong>보안 문제</strong>는 가장 중요한 문제 중 하나입니다.</p>
+
+<p>해커들이 서버를 공격하여 사용자 정보를 <strong>탈취</strong>하거나 서비스를 <strong>마비</strong>시킬 수 있기 때문입니다.</p>
+
+<p>이러한 보안 문제를 해결하기 위해서는 다음과 같은 방법을 사용할 수 있습니다.</p>
+
+<ul>
+  <li><strong>취약점 분석</strong>: 서버에 취약점이 있는지를 분석하여 보안 취약점을 제거합니다.</li>
+  <li><strong>암호화</strong>: 사용자 정보를 저장할 때 암호화하여 보호합니다.</li>
+  <li><strong>방화벽 설정</strong>: 외부에서의 공격을 막기 위해 방화벽을 설정합니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="2-성능performance-문제"><strong>2. 성능(Performance) 문제</strong></h2>
+
+<p>서버 개발 시 <strong>성능 문제</strong>는 서비스의 품질을 결정하는 매우 중요한 문제입니다.</p>
+
+<p>성능 문제가 발생하면 사용자들은 불편을 느끼고, 서비스의 이용률이 감소할 수 있습니다.</p>
+
+<p>이러한 성능 문제를 해결하기 위해서는 다음과 같은 방법을 사용할 수 있습니다.</p>
+
+<ul>
+  <li><strong>캐싱</strong>: 빈번하게 호출되는 데이터나 연산 결과를 캐싱하여 성능을 개선합니다.</li>
+  <li><strong>부하 분산</strong>: 서버에 부하를 골고루 분산하여 성능을 개선합니다.</li>
+  <li><strong>코드 최적화</strong>: 코드를 최적화하여 성능을 개선합니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="3-확장성scalability-문제"><strong>3. 확장성(Scalability) 문제</strong></h2>
+
+<p>서버 개발 시 <strong>확장성 문제</strong>는 사용자 수나 데이터 양이 증가할 때 서버를 확장하기 어려워지는 문제입니다.</p>
+
+<p>이러한 확장성 문제를 해결하기 위해서는 다음과 같은 방법을 사용할 수 있습니다.</p>
+
+<ul>
+  <li><strong>수평적 확장</strong>: 서버를 추가하여 처리 능력을 확장합니다.</li>
+  <li><strong>수직적 확장</strong>: 서버의 하드웨어 사양을 높여 처리 능력을 확장합니다.</li>
+  <li><strong>클라우드 서비스</strong>: 클라우드 서비스를 사용하여 필요한 만큼 서버를확장할 수 있습니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="4-서버-다운-문제"><strong>4. 서버 다운 문제</strong></h2>
+
+<p><strong>서버 다운 문제</strong>는 서비스가 중단될 수 있는 문제로, 사용자들에게 큰 불편을 줄 수 있습니다.</p>
+
+<p>이러한 서버 다운 문제를 해결하기 위해서는 다음과 같은 방법을 사용할 수 있습니다.</p>
+
+<ul>
+  <li><strong>모니터링</strong>: 서버 상태를 지속적으로 모니터링하여 문제를 발견하면 빠르게 대응합니다.</li>
+  <li><strong>백업</strong>: 서버에 저장된 데이터를 정기적으로 백업하여 데이터 손실을 예방합니다.</li>
+  <li><strong>대체 서버</strong>: 서버 다운 시 대체 서버를 사용하여 서비스를 계속 제공합니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="5-데이터베이스-문제"><strong>5. 데이터베이스 문제</strong></h2>
+
+<p>서버 개발 시 <strong>데이터베이스 문제</strong>는 매우 중요한 문제 중 하나입니다.</p>
+
+<p>데이터베이스 문제가 발생하면 데이터 유실이나 정합성 문제 등의 문제가 발생할 수 있습니다.</p>
+
+<p>이러한 데이터베이스 문제를 해결하기 위해서는 다음과 같은 방법을 사용할 수 있습니다.</p>
+
+<ul>
+  <li><strong>백업</strong>: 데이터베이스를 정기적으로 백업하여 데이터 손실을 예방합니다.</li>
+  <li><strong>복제</strong>: 데이터베이스를 복제하여 데이터 유실을 예방합니다.</li>
+  <li><strong>인덱싱</strong>: 데이터베이스의 인덱스를 최적화하여 검색 속도를 개선합니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="6-문서화documentation-문제"><strong>6. 문서화(Documentation) 문제</strong></h2>
+
+<p>서버 개발 시 <strong>문서화 문제</strong>는 개발자들 사이의 의사소통 문제로 작업 효율성을 저하시킬 수 있습니다.</p>
+
+<p>이러한 문서화 문제를 해결하기 위해서는 다음과 같은 방법을 사용할 수 있습니다.</p>
+
+<ul>
+  <li><strong>API 문서 작성</strong>: API 문서를 작성하여 개발자들 사이의 의사소통을 원활하게 합니다.</li>
+  <li><strong>코드 주석</strong>: 코드에 주석을 추가하여 코드 이해도를 높입니다.</li>
+  <li><strong>위키 페이지</strong>: 위키 페이지를 만들어 프로젝트에 대한 정보를 공유합니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="결론"><strong>결론</strong></h2>
+
+<p>서버 개발 시 발생할 수 있는 다양한 문제들은 위에서 소개한 것들 외에도 매우 다양합니다.</p>
+
+<p>위에서 소개한 문제들은 <strong>대표적인 문제</strong> 중 하나입니다.</p>
+
+<p>이러한 문제들을 해결하기 위해서는 최신 기술 동향을 계속해서 파악하고, 다양한 방법을 시도해보아야 한다고 생각합니다.</p>
+
+<p><br /></p>
+
+<p>그리고 개발자들은 항상 문제를 해결하는 방법을 찾기 위해 <strong>노력</strong>해야 합니다.</p>
+
+<p>서버 개발 시 발생할 수 있는 문제들을 미리 예방하고 해결하는 노력을 통해 안정적인 서버를 구축하고 서비스를 제공할 수 있습니다.</p>
+
+<p>또한, 이러한 문제들을 해결하는 과정에서 <strong>경험</strong>과 <strong>노하우</strong>를 축적할 수 있으며, 이는 미래에 발생할 수 있는 문제들을 해결하는 데 큰 도움이 될 것입니다.</p>
+
+<p><br /></p>
+
+<p>마지막으로, 서버 개발을 하면서 발생하는 문제들은 단순히 기술적인 문제뿐만 아니라, 다양한 외부적인 요인들로 인해 발생할 수도 있습니다.</p>
+
+<p>이러한 문제들을 해결하기 위해서는 개발자들뿐만 아니라, 다른 팀원들과의 원활한 <strong>의사소통</strong>과 <strong>협업</strong>이 필요합니다.</p>
+
+<p>따라서, 개발자들은 기술적인 역량뿐만 아니라, 의사소통과 협업 역량도 함께 발전시켜야 한다고 생각합니다.</p>]]></content><author><name>0126kjw</name></author><category term="CS" /><category term="CS" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">[Java] 자바(Java)의 자료형</title><link href="https://0126kjw.github.io/jekyll-theme-yat/java/2023/04/01/java%EC%9D%98-%EC%9E%90%EB%A3%8C%ED%98%95.html" rel="alternate" type="text/html" title="[Java] 자바(Java)의 자료형" /><published>2023-04-01T00:00:00+00:00</published><updated>2023-04-01T00:00:00+00:00</updated><id>https://0126kjw.github.io/jekyll-theme-yat/java/2023/04/01/java%EC%9D%98-%EC%9E%90%EB%A3%8C%ED%98%95</id><content type="html" xml:base="https://0126kjw.github.io/jekyll-theme-yat/java/2023/04/01/java%EC%9D%98-%EC%9E%90%EB%A3%8C%ED%98%95.html"><![CDATA[<p><img src="https://user-images.githubusercontent.com/108377235/232238718-734d82fe-fba7-4a44-b00a-948fd4d4365f.png" alt="java" /></p>
+
+<p><br /></p>
+
+<h2 id="intro">Intro</h2>
+
+<p>자바는 <code class="language-plaintext highlighter-rouge">기본 자료형(primitive data type)</code>과 <code class="language-plaintext highlighter-rouge">참조 자료형(reference data type)</code>으로 나뉘어지는 다양한 자료형을 지원합니다.</p>
+
+<p>이번 글에서는 각각의 <strong>자료형</strong>에 대해 알아보도록 하겠습니다.</p>
+
+<p>또한, 자주 사용하는 방법인 <code class="language-plaintext highlighter-rouge">형 변환</code>에 대한 내용도 다뤄보도록 하겠습니다.</p>
+
+<p><br /></p>
+
+<h2 id="기본-자료형primitive-data-type"><strong>기본 자료형(primitive data type)</strong></h2>
+
+<h3 id="1-논리형boolean"><strong>1. 논리형(boolean)</strong></h3>
+
+<p><strong>true</strong> 또는 <strong>false</strong> 값을 가집니다. 논리형 변수를 선언하기 위해서는 <strong><code class="language-plaintext highlighter-rouge">boolean</code></strong> 키워드를 사용합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">boolean</span> <span class="n">flag</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="2-문자형char"><strong>2. 문자형(char)</strong></h3>
+
+<p>16비트 <strong>유니코드(Unicode)</strong> 문자를 저장합니다. 문자형 변수를 선언하기 위해서는 <strong><code class="language-plaintext highlighter-rouge">char</code></strong> 키워드를 사용합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="sc">'A'</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="3-정수형byte-short-int-long"><strong>3. 정수형(byte, short, int, long)</strong></h3>
+
+<p>각각 1바이트, 2바이트, 4바이트, 8바이트의 <strong>정수</strong> 값을 저장합니다. 정수형 변수를 선언하기 위해서는 <strong><code class="language-plaintext highlighter-rouge">byte</code></strong>, <strong><code class="language-plaintext highlighter-rouge">short</code></strong>, <strong><code class="language-plaintext highlighter-rouge">int</code></strong>, <strong><code class="language-plaintext highlighter-rouge">long</code></strong> 키워드를 사용합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">byte</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">127</span><span class="o">;</span>
+<span class="kt">short</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">32767</span><span class="o">;</span>
+<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2147483647</span><span class="o">;</span>
+<span class="kt">long</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">9223372036854775807L</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="4-실수형float-double"><strong>4. 실수형(float, double)</strong></h3>
+
+<p>각각 4바이트, 8바이트의 <strong>실수</strong> 값을 저장합니다. 실수형 변수를 선언하기 위해서는 <strong><code class="language-plaintext highlighter-rouge">float</code></strong>, <strong><code class="language-plaintext highlighter-rouge">double</code></strong> 키워드를 사용합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">f</span> <span class="o">=</span> <span class="mf">3.14f</span><span class="o">;</span>
+<span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="mf">3.14159265358979323846</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="참조-자료형reference-data-type"><strong>참조 자료형(reference data type)</strong></h2>
+
+<h3 id="1-클래스class"><strong>1. 클래스(class)</strong></h3>
+
+<p><strong>객체(object)</strong>를 생성하기 위한 템플릿(template)입니다. 클래스는 <strong><code class="language-plaintext highlighter-rouge">class</code></strong> 키워드를 사용하여 정의합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nc">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">(</span><span class="s">"John"</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="2-배열array"><strong>2. 배열(array)</strong></h3>
+
+<p>동일한 자료형의 값들을 <strong>연속적으로</strong> 저장할 수 있는 자료구조입니다. 배열은 대괄호([])를 사용하여 선언합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[]{</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">};</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="3-인터페이스interface"><strong>3. 인터페이스(interface)</strong></h3>
+
+<p>클래스와 유사하지만, 클래스가 정의한 메소드를 구현할 강제성을 가집니다. 인터페이스는 <strong><code class="language-plaintext highlighter-rouge">interface</code></strong> 키워드를 사용하여 정의합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Shape</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">draw</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Circle</span> <span class="kd">implements</span> <span class="nc">Shape</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">draw</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Circle.draw()"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nc">Shape</span> <span class="n">shape</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Circle</span><span class="o">();</span>
+<span class="n">shape</span><span class="o">.</span><span class="na">draw</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="4-열거형enum"><strong>4. 열거형(enum)</strong></h3>
+
+<p>서로 연관된 상수(constant)들을 그룹화한 자료형입니다. 열거형은 <strong><code class="language-plaintext highlighter-rouge">enum</code></strong> 키워드를 사용하여 정의합니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">enum</span> <span class="nc">Day</span> <span class="o">{</span>
+    <span class="no">MONDAY</span><span class="o">,</span> <span class="no">TUESDAY</span><span class="o">,</span> <span class="no">WEDNESDAY</span><span class="o">,</span> <span class="no">THURSDAY</span><span class="o">,</span> <span class="no">FRIDAY</span><span class="o">,</span> <span class="no">SATURDAY</span><span class="o">,</span> <span class="no">SUNDAY</span>
+<span class="o">}</span>
+
+<span class="nc">Day</span> <span class="n">today</span> <span class="o">=</span> <span class="nc">Day</span><span class="o">.</span><span class="na">MONDAY</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="형-변환type-casting">형 변환(Type Casting)</h2>
+
+<p>형 변환(Type Casting)은 변수나 값의 자료형을 다른 자료형으로 변환하는 것을 말합니다.</p>
+
+<p><strong>자동 형 변환(Automatic Casting)</strong>과 <strong>강제 형 변환(Explicit Casting)</strong> 두 가지 방법이 있습니다.</p>
+
+<p><br /></p>
+
+<h3 id="1-자동-형-변환automatic-casting"><strong>1. 자동 형 변환(Automatic Casting)</strong></h3>
+
+<p><strong>자동 형 변환</strong>은 작은 크기의 자료형에서 큰 크기의 자료형으로 자동으로 변환됩니다.</p>
+
+<p>이는 데이터 손실 없이 형 변환이 가능하기 때문입니다.</p>
+
+<p><br /></p>
+
+<p>다음은 자동 형 변환의 예시입니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+<span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span> <span class="c1">// 자동 형 변환 발생</span>
+</code></pre></div></div>
+
+<p>위 코드에서 <strong><code class="language-plaintext highlighter-rouge">int</code></strong> 타입 변수 <strong><code class="language-plaintext highlighter-rouge">i</code></strong>가 <strong><code class="language-plaintext highlighter-rouge">double</code></strong> 타입 변수 <strong><code class="language-plaintext highlighter-rouge">d</code></strong>로 자동 형 변환됩니다.</p>
+
+<p><br /></p>
+
+<h3 id="2-강제-형-변환explicit-casting"><strong>2. 강제 형 변환(Explicit Casting)</strong></h3>
+
+<p><strong>강제 형 변환</strong>은 큰 크기의 자료형에서 작은 크기의 자료형으로 형 변환하는 것입니다.</p>
+
+<p>이는 데이터 손실이 발생할 수 있기 때문에 명시적으로 형 변환을 지정해야 합니다.</p>
+
+<p><br /></p>
+
+<p>다음은 강제 형 변환의 예시입니다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="mf">3.141592</span><span class="o">;</span>
+<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="n">d</span><span class="o">;</span> <span class="c1">// 강제 형 변환 발생</span>
+</code></pre></div></div>
+
+<p>위 코드에서 <strong><code class="language-plaintext highlighter-rouge">double</code></strong> 타입 변수 <strong><code class="language-plaintext highlighter-rouge">d</code></strong>가 <strong><code class="language-plaintext highlighter-rouge">int</code></strong> 타입 변수 <strong><code class="language-plaintext highlighter-rouge">i</code></strong>로 강제 형 변환됩니다.</p>
+
+<p>이때 소수점 이하의 데이터는 손실됩니다.</p>
+
+<hr />
+
+<p><br /></p>
+
+<p>자바는 기본 자료형과 참조 자료형으로 다양한 자료형을 지원합니다.</p>
+
+<p>기본 자료형은 논리형, 문자형, 정수형, 실수형으로 구성되며, 참조 자료형은 클래스, 배열, 인터페이스, 열거형으로 구성됩니다.</p>
+
+<p>이러한 자료형을 적절하게 활용하여 다양한 프로그램을 개발할 수 있습니다.</p>
+
+<p>typescript에서 타입 선언을 하기 때문에 크게 어렵지 않았던 개념이었던 것 같습니다.</p>]]></content><author><name>0126kjw</name></author><category term="Java" /><category term="Java" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">[Java] Hello, World!</title><link href="https://0126kjw.github.io/jekyll-theme-yat/java/2023/03/30/java-hello-world.html" rel="alternate" type="text/html" title="[Java] Hello, World!" /><published>2023-03-30T00:00:00+00:00</published><updated>2023-03-30T00:00:00+00:00</updated><id>https://0126kjw.github.io/jekyll-theme-yat/java/2023/03/30/java-hello-world</id><content type="html" xml:base="https://0126kjw.github.io/jekyll-theme-yat/java/2023/03/30/java-hello-world.html"><![CDATA[<p><img src="https://user-images.githubusercontent.com/108377235/232237661-c321b161-ee7a-42f0-9f9f-0ab51f79fbed.png" alt="javaspring" /></p>
+
+<p><br /></p>
+
+<h2 id="intro">Intro</h2>
+
+<p>제가 주로 학습하고 다루었던 언어는 <code class="language-plaintext highlighter-rouge">Javascript</code>와 <code class="language-plaintext highlighter-rouge">Node.js</code> 였습니다.</p>
+
+<p>하지만 이번에 <code class="language-plaintext highlighter-rouge">Java</code>를 한번 배워봐야겠다는 생각이 들었고, 한 언어를 어느정도 다뤄보았기 때문에 다른 언어를 학습할 때 조금이나마 수월할 것이라고 생각하였습니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">NestJS</code>라는 프레임워크를 학습할 때, <code class="language-plaintext highlighter-rouge">Java</code>와 비슷한 구조와 방식을 가진다는 글들을 보았었고 실제로 학습 중에 어렴풋이 느끼기도 했습니다.</p>
+
+<p>아직은 학습 초반 단계이기 때문에 이것에 대한 얘기는 추후에 다루도록 하겠습니다.</p>
+
+<p><br /></p>
+
+<p>이번 포스팅은 <code class="language-plaintext highlighter-rouge">Java</code>라는 프로그래밍 언어와 Java 기반으로 만들어진 <code class="language-plaintext highlighter-rouge">Spring</code>이라는 프레임워크에 대한 간단한 소개와 예시 코드를 작성해보겠습니다.</p>
+
+<hr />
+
+<p><br /></p>
+
+<h2 id="java">Java?</h2>
+
+<p><code class="language-plaintext highlighter-rouge">자바(Java)</code>는 썬 마이크로시스템즈(Sun Microsystems)에서 개발한 <code class="language-plaintext highlighter-rouge">객체 지향 프로그래밍 언어</code>입니다.</p>
+
+<p>자바는 매우 널리 사용되며, 모바일 애플리케이션 개발부터 대규모 기업용 애플리케이션 개발에 이르기까지 다양한 분야에서 사용됩니다.</p>
+
+<p>또한, 자바는 운영체제나 플랫폼에 독립적인 특성을 가지고 있으며, 강력한 보안 기능으로도 유명합니다.</p>
+
+<p><br /></p>
+
+<h2 id="spring">Spring?</h2>
+
+<p><code class="language-plaintext highlighter-rouge">스프링(Spring)</code>은 자바 기반의 <code class="language-plaintext highlighter-rouge">오픈 소스 프레임워크</code>입니다.</p>
+
+<p>스프링은 애플리케이션을 구축하는 데 필요한 많은 부분을 제공하며, 객체 지향 프로그래밍, 의존성 주입(Dependency Injection), 제어 역행(Inversion of Control) 등의 개념을 바탕으로 구성됩니다.</p>
+
+<p>스프링은 또한 데이터베이스 연동, 웹 애플리케이션 개발, 보안, 테스트 등의 기능도 제공합니다.</p>
+
+<p><br /></p>
+
+<h2 id="java--spring">Java &amp; Spring</h2>
+
+<p>스프링은 자바 기반의 프레임워크이므로, 자바에 대한 이해가 필요합니다.</p>
+
+<p>또한, 스프링은 자바의 많은 기능을 기반으로 구성되어 있으므로, 자바에 대한 이해를 바탕으로 스프링을 학습하는 것이 좋습니다.</p>
+
+<p>자바와 스프링을 함께 사용하면, 높은 생산성과 유연성을 얻을 수 있습니다</p>
+
+<p><br /></p>
+
+<h2 id="example-code">Example Code</h2>
+
+<h3 id="java-1">Java</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloWorld</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello, World!"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="spring-1">Spring</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloWorldController</span> <span class="o">{</span>
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="s">"/hello"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">helloWorld</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">"Hello, World!"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>위의 예시 코드는 각각 자바와 스프링으로 간단한 <code class="language-plaintext highlighter-rouge">"Hello, World!"</code> 출력 코드를 작성한 것입니다.</p>
+
+<p><br /></p>
+
+<h3 id="difference">Difference</h3>
+
+<p>제가 주로 다뤘던 <code class="language-plaintext highlighter-rouge">Node.js</code>와 <code class="language-plaintext highlighter-rouge">자바/스프링</code>은 모두 서버 개발에 사용되는 기술이지만, 몇 가지 차이점이 있습니다.</p>
+
+<p><br /></p>
+
+<p><strong>첫째</strong>, Node.js는 자바/스프링과 달리 자바스크립트 기반의 플랫폼입니다. 이는 Node.js 개발자들이 클라이언트와 서버 사이드 양쪽에서 모두 자바스크립트를 사용할 수 있도록 해줍니다.</p>
+
+<p><strong>둘째</strong>, 자바/스프링은 객체 지향 프로그래밍 언어를 기반으로 하며, Node.js는 이벤트 기반 프로그래밍 언어를 기반으로 합니다. 이러한 차이는 개발자들이 코드를 작성하는 방식과 구조에 영향을 미칩니다.</p>
+
+<p><strong>셋째</strong>, 자바/스프링은 많은 기업에서 사용되는 범용적인 프레임워크입니다. 이에 반해, Node.js는 주로 웹 개발을 위해 사용되며, 특히 실시간 어플리케이션의 개발에 강점을 가지고 있습니다.</p>
+
+<p><strong>넷째</strong>, 자바/스프링은 대규모 기업용 애플리케이션 개발에 적합합니다. 이에 비해 Node.js는 작은 규모의 애플리케이션 개발에 더 적합합니다.</p>
+
+<p><strong>마지막으로</strong>, 자바/스프링은 많은 라이브러리와 프레임워크가 존재하며, 이를 통해 개발자들이 개발 생산성을 높일 수 있습니다. Node.js도 라이브러리와 프레임워크가 많이 존재하지만, 그 수는 자바/스프링에 비해 적습니다.</p>
+
+<p><br /></p>
+
+<p>따라서, 자바/스프링과 Node.js는 각각 장단점이 있으며, 개발자들은 자신의 목적과 상황에 맞게 선택해야 합니다.</p>
+
+<hr />
+
+<p><br /></p>
+
+<p>이 블로그에서 Java를 처음 다루다보니 이번에는 간단한 소개와 코드를 작성해보았습니다.</p>
+
+<p>앞으로는 Java를 열심히 학습하면서 배운 내용을 바탕으로 게시물을 자주 작성하도록 하겠습니다.</p>]]></content><author><name>0126kjw</name></author><category term="Java" /><category term="Java" /><category term="Spring" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">WebSocket을 이용한 실시간 웹 애플리케이션 개발</title><link href="https://0126kjw.github.io/jekyll-theme-yat/node.js/2023/03/27/WebSocket%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EC%9B%B9-%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98-%EA%B0%9C%EB%B0%9C.html" rel="alternate" type="text/html" title="WebSocket을 이용한 실시간 웹 애플리케이션 개발" /><published>2023-03-27T00:00:00+00:00</published><updated>2023-03-27T00:00:00+00:00</updated><id>https://0126kjw.github.io/jekyll-theme-yat/node.js/2023/03/27/WebSocket%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EC%9B%B9-%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98-%EA%B0%9C%EB%B0%9C</id><content type="html" xml:base="https://0126kjw.github.io/jekyll-theme-yat/node.js/2023/03/27/WebSocket%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EC%9B%B9-%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98-%EA%B0%9C%EB%B0%9C.html"><![CDATA[<p><img src="https://user-images.githubusercontent.com/108377235/232225371-67c6eeb9-0e48-4ba2-91f7-3bad415fd887.png" alt="https://user-images.githubusercontent.com/108377235/232225371-67c6eeb9-0e48-4ba2-91f7-3bad415fd887.png" /></p>
+
+<p><br /></p>
+
+<h2 id="intro">Intro</h2>
+
+<p><code class="language-plaintext highlighter-rouge">WebSocket</code>은 HTTP와 달리 서버와 클라이언트 간 양방향 통신을 지원하는 프로토콜입니다.</p>
+
+<p>이를 이용하면 실시간으로 데이터를 주고받는 웹 애플리케이션을 쉽게 개발할 수 있습니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Node.js</code>는 비동기 I/O 처리를 지원하므로 <code class="language-plaintext highlighter-rouge">WebSocket</code>과 잘 어울립니다.</p>
+
+<p>이번 게시물에서는 <code class="language-plaintext highlighter-rouge">Node.js</code>와 <code class="language-plaintext highlighter-rouge">WebSocket</code>을 이용하여 간단한 실시간 채팅 애플리케이션을 만드는 방법과 예제 코드를 작성해보겠습니다.</p>
+
+<p><br /></p>
+
+<h2 id="websocket">WebSocket?</h2>
+
+<p>WebSocket은 서버와 클라이언트 간 양방향 통신을 지원하는 프로토콜입니다.</p>
+
+<p>HTTP와는 달리 연결을 유지하며, 서버와 클라이언트가 데이터를 주고받을 수 있습니다.</p>
+
+<p>이를 이용하면 실시간으로 데이터를 주고받는 웹 애플리케이션을 쉽게 개발할 수 있습니다.</p>
+
+<p><br /></p>
+
+<h2 id="using-websocket-in-nodejs">Using WebSocket in Node.js</h2>
+
+<p>Node.js에서 WebSocket을 사용하기 위해서는 <strong><code class="language-plaintext highlighter-rouge">ws</code></strong> 모듈을 설치해야 합니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install </span>ws
+</code></pre></div></div>
+
+<p><br /></p>
+
+<p>WebSocket 서버를 생성하려면 다음과 같이 <strong><code class="language-plaintext highlighter-rouge">WebSocket.Server</code></strong> 클래스를 이용합니다.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nf">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">ws</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">wss</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">.</span><span class="nc">Server</span><span class="p">({</span> <span class="na">port</span><span class="p">:</span> <span class="mi">8080</span> <span class="p">});</span>
+</code></pre></div></div>
+
+<p>이제 클라이언트와 연결이 이루어졌을 때의 이벤트를 처리할 수 있습니다.</p>
+
+<p><br /></p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">wss</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">connection</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span> <span class="nf">connection</span><span class="p">(</span><span class="nx">ws</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">client connected</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>이제 클라이언트와 연결이 이루어졌을 때 <strong><code class="language-plaintext highlighter-rouge">client connected</code></strong> 메시지가 출력됩니다.</p>
+
+<p><br /></p>
+
+<p>이제 클라이언트가 보낸 메시지를 수신하고, 다른 클라이언트에게 전송하는 기능을 구현해보겠습니다.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">wss</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">connection</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span> <span class="nf">connection</span><span class="p">(</span><span class="nx">ws</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">client connected</span><span class="dl">"</span><span class="p">);</span>
+
+  <span class="nx">ws</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">message</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span> <span class="nf">incoming</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">received: %s</span><span class="dl">"</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+
+    <span class="c1">// 다른 클라이언트에게 메시지 전송</span>
+    <span class="nx">wss</span><span class="p">.</span><span class="nx">clients</span><span class="p">.</span><span class="nf">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="nf">each</span><span class="p">(</span><span class="nx">client</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nf">if </span><span class="p">(</span><span class="nx">client</span> <span class="o">!==</span> <span class="nx">ws</span> <span class="o">&amp;&amp;</span> <span class="nx">client</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="nx">WebSocket</span><span class="p">.</span><span class="nx">OPEN</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">client</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>위 코드에서 <strong><code class="language-plaintext highlighter-rouge">ws.on('message')</code></strong>는 클라이언트로부터 메시지를 수신할 때 호출됩니다.</p>
+
+<p>메시지를 수신하면 해당 메시지를 다른 클라이언트에게 전송합니다.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">wss.clients.forEach()</code></strong>를 이용하여 WebSocket 서버에 연결된 모든 클라이언트에게 메시지를 전송합니다.</p>
+
+<p><br /></p>
+
+<p>이제 클라이언트 측에서도 WebSocket을 이용하여 서버와 연결할 수 있습니다.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">ws</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">WebSocket</span><span class="p">(</span><span class="dl">"</span><span class="s2">ws://localhost:8080</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">ws</span><span class="p">.</span><span class="nx">onopen</span> <span class="o">=</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">connected to server</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">ws</span><span class="p">.</span><span class="nx">onmessage</span> <span class="o">=</span> <span class="nf">function </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">received: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">event</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">ws</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong><code class="language-plaintext highlighter-rouge">WebSocket()</code></strong> 생성자를 이용하여 서버에 연결합니다.</p>
+
+<p>연결이 성공하면 <strong><code class="language-plaintext highlighter-rouge">onopen</code></strong> 이벤트가 호출됩니다.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">onmessage</code></strong> 이벤트는 서버로부터 메시지를 수신할 때 호출됩니다.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">send()</code></strong> 메서드를 이용하여 서버에 메시지를 전송합니다.</p>
+
+<p><br /></p>
+
+<p>이제 Node.js와 WebSocket을 이용하여 간단한 실시간 채팅 애플리케이션을 만들어보겠습니다.</p>
+
+<p><br /></p>
+
+<h2 id="create-a-real-time-chat-application">Create a real-time chat application</h2>
+
+<p>Express를 이용하여 HTTP 서버를 구현하고, WebSocket을 이용하여 실시간 채팅 애플리케이션을 구현해보겠습니다.</p>
+
+<p>먼저 Express 애플리케이션을 생성합니다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install </span>express
+</code></pre></div></div>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nf">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">express</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nf">express</span><span class="p">();</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">/</span><span class="dl">"</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nf">sendFile</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">/index.html</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nf">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">listening on port 3000</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>위 코드에서는 Express 애플리케이션을 생성하고, 루트 URL(‘/’)에 접속했을 때 <strong><code class="language-plaintext highlighter-rouge">index.html</code></strong> 파일을 반환하도록 합니다.</p>
+
+<p><br /></p>
+
+<p>이제 <strong><code class="language-plaintext highlighter-rouge">index.html</code></strong> 파일에서 WebSocket을 이용하여 서버와 연결하고, 채팅 기능을 구현합니다.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>WebSocket Chat Example<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">id=</span><span class="s">"input"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"send"</span><span class="nt">&gt;</span>Send<span class="nt">&lt;/button&gt;</span>
+    <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"messages"</span><span class="nt">&gt;&lt;/ul&gt;</span>
+
+    <span class="nt">&lt;script&gt;</span>
+      <span class="kd">const</span> <span class="nx">socket</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">WebSocket</span><span class="p">(</span><span class="dl">"</span><span class="s2">ws://localhost:8080</span><span class="dl">"</span><span class="p">);</span>
+
+      <span class="nx">socket</span><span class="p">.</span><span class="nx">onopen</span> <span class="o">=</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">connected to server</span><span class="dl">"</span><span class="p">);</span>
+      <span class="p">};</span>
+
+      <span class="nx">socket</span><span class="p">.</span><span class="nx">onmessage</span> <span class="o">=</span> <span class="nf">function </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">messages</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">messages</span><span class="dl">"</span><span class="p">);</span>
+        <span class="kd">const</span> <span class="nx">li</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">li</span><span class="dl">"</span><span class="p">);</span>
+        <span class="nx">li</span><span class="p">.</span><span class="nf">appendChild</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nf">createTextNode</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">data</span><span class="p">));</span>
+        <span class="nx">messages</span><span class="p">.</span><span class="nf">appendChild</span><span class="p">(</span><span class="nx">li</span><span class="p">);</span>
+      <span class="p">};</span>
+
+      <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">send</span><span class="dl">"</span><span class="p">).</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">,</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">input</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">"</span><span class="s2">input</span><span class="dl">"</span><span class="p">);</span>
+        <span class="nx">socket</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+        <span class="nx">input</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="dl">""</span><span class="p">;</span>
+      <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>위 코드에서는 <strong><code class="language-plaintext highlighter-rouge">WebSocket()</code></strong> 생성자를 이용하여 서버와 연결합니다.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">onopen</code></strong> 이벤트에서는 서버에 연결되었다는 메시지를 출력합니다.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">onmessage</code></strong> 이벤트에서는 서버로부터 메시지를 수신하면 <strong><code class="language-plaintext highlighter-rouge">ul</code></strong> 요소에 해당 메시지를 추가합니다.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">click</code></strong> 이벤트에서는 <strong><code class="language-plaintext highlighter-rouge">input</code></strong> 요소에 입력된 값을 서버로 전송하고, <strong><code class="language-plaintext highlighter-rouge">input</code></strong> 요소를 초기화합니다.</p>
+
+<p><br /></p>
+
+<p>이제 WebSocket을 이용하여 클라이언트와 서버가 실시간으로 통신할 수 있습니다.</p>
+
+<p>서버에서는 WebSocket을 이용하여 모든 클라이언트에게 메시지를 전송하면 되며, 클라이언트에서는 WebSocket을 이용하여 서버로부터 메시지를 수신하고, 채팅창에 해당 메시지를 출력하면 됩니다.</p>
+
+<p><br /></p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nf">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">ws</span><span class="dl">"</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">wss</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">.</span><span class="nc">Server</span><span class="p">({</span> <span class="na">port</span><span class="p">:</span> <span class="mi">8080</span> <span class="p">});</span>
+
+<span class="nx">wss</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">connection</span><span class="dl">"</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">ws</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">client connected</span><span class="dl">"</span><span class="p">);</span>
+
+  <span class="nx">ws</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">message</span><span class="dl">"</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">received: %s</span><span class="dl">"</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+
+    <span class="nx">wss</span><span class="p">.</span><span class="nx">clients</span><span class="p">.</span><span class="nf">forEach</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">client</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nf">if </span><span class="p">(</span><span class="nx">client</span> <span class="o">!==</span> <span class="nx">ws</span> <span class="o">&amp;&amp;</span> <span class="nx">client</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="nx">WebSocket</span><span class="p">.</span><span class="nx">OPEN</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">client</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>위 코드에서는 <strong><code class="language-plaintext highlighter-rouge">WebSocket.Server()</code></strong> 생성자를 이용하여 WebSocket 서버를 생성합니다.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">on('connection')</code></strong> 이벤트에서는 클라이언트와 연결되었다는 메시지를 출력합니다.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">on('message')</code></strong> 이벤트에서는 클라이언트로부터 메시지를 수신하면 해당 메시지를 모든 클라이언트에게 전송합니다.</p>
+
+<hr />
+
+<p><br /></p>
+
+<p>지금까지 <code class="language-plaintext highlighter-rouge">Node.js</code>와 <code class="language-plaintext highlighter-rouge">WebSocket</code>을 이용하여 실시간 채팅 애플리케이션을 구현하는 방법을 알아보았습니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">WebSocket</code>을 이용하면 클라이언트와 서버 간에 실시간으로 데이터를 주고받을 수 있으며, 이를 이용하여 다양한 실시간 애플리케이션을 구현할 수 있습니다.</p>
+
+<p><br /></p>
+
+<p>다음 포스팅에서는 <code class="language-plaintext highlighter-rouge">socket.io</code>에 대한 내용을 다뤄보도록 하겠습니다.</p>]]></content><author><name>0126kjw</name></author><category term="Node.js" /><category term="Node.js" /><category term="WebSocket" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">SQL 기본 개념과 예시</title><link href="https://0126kjw.github.io/jekyll-theme-yat/sql/2023/03/20/SQL%EC%9D%98-%EA%B8%B0%EB%B3%B8-%EA%B0%9C%EB%85%90%EA%B3%BC-%EC%98%88%EC%8B%9C.html" rel="alternate" type="text/html" title="SQL 기본 개념과 예시" /><published>2023-03-20T00:00:00+00:00</published><updated>2023-03-20T00:00:00+00:00</updated><id>https://0126kjw.github.io/jekyll-theme-yat/sql/2023/03/20/SQL%EC%9D%98-%EA%B8%B0%EB%B3%B8-%EA%B0%9C%EB%85%90%EA%B3%BC-%EC%98%88%EC%8B%9C</id><content type="html" xml:base="https://0126kjw.github.io/jekyll-theme-yat/sql/2023/03/20/SQL%EC%9D%98-%EA%B8%B0%EB%B3%B8-%EA%B0%9C%EB%85%90%EA%B3%BC-%EC%98%88%EC%8B%9C.html"><![CDATA[<p><img src="https://user-images.githubusercontent.com/108377235/232223517-7000604b-1a19-4082-bc3b-f6696b5630a7.png" alt="SQLwithChatGPT" /></p>
+
+<p><br /></p>
+
+<h2 id="intro">Intro</h2>
+
+<p>관계형 데이터베이스를 사용할 때 쓸 수 있는 다양한 툴들이 있습니다.</p>
+
+<p>대표적으로 <code class="language-plaintext highlighter-rouge">MySQL Workbench</code>, <code class="language-plaintext highlighter-rouge">Oracle SQL Developer</code>, <code class="language-plaintext highlighter-rouge">Microsoft SQL Server Management Studio</code> 등이 있습니다.</p>
+
+<p>그래서 비록 쿼리문을 직접 작성하는 일이 드물긴 하지만 필요할 때 직접 쿼리문을 작성하거나 코드 상에서 쿼리를 작성해두는 일이 종종 있었습니다.</p>
+
+<p>그렇기에 아주 기초적이지만 그만큼 중요하고 자주 쓰이는 쿼리의 종류와 간단한 예시를 정리해보겠습니다.</p>
+
+<p><br /></p>
+
+<p>요즘 <code class="language-plaintext highlighter-rouge">ChatGPT</code>, <code class="language-plaintext highlighter-rouge">NotionAI</code> 등 AI 서비스에 큰 관심을 가지고 있어서 이번 글에서는 쿼리문의 예시 부분을 도움받아 보았습니다.</p>
+
+<hr />
+
+<p><br /></p>
+
+<h2 id="sql">SQL</h2>
+
+<p><code class="language-plaintext highlighter-rouge">SQL(Structured Query Language)</code>은 데이터베이스에서 데이터를 저장, 조회, 수정, 삭제하는 등의 작업을 수행하는 표준 데이터베이스 언어입니다. 대부분의 데이터베이스에서 SQL을 사용하며, 데이터베이스 간에 호환성을 보장하는 중요한 역할을 합니다.</p>
+
+<p>SQL에서 가장 중요한 쿼리문은 <code class="language-plaintext highlighter-rouge">SELECT</code>, <code class="language-plaintext highlighter-rouge">INSERT</code>, <code class="language-plaintext highlighter-rouge">UPDATE</code>, <code class="language-plaintext highlighter-rouge">DELETE</code> 입니다. 각각의 쿼리문에 대해 예시를 살펴보면 다음과 같습니다.</p>
+
+<p><br /></p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">SELECT</code>: 데이터베이스에서 데이터를 조회할 때 사용됩니다.</li>
+</ol>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">customers</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>위의 쿼리문은 customers 테이블에 있는 모든 데이터를 조회합니다. *은 모든 열(column)을 의미합니다.</p>
+
+<p><br /></p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">INSERT</code>: 데이터베이스에 새로운 데이터를 추가할 때 사용됩니다.</li>
+</ol>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">customers</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">phone</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'John Doe'</span><span class="p">,</span> <span class="s1">'johndoe@email.com'</span><span class="p">,</span> <span class="s1">'555-1234'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>위의 쿼리문은 customers 테이블에 새로운 데이터를 추가합니다. name, email, phone은 열(column)을 의미하며, VALUES 다음의 값들은 새로운 데이터의 값들을 의미합니다.</p>
+
+<p><br /></p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">UPDATE</code>: 데이터베이스에서 기존 데이터를 수정할 때 사용됩니다.</li>
+</ol>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">UPDATE</span> <span class="n">customers</span> <span class="k">SET</span> <span class="n">phone</span><span class="o">=</span><span class="s1">'555-5678'</span> <span class="k">WHERE</span> <span class="n">name</span><span class="o">=</span><span class="s1">'John Doe'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>위의 쿼리문은 customers 테이블에서 name이 ‘John Doe’인 데이터의 phone 값을 ‘555-5678’로 수정합니다.</p>
+
+<p><br /></p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">DELETE</code>: 데이터베이스에서 데이터를 삭제할 때 사용됩니다.</li>
+</ol>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">customers</span> <span class="k">WHERE</span> <span class="n">name</span><span class="o">=</span><span class="s1">'John Doe'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>위의 쿼리문은 customers 테이블에서 name이 ‘John Doe’인 데이터를 삭제합니다.</p>
+
+<p><br /></p>
+
+<p>이 외에도 SQL에는 JOIN, GROUP BY, ORDER BY, LIMIT 등의 다양한 쿼리문이 있습니다. 이를 이용해 원하는 데이터를 빠르게 검색하거나 필요한 데이터만 추출할 수 있습니다.</p>
+
+<p><br /></p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">JOIN</code>: 두 개 이상의 테이블을 연결하여 데이터를 검색하는데 사용됩니다.</li>
+</ol>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">customers</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">orders</span><span class="p">.</span><span class="n">order_date</span>
+<span class="k">FROM</span> <span class="n">customers</span>
+<span class="k">JOIN</span> <span class="n">orders</span>
+<span class="k">ON</span> <span class="n">customers</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">orders</span><span class="p">.</span><span class="n">customer_id</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>위의 쿼리문은 customers와 orders 테이블을 조인하여, customer_id 열이 일치하는 데이터의 name과 order_date 열의 값을 조회합니다.</p>
+
+<p><br /></p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">GROUP BY</code>: 열의 값을 기준으로 데이터를 그룹화하여 집계 함수를 적용하는데 사용됩니다.</li>
+</ol>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="k">COUNT</span><span class="p">(</span><span class="n">order_id</span><span class="p">),</span> <span class="n">customer_id</span>
+<span class="k">FROM</span> <span class="n">orders</span>
+<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">customer_id</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>위의 쿼리문은 orders 테이블에서 customer_id 열을 기준으로 데이터를 그룹화하고, 각 그룹의 order_id 수를 조회합니다.</p>
+
+<p><br /></p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">ORDER BY</code>: 검색 결과를 정렬하는데 사용됩니다.</li>
+</ol>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">customers</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">name</span> <span class="k">ASC</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>위의 쿼리문은 customers 테이블에서 name 열을 오름차순으로 정렬하여 조회합니다.</p>
+
+<p><br /></p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">LIMIT</code>: 검색 결과를 제한하는데 사용됩니다.</li>
+</ol>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">customers</span>
+<span class="k">LIMIT</span> <span class="mi">10</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>위의 쿼리문은 customers 테이블에서 최대 10개의 데이터만 조회합니다.</p>
+
+<p><br /></p>
+
+<p>SQL을 이용한 데이터베이스 작업은 데이터를 효율적으로 관리하고, 필요한 데이터를 쉽게 추출할 수 있도록 도와줍니다. 또한 SQL은 대부분의 데이터베이스에서 사용되므로, SQL을 익히면 다양한 데이터베이스에서 작업할 수 있는 능력을 갖출 수 있습니다.</p>]]></content><author><name>0126kjw</name></author><category term="SQL" /><category term="SQL" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">[CS] 백엔드 기술 면접 예상 질문 Part2</title><link href="https://0126kjw.github.io/jekyll-theme-yat/cs/2023/03/12/%EB%B0%B1%EC%97%94%EB%93%9C-%EA%B8%B0%EC%88%A0-%EB%A9%B4%EC%A0%91-%EC%98%88%EC%83%81-%EC%A7%88%EB%AC%B8-Part2.html" rel="alternate" type="text/html" title="[CS] 백엔드 기술 면접 예상 질문 Part2" /><published>2023-03-12T00:00:00+00:00</published><updated>2023-03-12T00:00:00+00:00</updated><id>https://0126kjw.github.io/jekyll-theme-yat/cs/2023/03/12/%EB%B0%B1%EC%97%94%EB%93%9C-%EA%B8%B0%EC%88%A0-%EB%A9%B4%EC%A0%91-%EC%98%88%EC%83%81-%EC%A7%88%EB%AC%B8-Part2</id><content type="html" xml:base="https://0126kjw.github.io/jekyll-theme-yat/cs/2023/03/12/%EB%B0%B1%EC%97%94%EB%93%9C-%EA%B8%B0%EC%88%A0-%EB%A9%B4%EC%A0%91-%EC%98%88%EC%83%81-%EC%A7%88%EB%AC%B8-Part2.html"><![CDATA[<p><img src="https://user-images.githubusercontent.com/108377235/225361302-801bd6b9-881d-4fc1-98e7-051a12ac2566.jpg" alt="2FT5JRJ07Z1V468MEQU9" /></p>
+
+<p><br /></p>
+
+<h2 id="intro">Intro</h2>
+
+<p>이번에 Node.js 개발자 기술 면접을 보고 왔는데, 면접관님에게 좋은 이야기를 많이 듣고 칭찬도 받아 굉장히 기분이 좋은 상태입니다.</p>
+
+<p>하지만, 다음 면접을 준비하기 위해서는 들뜨지 않고 차분하게 학습을 하는 것이 중요하다고 생각합니다.</p>
+
+<p>만약, 이 글을 읽고 계신 취준생분들이 계시다면 이 글을 통해 좋은 기운, 좋은 기분 얻어가실 수 있었으면 좋겠습니다.</p>
+
+<p><br /></p>
+
+<p>그럼 이제 이전 포스팅에 이어서 백엔드 기술 면접 예상 질문을 정리해보겠습니다.</p>
+
+<p>이전 포스팅에서는 주제별로 질문을 정리해보았지만, 내용이 많아.. 따로 나누지 않고 질문 및 답변을 작성해보겠습니다.</p>
+
+<p>많은 내용의 출처를 모두 작성하지 못하는 점 이해해주시면 감사드리고, 만약 잘못된 내용이 있다면 댓글로 알려주시면 감사하겠습니다.</p>
+
+<p><br /></p>
+
+<h2 id="question">Question</h2>
+
+<h4 id="restful-api의-정의와-장단점을-설명하세요">RESTful API의 정의와 장단점을 설명하세요.</h4>
+
+<p>RESTful API는 Representational State Transfer의 약자로, 웹 서비스를 구현하는 방법 중 하나입니다. RESTful API는 HTTP 요청을 통해 서버와 클라이언트 간에 리소스를 주고받습니다. 리소스는 웹 상의 데이터나 기능을 의미하며, 일반적으로 JSON이나 XML 형식으로 표현됩니다.</p>
+
+<p>RESTful API에는 다음과 같은 특징이 있습니다:</p>
+
+<ul>
+  <li><strong>확장성</strong>: REST API를 구현하는 시스템은 클라이언트와 서버가 독립적으로 작동하므로 쉽게 크기 조정할 수 있습니다.</li>
+  <li><strong>무상태성</strong>: 서버는 클라이언트의 이전 요청 정보를 저장하지 않으므로 서버 부하를 줄일 수 있습니다.</li>
+  <li><strong>일관성</strong>: REST API는 HTTP 메서드(GET, POST, PUT, DELETE 등)와 URL 규칙을 따르므로 통신 방식이 일관되고 이해하기 쉽습니다.</li>
+</ul>
+
+<p>RESTful API의 장점은 다음과 같습니다:</p>
+
+<ul>
+  <li><strong>HTTP 프로토콜을 그대로 활용</strong>: RESTful API는 HTTP 메서드와 URL 규칙을 따르므로 별도의 인프라를 구축할 필요가 없습니다. 또한 HTTP 프로토콜의 표준을 최대한 활용하여 캐싱, 보안, 압축 등의 기능을 이용할 수 있습니다.</li>
+  <li><strong>다양한 플랫폼과 언어에 호환</strong>: RESTful API는 JSON이나 XML 같은 범용적인 데이터 형식을 사용하므로 다양한 플랫폼과 언어에서 손쉽게 접근할 수 있습니다. 웹 뿐만 아니라 모바일이나 IoT 등에서도 적용할 수 있습니다.</li>
+  <li><strong>유연하고 확장성이 높음</strong>: RESTful API는 리소스와 표현 방식을 분리하므로 서버와 클라이언트가 독립적으로 변경되거나 발전할 수 있습니다. 또한 리소스를 모듈화하고 계층화하여 유연하게 관리할 수 있습니다.</li>
+</ul>
+
+<p>RESTful API의 단점은 다음과 같습니다:</p>
+
+<ul>
+  <li><strong>HTTP 메서드의 제한</strong>: RESTful API는 HTTP 메서드를 사용하여 리소스를 표현하는데, 이 때문에 메서드 형태가 제한적이고 오해의 소지가 있을 수 있습니다. 예를 들어, PUT 메서드는 리소스 전체를 업데이트하는데 사용되지만, 일부분만 수정하는 경우에도 PUT 메서드를 사용해야 하는 문제가 있습니다.</li>
+  <li><strong>공식화된 표준이 없음</strong>: RESTful API는 아키텍처 스타일일 뿐 공식화된 표준이 존재하지 않기 때문에 개발자마다 설계 방식이 다를 수 있습니다. 이로 인해 관리가 어렵고 개발 시간과 비용이 증가할 수 있습니다.</li>
+  <li><strong>데이터 전송량이 많아질 수 있음</strong>: RESTful API는 리소스 상태에 대한 정보를 매번 전달하기 때문에 데이터 전송량이 많아질 수 있습니다. 또한 하나의 요청으로 여러 개의 리소스를 처리하기 어려울 수 있으므로 네트워크 부하가 증가할 수 있습니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="서버-사이드-렌더링과-클라이언트-사이드-렌더링의-차이점과-장단점을-설명하세요">서버 사이드 렌더링과 클라이언트 사이드 렌더링의 차이점과 장단점을 설명하세요.</h4>
+
+<p>서버 사이드 렌더링과 클라이언트 사이드 렌더링은 웹 페이지를 구성하는 방식의 차이입니다. 서버 사이드 렌더링은 서버에서 HTML 파일을 만들어 브라우저로 전송하는 방식입니다. 클라이언트 사이드 렌더링은 서버에서 HTML 파일을 처리하지 않고, 브라우저의 자바스크립트를 통해 상호작용하는 방식입니다.</p>
+
+<p>서버 사이드 렌더링과 클라이언트 사이드 렌더링의 장단점은 다음과 같습니다.</p>
+
+<ul>
+  <li>서버 사이드 렌더링: SEO에 유리하고, 초기 로딩 속도가 빠릅니다. 하지만 서버 부하가 크고, 페이지 전환 시 새로운 요청과 응답을 해야 합니다.</li>
+  <li>클라이언트 사이드 렌더링: 초기 로딩 이후에는 서버 요청 없이 동작하므로 속도가 빠르고, 사용자 경험이 좋습니다. 하지만 SEO에 취약하고, 초기 로딩 속도가 느립니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="mvc-패턴에-대해-설명하고-비슷한-디자인-패턴의-예시를-설명하세요">MVC 패턴에 대해 설명하고 비슷한 디자인 패턴의 예시를 설명하세요.</h4>
+
+<p>MVC 패턴은 Model-View-Controller의 약자로, 애플리케이션을 세 가지 역할로 구분한 개발 방법론입니다.</p>
+
+<ul>
+  <li>Model은 데이터와 비즈니스 로직을 담당하는 부분입니다. 데이터베이스나 파일 등의 외부 자원과의 연동을 처리하고, 사용자가 입력한 데이터나 출력할 데이터를 정의합니다.</li>
+  <li>View는 사용자 인터페이스를 담당하는 부분입니다. 사용자에게 보여지는 화면을 구성하고, 사용자의 요청을 받아 Controller에 전달합니다.</li>
+  <li>Controller는 Model과 View 사이의 상호작용을 관리하는 부분입니다. 사용자의 요청을 해석하고, 적절한 Model에게 작업을 지시하고, 결과를 View에게 전달합니다.</li>
+</ul>
+
+<p>MVC 패턴의 장점은 다음과 같습니다.</p>
+
+<ul>
+  <li>각 구성요소가 독립적으로 개발되고 테스트될 수 있어 협업과 유지보수가 용이합니다.</li>
+  <li>재사용성과 확장성이 높아 애플리케이션의 생명주기를 연장할 수 있습니다.</li>
+  <li>중복 코드를 줄일 수 있어 개발 시간과 비용을 절약할 수 있습니다.</li>
+</ul>
+
+<p>MVC 패턴의 단점은 다음과 같습니다.</p>
+
+<ul>
+  <li>설계가 복잡해 초보 개발자에게는 어려울 수 있습니다.</li>
+  <li>모델과 뷰 사이의 의존성이 높아 분리하기 어려울 수 있습니다.</li>
+  <li>컨트롤러가 과도하게 많은 역할을 수행해 복잡해질 수 있습니다.</li>
+</ul>
+
+<p>MVC 패턴과 비슷한 디자인 패턴으로는 MVP (Model-View-Presenter) 패턴과 MVVM (Model-View-ViewModel) 패턴이 있습니다.</p>
+
+<ul>
+  <li>MVP 패턴은 MVC 패턴에서 컨트롤러 대신 프레젠터를 사용하는 방식입니다. 프레젠터는 뷰와 모델 사이의 의존성을 제거하고, 뷰와 모델 간의 상호작용을 중재합니다. 프레젠터는 뷰와 1:1로 연결되며, 뷰에서 발생하는 이벤트를 처리하고 모델에서 받은 데이터를 가공하여 뷰에 전달합니다.</li>
+  <li>MVVM 패턴은 MVC 패턴에서 컨트롤러 대신 뷰모델을 사용하는 방식입니다. 뷰모델은 뷰와 모델 사이에 위치하며, 데이터 바인딩(Data Binding) 기술을 통해 뷰와 모델 간의 동기화를 자동으로 처리합니다. 뷰모델은 뷰와 1:n으로 연결될 수 있으며, UI 로직을 담당하고 모델에서 받은 데이터를 변환하여 저장합니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="객체-지향-프로그래밍과-함수형-프로그래밍의-차이점과-장단점에-대해-설명하세요">객체 지향 프로그래밍과 함수형 프로그래밍의 차이점과 장단점에 대해 설명하세요.</h4>
+
+<p>oop와 fp는 프로그래밍 패러다임(디자인 패턴)의 한 종류입니다.</p>
+
+<ul>
+  <li>oop: Object Oriented Programming의 약자로, 프로그램을 객체(object)라는 기본 단위로 나누고 이들의 상호작용으로 서술하는 방식입니다. 객체는 데이터와 메소드(method)를 묶어서 하나의 역할을 수행합니다. oop의 장점은 코드의 재사용성과 유지보수성을 높이고, 캡슐화(encapsulation), 상속(inheritance), 다형성(polymorphism) 등의 특징을 활용할 수 있다는 점입니다. oop의 단점은 객체 간의 의존성(dependency)이 높아져서 복잡도가 증가하고, 성능이 저하될 수 있다는 점입니다.</li>
+  <li>fp: Functional Programming의 약자로, 프로그램을 순수한(pure) 함수(function)들의 조합으로 서술하는 방식입니다. 순수한 함수란 부작용(side effect)이 없고, 동일한 입력에 대해 항상 동일한 출력을 내는 함수를 말합니다. fp의 장점은 코드가 간결하고 가독성이 좋으며, 병렬 처리(parallel processing)와 테스트(testing), 디버깅(debugging)이 용이하다는 점입니다. fp의 단점은 추상화(abstraction) 수준이 높아져서 이해하기 어렵고, 성능이 저하될 수 있다는 점입니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="tdd테스트-주도-개발에-대해-설명하세요">TDD(테스트 주도 개발)에 대해 설명하세요.</h4>
+
+<p>tdd는 Test Driven Development의 약자로 ‘테스트 주도 개발’이라고 합니다. 테스트 주도 개발은 테스트 케이스를 먼저 작성하고, 그에 맞는 코드를 구현하는 방식입니다. tdd의 장점은 코드의 품질과 신뢰성을 높이고, 리팩토링(refactoring)과 유지보수를 용이하게 한다는 점입니다. tdd의 단점은 테스트 케이스 작성에 시간과 비용이 들고, 테스트 커버리지(coverage)가 낮거나 테스트 케이스가 잘못 작성될 수 있다는 점입니다.</p>
+
+<p>tdd의 단계는 다음과 같습니다.</p>
+
+<ol>
+  <li>실패하는 테스트 케이스를 작성합니다. 요구사항을 반영하는 테스트 케이스를 먼저 작성하고, 실행해봅니다. 이때 테스트는 실패해야 합니다.</li>
+  <li>테스트를 통과하는 코드를 작성합니다. 테스트 케이스를 만족시키기 위한 최소한의 코드를 작성하고, 다시 테스트를 실행합니다. 이때 테스트는 성공해야 합니다.</li>
+  <li>코드를 개선합니다. 작성한 코드에 대해 리팩토링(refactoring)을 수행하여 중복을 제거하고 가독성을 높입니다.</li>
+</ol>
+
+<p>tdd의 원칙은 다음과 같습니다.</p>
+
+<ul>
+  <li>테스트 케이스는 한 번에 하나씩만 작성합니다.</li>
+  <li>테스트 케이스는 명확하고 간결하게 작성합니다.</li>
+  <li>테스트 케이스는 모든 가능한 시나리오와 예외 상황을 커버해야 합니다.</li>
+  <li>테스트 케이스는 자동화되어야 합니다.</li>
+  <li>테스트를 통과하기 위한 최소한의 코드만 작성 및 개선합니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="cicd의-개념과-과정에-대해-설명하세요">CI/CD의 개념과 과정에 대해 설명하세요.</h4>
+
+<p>CI/CD는 애플리케이션의 통합 및 테스트 단계에서부터 제공 및 배포에 이르는 애플리케이션의 라이프사이클 전체에 걸쳐 지속적인 자동화와 지속적인 모니터링을 제공하는 것입니다. CI/CD의 핵심 개념은 다음과 같습니다.</p>
+
+<ul>
+  <li>지속적인 통합(Continuous Integration): 개발자들이 작성한 코드를 정기적으로 통합하고 자동으로 빌드와 테스트를 수행하여 코드의 품질과 안정성을 유지하는 것입니다.</li>
+  <li>지속적인 서비스 제공(Continuous Delivery): 통합된 코드를 자동으로 운영 환경과 유사한 환경에 배포하고 검증하여 언제든지 실제 운영 환경에 배포할 수 있는 상태를 유지하는 것입니다.</li>
+  <li>지속적인 배포(Continuous Deployment): 검증된 코드를 자동으로 실제 운영 환경에 배포하여 고객에게 빠르게 서비스를 제공하는 것입니다.</li>
+</ul>
+
+<p>CI/CD의 과정은 다음과 같습니다.</p>
+
+<ul>
+  <li>개발자가 로컬에서 코드를 작성하고 버전 관리 시스템(Git 등)에 커밋합니다.</li>
+  <li>CI 서버(Jenkins 등)가 버전 관리 시스템에서 새로운 커밋을 감지하고 코드를 가져와서 빌드와 테스트를 수행합니다.</li>
+  <li>CI 서버가 빌드와 테스트 결과를 개발자에게 피드백합니다. 오류가 발생하면 수정합니다.</li>
+  <li>CD 서버(Jenkins 등)가 CI 서버에서 전달받은 코드를 스테이징 환경(운영 환경과 유사한 환경)에 배포하고 추가적인 검증을 수행합니다. 오류가 발생하면 수정합니다.</li>
+  <li>CD 서버가 스테이징 환경에서 검증된 코드를 운영 환경에 배포합니다.</li>
+</ul>
+
+<p>CI/CD는 애플리케이션 개발과 운영의 속도와 안정성을 높여주는 방법입니다. CI/CD 도구나 서비스로는 Jenkins, Travis CI, AWS CodePipeline, GitLab CI/CD 등이 있습니다.</p>
+
+<p><br /></p>
+
+<h4 id="배포-자동화에-대해-설명하세요">배포 자동화에 대해 설명하세요.</h4>
+
+<p>배포 자동화는 개발된 애플리케이션을 운영 환경에 배포하는 과정을 자동화하는 것입니다.</p>
+
+<p>배포 자동화의 장점은 다음과 같습니다.</p>
+
+<ul>
+  <li>배포 시간과 비용을 절약할 수 있습니다. 수동으로 배포하는 경우에는 인력과 시간이 많이 소요되지만, 자동화를 통해 빠르고 정확하게 배포할 수 있습니다.</li>
+  <li>배포 오류와 장애를 줄일 수 있습니다. 수동으로 배포하는 경우에는 인간의 실수나 누락이 발생할 수 있지만, 자동화를 통해 일관된 방식으로 배포할 수 있습니다.</li>
+  <li>지속적인 통합/지속적인 제공(CI/CD)을 지원할 수 있습니다. 개발과 테스트에서 제공과 배포에 이르는 라이프사이클 전체를 지속적으로 자동화하고 모니터링하여 고객에게 빠르고 안정적인 애플리케이션을 제공할 수 있습니다.</li>
+</ul>
+
+<p>배포 자동화의 단점은 다음과 같습니다.</p>
+
+<ul>
+  <li>초기 구축 비용이 들 수 있습니다. 배포 자동화를 위한 도구나 서비스를 선택하고 설치하고 설정하는 과정에 시간과 비용이 소요될 수 있습니다.</li>
+  <li>보안 문제가 발생할 수 있습니다. 배포 자동화를 위한 도구나 서비스가 해커의 공격 대상이 될 수 있으므로, 보안 강화와 관리가 필요합니다.</li>
+</ul>
+
+<p>배포 자동화를 위해 사용하는 도구나 서비스는 다양합니다. 예를 들어, Jenkins, Travis CI, AWS CodeDeploy, Ansible 등이 있습니다.</p>
+
+<p><br /></p>
+
+<h4 id="쿠키와-세션의-차이점과-작동-원리에-대해-설명하세요">쿠키와 세션의 차이점과 작동 원리에 대해 설명하세요.</h4>
+
+<p>쿠키와 세션은 웹에서 사용자의 상태 정보를 저장하는 방법입니다. 쿠키는 사용자의 컴퓨터에 작은 파일로 저장되고, 세션은 서버에 저장됩니다. 쿠키는 서버의 자원을 사용하지 않지만 보안이 약하고, 세션은 서버의 자원을 사용하지만 보안이 강합니다. 쿠키와 세션은 주로 로그인 상태 유지, 장바구니 기능, 방문 횟수 카운트 등에 사용됩니다.</p>
+
+<p>쿠키와 세션의 작동 원리는 다음과 같습니다.</p>
+
+<ul>
+  <li>쿠키: 사용자가 웹 사이트에 접속하면 서버는 사용자의 정보를 담은 쿠키를 생성하고 응답 헤더에 넣어서 보냅니다. 사용자의 브라우저는 쿠키를 받아서 저장하고, 다시 서버에 요청할 때마다 쿠키를 요청 헤더에 넣어서 보냅니다. 이렇게 하면 서버는 사용자의 상태 정보를 알 수 있습니다.</li>
+  <li>세션: 사용자가 웹 사이트에 접속하면 서버는 사용자의 정보를 담은 세션 객체를 생성하고, 세션 ID를 발급합니다. 서버는 세션 ID를 쿠키로 만들어서 응답 헤더에 넣어서 보냅니다. 사용자의 브라우저는 세션 ID가 담긴 쿠키를 받아서 저장하고, 다시 서버에 요청할 때마다 쿠키를 요청 헤더에 넣어서 보냅니다. 이렇게 하면 서버는 세션 ID로 세션 객체를 찾아서 사용자의 상태 정보를 알 수 있습니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="스택과-큐의-정의와-특징에-대해-설명하세요">스택과 큐의 정의와 특징에 대해 설명하세요.</h4>
+
+<p>스택은 책을 쌓는 것처럼 차곡차곡 쌓아 올린 형태의 자료구조입니다. 스택에서는 가장 위에 있는 데이터만 접근하고 삭제할 수 있습니다. 이를 <strong>후입선출(Last In First Out, LIFO)</strong> 방식이라고 합니다.</p>
+
+<p>스택의 특징은 다음과 같습니다.</p>
+
+<ul>
+  <li>스택은 재귀 알고리즘을 사용하는 경우에 유용합니다.</li>
+  <li>스택은 웹 브라우저의 뒤로 가기 기능이나 실행 취소 기능 등에 활용될 수 있습니다.</li>
+  <li>스택은 단순하고 효율적인 자료구조입니다.</li>
+</ul>
+
+<p>큐는 먼저 들어온 데이터가 먼저 나가는 <strong>선입선출(First In First Out, FIFO)</strong> 방식의 자료구조입니다. 큐에서는 한 쪽 끝에서만 데이터를 삽입하고 다른 쪽 끝에서만 데이터를 삭제할 수 있습니다.</p>
+
+<p>큐의 특징은 다음과 같습니다.</p>
+
+<ul>
+  <li>큐는 운영체제의 작업 스케줄링이나 인쇄 대기열 등에 활용될 수 있습니다.</li>
+  <li>큐는 순서대로 처리해야 하는 작업들을 임시로 저장하는데 유용합니다.</li>
+  <li>큐는 배열이나 연결리스트로 구현할 수 있습니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="대칭키와-공개키-암호화의-차이점에-대해-설명하세요">대칭키와 공개키 암호화의 차이점에 대해 설명하세요.</h4>
+
+<p>대칭키와 공개키 암호화의 차이점은 다음과 같습니다.</p>
+
+<ul>
+  <li>대칭키 암호화는 암호화와 복호화에 사용하는 키가 <strong>동일</strong>한 방식입니다. 예를 들어, A와 B가 대칭키 암호화로 통신하려면 미리 같은 키를 공유해야 합니다. 대칭키 암호화는 속도가 빠르지만 키를 안전하게 교환하는 문제가 있습니다.</li>
+  <li>공개키 암호화는 암호화와 복호화에 사용하는 키가 <strong>서로 다른</strong> 방식입니다. 예를 들어, A가 B에게 메시지를 보내려면 B의 공개키로 메시지를 암호화하고, B는 자신의 개인키로 메시지를 복호화합니다. 공개키는 모두에게 공개되어 있고 개인키는 각자만 가지고 있습니다. 공개키 암호화는 키 교환 문제를 해결하지만 속도가 느립니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="해시-함수와-암호화의-차이점에-대해-설명하세요">해시 함수와 암호화의 차이점에 대해 설명하세요.</h4>
+
+<p>해시 함수는 <strong>단방향 암호화</strong>이므로 복호화가 불가능하며, 데이터 보안에 중점을 두었습니다. 즉, 평문을 암호문으로 변환하면 결과 암호문(일명 해시)으로부터 절대로 복구할 수 없습니다.</p>
+
+<p>암호화는 <strong>양방향 암호화</strong>이므로 복호화가 가능하며, 통신에서의 보안에 중점을 두었습니다. 즉, 평문을 암호문으로 변환한 후 다시 평문으로 변환할 수 있습니다.</p>
+
+<p><br /></p>
+
+<hr />
+
+<p><br /></p>
+
+<p>이렇게 두 파트로 나눈 백엔드 기술 면접 예상 질문에 대해 작성해보았습니다.</p>
+
+<p>두 포스팅의 내용은 백엔드 개발자가 알아야 할 가장 기초적인 지식에 해당한다고 생각하며, 더 많은 컴퓨터 공학 지식을 알아두어야 실무에서 도움이 될 것이라고 생각합니다.</p>
+
+<p>또한, 기술 면접에서 자주 등장하는 질문들을 간추려 정리하였기 때문에 급하신 분들에게 도움은 되더라도 꼭 긴 시간의 학습을 통해 이론적인 준비를 갖춰두는 것을 추천합니다.</p>
+
+<p>기회가 된다면 이후 면접에서 실제로 받은 질문에 대해 정리해 포스팅하도록 하겠습니다.</p>
+
+<p><br /></p>
+
+<p>위 내용 중 잘못된 부분이 있다면 댓글로 알려주시면 감사하겠습니다.</p>]]></content><author><name>0126kjw</name></author><category term="CS" /><category term="CS" /><category term="Node.js" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">[CS] 백엔드 기술 면접 예상 질문 Part1</title><link href="https://0126kjw.github.io/jekyll-theme-yat/cs/2023/03/09/%EB%B0%B1%EC%97%94%EB%93%9C-%EA%B8%B0%EC%88%A0-%EB%A9%B4%EC%A0%91-%EC%98%88%EC%83%81-%EC%A7%88%EB%AC%B8-Part1.html" rel="alternate" type="text/html" title="[CS] 백엔드 기술 면접 예상 질문 Part1" /><published>2023-03-09T00:00:00+00:00</published><updated>2023-03-09T00:00:00+00:00</updated><id>https://0126kjw.github.io/jekyll-theme-yat/cs/2023/03/09/%EB%B0%B1%EC%97%94%EB%93%9C-%EA%B8%B0%EC%88%A0-%EB%A9%B4%EC%A0%91-%EC%98%88%EC%83%81-%EC%A7%88%EB%AC%B8-Part1</id><content type="html" xml:base="https://0126kjw.github.io/jekyll-theme-yat/cs/2023/03/09/%EB%B0%B1%EC%97%94%EB%93%9C-%EA%B8%B0%EC%88%A0-%EB%A9%B4%EC%A0%91-%EC%98%88%EC%83%81-%EC%A7%88%EB%AC%B8-Part1.html"><![CDATA[<p><img src="https://user-images.githubusercontent.com/108377235/225349471-b0653fed-a44c-4ae1-b119-3bfb500f0615.jpg" alt="ESlNk4bVAAARDPT" /></p>
+
+<p><br /></p>
+
+<h2 id="intro">Intro</h2>
+
+<p>Node.js 개발자 기술 면접을 준비하면서 생각한 몇 가지의 예상 질문들과 그 답변을 조사 후 제 나름대로 정리해보았습니다.</p>
+
+<p>백엔드 기술 면접은 알아야 하는 범위가 많기 때문에 글이 길어질 수 있다는 점 양해 부탁드립니다.</p>
+
+<p>또한, 광범위한 내용의 출처를 모두 표기하지 못한 점 이해해주시고, 잘못된 내용이 있다면 댓글로 알려주시면 감사하겠습니다.</p>
+
+<p><br /></p>
+
+<h2 id="question">Question</h2>
+
+<h3 id="network">Network</h3>
+
+<h4 id="http와-https의-차이점을-설명하세요">Http와 Https의 차이점을 설명하세요.</h4>
+
+<p>http와 https는 웹 통신 프로토콜입니다. http는 HyperText Transfer Protocol의 약자로, 웹 서버와 웹 브라우저 간에 정보를 주고받을 수 있게 하는 규약입니다. https는 HyperText Transfer Protocol Secure의 약자로, http에 보안 기능을 추가한 것입니다.</p>
+
+<p>http와 https의 차이점은 보안 관련 프로토콜이 정의되어 있는지 여부입니다. http는 보안 프로토콜이 정의되어 있지 않기 때문에 전송되는 데이터가 암호화되지 않아 중간에 누군가 가로채거나 변조할 수 있습니다. https는 SSL(Secure Socket Layer)이라는 보안 프로토콜을 사용하여 전송되는 데이터를 암호화하고 인증하므로 중간에 누군가 가로채거나 변조할 수 없습니다.</p>
+
+<p>https는 http보다 보안성이 높기 때문에 전자상거래나 개인정보를 다루는 웹사이트에서 많이 사용됩니다. 또한 https는 검색엔진 최적화(SEO)에도 유리합니다. 구글은 https를 사용하는 사이트를 우선적으로 검색 결과에 노출시키기 때문입니다.</p>
+
+<p><br /></p>
+
+<h4 id="ssltls의-원리와-과정을-설명하세요">SSL/TLS의 원리와 과정을 설명하세요.</h4>
+
+<p>ssl/tls는 웹 서버와 클라이언트 간의 암호화된 통신을 위한 프로토콜입니다. ssl은 tls의 이전 버전으로, 현재는 tls가 더 안전하고 효율적인 표준으로 사용됩니다.</p>
+
+<p>ssl/tls의 통신 과정은 다음과 같습니다:</p>
+
+<ol>
+  <li>핸드쉐이크: 클라이언트가 웹 서버에 접속하면, 서버는 자신의 인증서를 보냅니다. 인증서에는 서버의 공개키와 인증 기관(CA)의 디지털 서명이 포함됩니다. 클라이언트는 인증서를 검증하고, 서버와 협상할 암호화 방식을 선택합니다. 그리고 서버의 공개키로 암호화된 대칭키를 생성하여 보냅니다. 서버는 자신의 개인키로 대칭키를 복호화하고, 핸드쉐이크가 완료됩니다.</li>
+  <li>세션: 핸드쉐이크가 완료되면, 클라이언트와 서버는 대칭키를 사용하여 데이터를 암호화하고 복호화하여 통신합니다. 이때 레코드 레이어에서 데이터를 분할하고 MAC(Message Authentication Code)을 추가하여 무결성과 안전성을 보장합니다.</li>
+  <li>세션 종료: 클라이언트나 서버 중 하나가 연결을 종료하면, 세션은 종료되고 대칭키는 폐기됩니다.</li>
+</ol>
+
+<p><br /></p>
+
+<h4 id="osi-7계층과-tcpip-4계층의-차이점과-각-계층의-역할을-설명하세요">OSI 7계층과 TCP/IP 4계층의 차이점과 각 계층의 역할을 설명하세요.</h4>
+
+<p>osi 7계층과 tcp/ip 4계층은 네트워크 통신을 위한 모델로, 각각 다른 기관에서 개발되었습니다. osi 7계층은 ISO에서 개발했고, tcp/ip 4계층은 미국 국방성의 통신표준으로 채택되었습니다.</p>
+
+<p>osi 7계층은 응용-표현-세션-전송-네트워크-데이터링크-물리 계층으로 구성되어 있습니다. tcp/ip 4계층은 응용-전송-인터넷-네트워크 액세스 계층으로 구성되어 있습니다.</p>
+
+<p>각 계층의 역할에 대해서는 다음과 같이 요약할 수 있습니다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>osi 7계층</th>
+      <th>tcp/ip 4계층</th>
+      <th>역할</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>응용 계층</td>
+      <td>응용 계층</td>
+      <td>사용자와 네트워크 간의 인터페이스 제공</td>
+    </tr>
+    <tr>
+      <td>표현 계층</td>
+      <td>-</td>
+      <td>데이터의 형식과 암호화를 담당</td>
+    </tr>
+    <tr>
+      <td>세션 계층</td>
+      <td>-</td>
+      <td>연결의 설정과 유지를 담당</td>
+    </tr>
+    <tr>
+      <td>전송 계층</td>
+      <td>전송 계층</td>
+      <td>데이터의 신뢰성 있는 전달을 담당</td>
+    </tr>
+    <tr>
+      <td>네트워크 계층</td>
+      <td>인터넷 계층</td>
+      <td>데이터의 경로 선택과 라우팅을 담당</td>
+    </tr>
+    <tr>
+      <td>데이터링크 계층</td>
+      <td>네트워크 액세스 계층</td>
+      <td>물리적 매체를 통한 데이터의 전송을 담당</td>
+    </tr>
+    <tr>
+      <td>물리 계층</td>
+      <td>네트워크 액세스 계층</td>
+      <td>비트 단위의 신호 변환을 담당</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<h4 id="tcp와-udp의-차이점과-특징은-무엇인지-설명하세요">TCP와 UDP의 차이점과 특징은 무엇인지 설명하세요.</h4>
+
+<p>tcp와 udp는 전송 계층에서 사용되는 프로토콜로, 데이터의 신뢰성 있는 전달을 담당합니다. tcp와 udp의 차이점과 특징은 다음과 같습니다.</p>
+
+<ul>
+  <li>tcp는 연결 지향적인 프로토콜로, 데이터를 전송하기 전에 3-way handshake라는 과정을 통해 상대방과 연결을 맺고, 데이터를 전송한 후에 4-way handshake라는 과정을 통해 연결을 해제합니다. 이렇게 함으로써 데이터의 순서와 누락 여부를 보장하고, 오류가 발생하면 재전송을 요청할 수 있습니다.</li>
+  <li>udp는 비연결 지향적인 프로토콜로, 데이터를 전송하기 전에 상대방과 연결을 맺지 않고, 데이터를 전송한 후에도 연결을 해제하지 않습니다. 이렇게 함으로써 tcp보다 간단하고 빠르며 네트워크 부하가 적지만, 데이터의 순서와 누락 여부를 보장하지 않고, 오류가 발생해도 재전송을 요청할 수 없습니다.</li>
+</ul>
+
+<p>tcp와 udp의 특징에 따라 적합한 상황이 다릅니다. 예를 들어,</p>
+
+<ul>
+  <li>tcp는 신뢰성 있는 데이터 전달이 중요한 경우에 사용됩니다. 예를 들어 웹 서비스나 파일 다운로드 등에서 tcp가 사용됩니다.</li>
+  <li>udp는 실시간성이나 속도가 중요한 경우에 사용됩니다. 예를 들어 음성 통화나 스트리밍 서비스 등에서 udp가 사용됩니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="dns란-무엇이고-어떻게-작동하는지-설명하세요">DNS란 무엇이고 어떻게 작동하는지 설명하세요.</h4>
+
+<p>dns는 도메인 이름 시스템(Domain Name System)의 약자로, 인터넷에서 도메인 이름을 IP 주소로 변환하는 역할을 하는 서비스입니다. 예를 들어, www.naver.com이라는 도메인 이름은 210.89.160.88이라는 IP 주소와 연결되어 있습니다.</p>
+
+<p>dns가 작동하는 원리는 다음과 같습니다.</p>
+
+<ul>
+  <li>웹 브라우저에 www.naver.com을 입력하면, 컴퓨터는 로컬 dns 서버에게 www.naver.com의 IP 주소를 요청합니다.</li>
+  <li>로컬 dns 서버는 자신의 캐시에 해당 IP 주소가 있는지 확인합니다. 만약 있다면 바로 응답하고, 없다면 루트 dns 서버에게 요청을 전달합니다.</li>
+  <li>루트 dns 서버는 최상위 도메인(.com)을 관리하는 tld(top-level domain) dns 서버의 주소를 응답합니다.</li>
+  <li>로컬 dns 서버는 tld dns 서버에게 www.naver.com의 IP 주소를 요청합니다.</li>
+  <li>tld dns 서버는 naver.com 도메인을 관리하는 영역(authoritative) dns 서버의 주소를 응답합니다.</li>
+  <li>로컬 dns 서버는 영역 dns 서버에게 www.naver.com의 IP 주소를 요청합니다.</li>
+  <li>영역 dns 서버는 www.naver.com의 IP 주소(210.89.160.88)를 응답합니다.</li>
+  <li>로컬 dns 서버는 받은 IP 주소를 캐시에 저장하고, 컴퓨터에게 전달합니다.</li>
+  <li>컴퓨터는 받은 IP 주소로 웹 브라우저와 통신하여 웹 페이지를 보여줍니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="로드밸런싱에-대해-설명하세요">로드밸런싱에 대해 설명하세요.</h4>
+
+<p>로드밸런싱은 네트워크 또는 서버에 가해지는 부하를 분산하여 가용성 및 성능을 향상시키는 기술입니다. 로드밸런싱을 제공하는 장치나 서비스를 로드밸런서라고 합니다.</p>
+
+<p>로드밸런서는 클라이언트의 요청을 여러 대의 서버 중 하나에게 전달하고, 응답 결과를 다시 클라이언트에게 반환합니다. 이때 로드밸런서는 서버의 상태와 부하를 고려하여 적절한 서버를 선택하는 알고리즘을 사용합니다.</p>
+
+<p>로드밸런싱의 장점은 다음과 같습니다.</p>
+
+<ul>
+  <li>서버의 장애나 유지보수로 인한 애플리케이션 가동 중지 시간을 줄일 수 있습니다.</li>
+  <li>서버의 확장성과 내결함성을 높일 수 있습니다.</li>
+  <li>네트워크 트래픽과 자원 사용률을 균등하게 분산할 수 있습니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="database">Database</h3>
+
+<h4 id="sql과-nosql의-차이점을-설명하세요">SQL과 NoSQL의 차이점을 설명하세요.</h4>
+
+<p>SQL과 NoSQL은 데이터베이스 관리 시스템의 두 가지 유형입니다. SQL은 관계형 데이터베이스로서, 테이블과 행으로 구성된 사전 정의된 스키마를 사용하고 구조화된 쿼리 언어를 사용하여 데이터를 저장하고 검색합니다. NoSQL은 비관계형 데이터베이스로서, 컬렉션과 문서로 구성된 유연한 스키마를 사용하고 다양한 쿼리 방식을 사용하여 데이터를 저장하고 검색합니다.</p>
+
+<p>예시로는 SQL의 경우 MySQL과 PostgreSQL이 있으며, NoSQL의 경우 MongoDB와 Cassandra가 있습니다. SQL과 NoSQL은 각각 장단점이 있으므로 상황에 따라 적절한 것을 선택해야 합니다.</p>
+
+<p>SQL과 NoSQL의 장단점은 다음과 같습니다.</p>
+
+<p>SQL의 장점은 데이터의 일관성과 무결성을 보장하고, 표준화된 쿼리 언어를 사용하여 복잡한 조인이나 집계 연산을 쉽게 할 수 있다는 점입니다. SQL의 단점은 스키마가 고정되어 있어서 데이터 구조가 변경되면 수정이 어렵고, 수평적 확장이 어렵다는 점입니다.</p>
+
+<p>NoSQL의 장점은 스키마가 없기 때문에 유연하게 데이터를 저장하고 검색할 수 있고, 분산 처리를 통해 수평적 확장이 용이하다는 점입니다. NoSQL의 단점은 데이터의 일관성이 약하고, 표준화된 쿼리 언어가 없어서 다양한 방식으로 데이터를 다루어야 한다는 점입니다.</p>
+
+<p><br /></p>
+
+<h4 id="데이터베이스-정규화에-대해-설명하세요">데이터베이스 정규화에 대해 설명하세요.</h4>
+
+<p>데이터베이스 정규화는 관계형 데이터베이스의 설계에서 중복을 최소화하고 데이터의 일관성과 무결성을 보장하기 위해 데이터를 구조화하는 과정입니다. 정규화는 여러 단계로 이루어지는데, 각 단계마다 특정한 조건을 만족하도록 릴레이션을 분해합니다. 일반적으로 제1정규형부터 제5정규형까지 있으며, 가장 많이 사용되는 것은 제3정규형입니다.</p>
+
+<ul>
+  <li>제1정규형은 릴레이션의 모든 속성이 원자값을 가지도록 하는 것입니다. 예를 들어, 학생 테이블에서 이름과 주소를 하나의 컬럼에 저장하는 것은 제1정규형을 위반하는 것입니다.</li>
+  <li>제2정규형은 릴레이션의 모든 비주요 속성이 기본키에 완전 함수 종속되도록 하는 것입니다. 예를 들어, 학생 테이블에서 학번과 과목코드를 기본키로 하고 성적과 교수명을 비주요 속성으로 하면, 교수명은 과목코드에 부분 함수 종속되므로 제2정규형을 위반하는 것입니다.</li>
+  <li>제3정규형은 릴레이션의 모든 비주요 속성이 기본키에 이행적 함수 종속되지 않도록 하는 것입니다. 예를 들어, 학생 테이블에서 학번을 기본키로 하고 성명과 주민번호를 비주요 속성으로 하면, 성명은 주민번호에 이행적 함수 종속되므로 제3정규형을 위반하는 것입니다.</li>
+  <li>제4정규형은 릴레이션이 BCNF를 만족하면서, 함수 종속이 아닌 다치 종속 (MVD: Multi Valued Dependency) 를 제거해야 만족할 수 있습니다. 다치 종속이란 A-&gt;B와 A-&gt;C가 성립할 때 A-&gt;BC가 성립하는 것을 말합니다. 예를 들어, 학생 테이블에서 학번을 기본키로 하고 자격증과 언어를 비주요 속성으로 하면, 자격증과 언어는 학번에 다치 종속되므로 제4정규형을 위반하는 것입니다.</li>
+  <li>제5정규형은 릴레이션이 제4정규형을 만족하면서 후보키를 통하지 않는 조인 종속 (JD: Join Dependency) 을 제거해야 만족할 수 있습니다. 조인 종속이란 릴레이션 R의 모든 속성들의 집합 X가 R의 부분집합들의 자연조인으로 표현될 수 있을 때 성립하는 것을 말합니다. 예를 들어, 학생 테이블에서 학번-자격증-언어를 기본키로 하고 국적을 비주요 속성으로 하면, 국적은 조인 종속되므로 제5정규형을 위반하는 것입니다.</li>
+</ul>
+
+<p>제4정규형과 제5정규형은 실무에서 잘 쓰이지 않는다고 합니다. 왜냐하면 너무 많은 정규화는 쿼리가 복잡해지고 성능 저하가 발생할 수 있기 때문입니다.</p>
+
+<p>데이터베이스 정규화는 데이터의 중복과 이상 현상을 줄여주지만, 너무 많은 정규화는 쿼리가 복잡해지고 성능 저하가 발생할 수 있습니다. 따라서 적절한 수준의 반정규화(denormalization)가 필요할 수 있습니다. 반정규화는 읽기 성능을 향상시키기 위해 일부러 중복을 허용하거나 릴레이션을 합치는 작업입니다.</p>
+
+<p><br /></p>
+
+<h4 id="database-injection에-대해-설명하세요">Database Injection에 대해 설명하세요.</h4>
+
+<p>database injection이란 웹 보안 취약점으로, 공격자가 웹 페이지 입력을 통해 데이터베이스에 전달되는 SQL 문에 악의적인 코드를 삽입하는 기술입니다. 이렇게 하면 공격자는 데이터베이스를 파괴하거나 정상적으로 접근할 수 없는 데이터를 조회할 수 있습니다.</p>
+
+<p>database injection은 여러 종류가 있습니다. 예를 들어, SQL injection은 SQL 문에 삽입된 코드로 인해 데이터베이스 서버에서 잘못된 명령을 실행하게 하는 것입니다. Blind SQL injection은 웹 페이지에서 데이터베이스 메시지가 공격자에게 보이지 않을 때 사용하는 것으로, 참/거짓 값을 반환하는 조건문을 삽입하여 데이터베이스의 정보를 유추하는 것입니다.</p>
+
+<p>database injection은 매우 흔하고 위험한 웹 해킹 기술입니다. 그러므로 웹 개발자들은 입력값 검증, 파라미터화된 쿼리 사용, 에러 메시지 숨김 등의 방법으로 database injection을 방지해야 합니다</p>
+
+<p><br /></p>
+
+<h3 id="javascriptnodejs">JavaScript(Node.js)</h3>
+
+<h4 id="javascript의-특징과-장단점을-설명하세요">JavaScript의 특징과 장단점을 설명하세요.</h4>
+
+<p>자바스크립트는 웹 브라우저에서 동작하는 스크립트 언어로, HTML과 CSS와 함께 웹 개발에 많이 사용됩니다. 자바스크립트의 특징은 다음과 같습니다.</p>
+
+<ul>
+  <li>동적 타입 언어: 변수의 타입을 선언하지 않고도 값을 할당하거나 변경할 수 있습니다.</li>
+  <li>객체 지향 언어: 객체와 프로토타입을 기반으로 상속과 다형성을 구현할 수 있습니다.</li>
+  <li>함수형 언어: 일급 함수와 클로저를 지원하여 고차 함수와 비동기 프로그래밍을 할 수 있습니다.</li>
+  <li>인터프리터 언어: 컴파일 과정 없이 소스 코드를 바로 실행할 수 있습니다.</li>
+</ul>
+
+<p>자바스크립트의 장점은 다음과 같습니다.</p>
+
+<ul>
+  <li>웹 브라우저에서 널리 지원되며, 웹 페이지에 동적인 기능을 추가할 수 있습니다.</li>
+  <li>Node.js와 같은 플랫폼을 통해 서버 사이드 개발도 가능합니다.</li>
+  <li>다양한 라이브러리와 프레임워크가 존재하여 개발 생산성을 높일 수 있습니다.</li>
+</ul>
+
+<p>자바스크립트의 단점은 다음과 같습니다.</p>
+
+<ul>
+  <li>동적 타입 언어이기 때문에 타입 오류가 발생하기 쉽고 디버깅이 어렵습니다.</li>
+  <li>전역 변수의 남용으로 인한 충돌 위험이 있으며, 모듈화가 부족합니다.</li>
+  <li>호환성 문제로 인해 브라우저마다 동작이 다를 수 있으며, 보안 문제가 발생할 수 있습니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="nodejs의-정의와-특징을-설명하세요">Node.js의 정의와 특징을 설명하세요.</h4>
+
+<ul>
+  <li>Node.js는 무엇인가요?
+    <ul>
+      <li>Node.js는 크롬의 자바스크립트 엔진을 기반으로 하는 서버 사이드 런타임 환경입니다. 즉, 웹 브라우저가 아닌 서버에서 자바스크립트를 실행할 수 있게 해줍니다.</li>
+    </ul>
+  </li>
+  <li>Node.js의 특징은 무엇인가요?
+    <ul>
+      <li>Node.js의 특징은 비동기식이고 이벤트 기반이라는 점입니다. 이는 API로부터 데이터를 기다리지 않고 다음 API로 넘어가서 서버의 성능을 향상시킬 수 있다는 의미입니다. 또한 Node.js는 쉽게 확장할 수 있도록 설계되어 있습니다. 구글에서 개발한 크롬 V8 엔진을 사용하여 자바스크립트를 매우 빠르게 컴파일하고 실행할 수 있으며, 클러스터 모듈과 자식 프로세스를 사용하여 애플리케이션을 수평으로 분할하고 로드 밸런싱할 수 있습니다. 마지막으로 Node.js는 네트워킹을 포함하여 다양한 기능을 제공하는 훌륭한 표준 라이브러리를 갖고 있습니다. 예를 들어 http 모듈을 사용하면 쉽게 HTTP 서버를 만들고 실행할 수 있습니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="비동기-처리의-원리와-예시를-설명하세요">비동기 처리의 원리와 예시를 설명하세요.</h4>
+
+<p>javascript가 비동기 처리를 할 수 있는 원리는 다음과 같습니다.</p>
+
+<ul>
+  <li>javascript는 싱글스레드로 동작하기 때문에 하나의 작업만 처리할 수 있습니다. 그러나 javascript 런타임은 web api, event loop, callback queue와 같은 다른 구성 요소들과 함께 동작합니다.</li>
+  <li>javascript 엔진에서 비동기 함수가 호출되면 call stack에 쌓였다가 web api로 이동한 후 해당 함수가 등록되고 call stack에서 사라집니다.</li>
+  <li>web api에서 비동기 함수의 이벤트가 발생하면 해당 콜백 함수는 callback queue에 push됩니다.</li>
+  <li>event loop는 call stack과 callback queue를 지속적으로 확인하면서 call stack이 비어있을 때 callback queue의 첫 번째 콜백 함수를 call stack으로 옮깁니다.</li>
+  <li>이렇게 call stack으로 옮겨진 콜백 함수는 실행되고 결과를 반환합니다.</li>
+</ul>
+
+<p>javascript의 비동기 처리의 예시는 다양하게 있습니다.</p>
+
+<ul>
+  <li>가장 대표적인 예시는 setTimeout() 함수입니다. 이 함수는 일정 시간 뒤에 콜백 함수를 실행시키는데, 이때 콜백 함수는 web api로 보내져서 비동기적으로 처리됩니다.</li>
+  <li>또 다른 예시는 AJAX입니다. AJAX는 서버와 통신할 때 비동기 방식으로 데이터를 주고받을 수 있습니다.</li>
+  <li>그 외에도 Promise, async/await, fetch 등의 기능들도 비동기 처리를 위해 사용할 수 있습니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="멀티-스레드와-싱글-스레드의-차이점을-설명하세요">멀티 스레드와 싱글 스레드의 차이점을 설명하세요.</h4>
+
+<p>스레드란 프로세스가 할당받은 자원을 이용하는 실행의 단위입니다. 멀티 스레드는 하나의 프로세스에서 여러 개의 스레드를 동시에 실행하는 기술이고, 싱글 스레드는 하나의 프로세스에서 오직 하나의 스레드만 실행하는 것입니다.</p>
+
+<p>멀티 스레드와 싱글 스레드의 차이점은 다음과 같습니다.</p>
+
+<ul>
+  <li>멀티 스레드는 CPU의 활용도를 높이고, 응답 시간을 줄일 수 있습니다. 반면에 싱글 스레드는 CPU가 한 번에 하나의 작업만 처리할 수 있기 때문에 효율이 낮을 수 있습니다.</li>
+  <li>멀티 스레드는 자원을 공유하기 때문에 메모리 사용량이 적고, 컨텍스트 스위칭 비용이 낮습니다. 반면에 싱글 스레드는 자원을 공유하지 않기 때문에 메모리 사용량이 많고, 컨텍스트 스위칭 비용이 높습니다.</li>
+  <li>멀티 스레드는 동기화와 교착 상태 등의 문제가 발생할 수 있으며, 프로그래밍 난이도가 높습니다. 반면에 싱글 스레드는 이러한 문제가 없으며, 프로그래밍 난이도가 낮습니다.</li>
+</ul>
+
+<p>싱글스레드와 멀티스레드를 사용하는 예시는 다음과 같습니다.</p>
+
+<ul>
+  <li>싱글스레드는 하나의 작업만 처리할 수 있기 때문에 간단하고 순차적인 작업에 적합합니다. 예를 들어, 라면집에서 알바생이 한 테이블에 대한 주문을 완전히 처리해야 다음 테이블의 주문을 받고 처리할 수 있다면, 이는 싱글스레드와 비슷한 상황입니다.</li>
+  <li>멀티스레드는 여러 개의 작업을 동시에 처리할 수 있기 때문에 복잡하고 병렬적인 작업에 적합합니다. 예를 들어, 웹 서버에서 여러 클라이언트의 요청을 동시에 처리하기 위해 멀티스레드를 사용할 수 있습니다.</li>
+</ul>
+
+<p><br /></p>
+
+<h4 id="nodejs에서-보안을-강화할-수-있는-방법을-설명하세요">Node.js에서 보안을 강화할 수 있는 방법을 설명하세요.</h4>
+
+<p>Node.js에서 보안을 강화하기 위한 방법으로는 다음과 같은 것들이 있습니다.</p>
+
+<ul>
+  <li>디버거 포트를 비활성화하거나 암호화하고 인증을 적용합니다. 디버거는 Node.js 실행 환경에 완전히 액세스할 수 있기 때문에 공격자가 임의의 코드를 실행할 수 있는 위험성이 있습니다.</li>
+  <li>helmet 모듈을 사용하여 HTTP 헤더의 설정을 변경합니다. helmet은 Express와 함께 사용되는 보안 강화 모듈로서, 웹 취약점으로부터 서버를 보호해줍니다.</li>
+  <li>HTTPS 프로토콜을 사용하여 통신을 암호화하고 인증서를 발급받습니다. HTTPS는 HTTP보다 안전하고 신뢰할 수 있는 통신 방식입니다.</li>
+</ul>
+
+<p><br /></p>
+
+<hr />
+
+<p><br /></p>
+
+<p>이번 포스팅에서는 네트워크, 데이터베이스, 자바스크립트 주제의 몇 가지 예상 질문을 작성해보았습니다.</p>
+
+<p>이 글을 포스팅하면서 백엔드 직무는 알아야 하는 부분이 정말 많다는 것을 다시 한번 체감할 수 있었습니다.</p>
+
+<p>작성하다보니 내용이 너무 길어져 나머지 내용은 다음 포스팅에 이어서 작성하도록 하겠습니다.</p>
+
+<p><br /></p>
+
+<p>위 내용 중 잘못된 부분이 있다면 댓글로 알려주시면 감사하겠습니다.</p>]]></content><author><name>0126kjw</name></author><category term="CS" /><category term="CS" /><category term="Node.js" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">[CS] 면접 질문 + NotionAI</title><link href="https://0126kjw.github.io/jekyll-theme-yat/cs/2023/02/12/CS-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-NotionAI.html" rel="alternate" type="text/html" title="[CS] 면접 질문 + NotionAI" /><published>2023-02-12T00:00:00+00:00</published><updated>2023-02-12T00:00:00+00:00</updated><id>https://0126kjw.github.io/jekyll-theme-yat/cs/2023/02/12/CS-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-NotionAI</id><content type="html" xml:base="https://0126kjw.github.io/jekyll-theme-yat/cs/2023/02/12/CS-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-NotionAI.html"><![CDATA[<p><img src="https://user-images.githubusercontent.com/108377235/218323945-0e0f825c-11d5-4135-8dad-bd8e02cbd859.png" alt="header" /></p>
+
+<p><br /></p>
+
+<h2 id="intro">Intro</h2>
+
+<p>얼마 전 백엔드 개발 기술 면접을 다녀왔습니다.</p>
+
+<p>비록 원했던 결과는 얻지 못했지만 부족한 것이 무엇이고 어떤 부분을 더 준비해야할 지에 대해 알게되었던 뜻깊은 시간이었습니다.</p>
+
+<p>이번에는 제가 기억나는 면접의 질문들 중 몇 가지를 정리하고 그에 대한 답변을 <code class="language-plaintext highlighter-rouge">Notion AI</code>를 통해 간략하게 작성해보겠습니다.</p>
+
+<p><br /></p>
+
+<p>Notion AI가 소개하는 Notion AI는 다음과 같습니다.</p>
+
+<blockquote>
+  <p>Notion AI는 자연어 처리 기술을 통해 문장을 분석하고 분석 된 내용을 문서로 작성해주는 기술로, 작업의 생산성을 높이고 글을 더 빠르고 정확하게 작성하는 데 도움을 줍니다. Notion AI는 사용자가 입력한 글을 실시간으로 분석하여 사용자가 원하는 내용을 더 빠르게 작성하는 데 도움을 줍니다. 또한 Notion AI는 여러개의 입력 데이터를 분석하여 다양한 문서의 작성을 돕는 기능도 제공합니다.</p>
+</blockquote>
+
+<p>아래 내용은 NotionAI를 통해 작성되었으므로, 잘못된 내용이 있을 수도 있으니 양해 바랍니다.</p>
+
+<hr />
+
+<p><br /></p>
+
+<h2 id="question">Question</h2>
+
+<h3 id="http와-https의-차이점">http와 https의 차이점</h3>
+
+<p>HTTP와 HTTPS는 두가지 다른 프로토콜입니다. HTTP는 Hypertext Transfer Protocol의 약자로, 하이퍼텍스트를 통해 웹 서버와 클라이언트 간의 데이터를 주고 받는 데 사용됩니다. 하지만 HTTP는 데이터를 암호화하지 않습니다. HTTPS는 Hypertext Transfer Protocol Secure의 약자로, HTTP와 동일하게 사용되지만 데이터를 암호화하기 때문에 데이터의 보안을 더 강화합니다. HTTPS는 보통 금융 거래나 로그인 과정 등과 같이 데이터 보안이 중요한 분야에서 많이 사용됩니다.</p>
+
+<p><br /></p>
+
+<h3 id="동기와-비동기의-차이점">동기와 비동기의 차이점</h3>
+
+<p>JavaScript는 동기와 비동기 두가지 방식의 처리 방식을 제공합니다. 동기 방식은 작업을 순차적으로 처리하는 방식으로, 한 번 작업이 완료되어야 다음 작업이 실행됩니다. 반면 비동기 방식은 여러개의 작업을 동시에 처리하는 방식으로, 작업의 실행 순서와 관계 없이 빠르게 작업이 실행됩니다. 따라서 동기 방식은 작업의 순서가 중요할 때 사용하고, 비동기 방식은 작업의 순서가 별로 중요하지 않을 때 사용합니다.</p>
+
+<p><br /></p>
+
+<h3 id="객체지향프로그래밍이란">객체지향프로그래밍이란</h3>
+
+<p>객체 지향 프로그래밍(Object Oriented Programming, OOP)은 소프트웨어 개발을 위한 프로그래밍 패러다임으로, 프로그램의 작성을 객체에 집중하는 방법으로 이루어집니다. OOP는 소프트웨어 개발을 더 간단하게 만들고 코드를 반복해서 사용할 수 있도록 기능을 재사용할 수 있게 도와줍니다. OOP를 사용하면 개발 시간을 단축할 수 있고, 프로그램 유지 보수 및 업그레이드를 더 쉽게 수행할 수 있습니다.</p>
+
+<p><br /></p>
+
+<h3 id="자바스크립트의-특징">자바스크립트의 특징</h3>
+
+<p>자바스크립트는 브라우저 내에서 실행되는 객체 기반의 스크립팅 언어입니다. 자바스크립트는 다양한 라이브러리를 지원하고, 비동기 방식으로 코딩하는 것을 지원합니다. 또한 자바스크립트는 동적인 웹 사이트를 만들기 위해 매우 유용한 언어로, 정적인 내용을 바꿔주는 등 다양한 기능을 제공합니다. 또한 자바스크립트는 객체 지향 프로그래밍을 지원하는데, 객체를 사용하기 때문에 프로그램의 작성이 더 간편해집니다.</p>
+
+<p><br /></p>
+
+<h3 id="파이썬과-자바스크립트의-차이점">파이썬과 자바스크립트의 차이점</h3>
+
+<p>Python과 JavaScript는 두개의 다른 프로그래밍 언어로, 다양한 분야에서 사용되고 있습니다. 하지만 각각의 특징과 사용 방식이 다르기 때문에 두 언어를 구분하기도 합니다.</p>
+
+<p>Python은 객체 지향 프로그래밍 언어로, 동적 타이핑 방식을 사용합니다. 이 방식은 변수에 저장된 값이 변할 때 그 값에 따라 자동으로 변수 타입이 변합니다. 또한 매우 쉽게 읽고 쓸 수 있는 간결한 문법을 사용합니다.</p>
+
+<p>JavaScript는 스크립팅 언어로, 브라우저 내에서 실행됩니다. 이 언어는 비동기 방식으로 코딩하는 것을 지원하고, 다양한 라이브러리를 지원합니다. 또한 자바스크립트는 객체 기반의 스크립팅 언어로, 객체 지향 프로그래밍을 지원합니다.</p>
+
+<p>따라서 Python과 JavaScript는 다른 프로그래밍 언어로, 각각 다른 분야에 사용되고 있습니다. Python은 동적 타이핑 방식을 사용하고, 간결한 문법을 사용합니다. 반면 JavaScript는 비동기 방식으로 코딩하는 것을 지원하고, 다양한 라이브러리를 지원합니다.</p>
+
+<p><br /></p>
+
+<h3 id="테스트주도개발에-대해">테스트주도개발에 대해</h3>
+
+<p>테스트 주도 개발(Test-Driven Development, TDD)은 개발 단계에서 테스트 작성과 개발이 순차적으로 이루어지는 개발 방법론입니다. TDD는 개발 단계에서 기능 요구 사항을 테스트 코드로 작성하고, 개발자가 작성한 코드로 테스트를 통과할 때까지 반복합니다. TDD는 개발 과정을 간결하고 효과적으로 진행할 수 있도록 도와줍니다. 또한 TDD는 버그를 발견하고 수정하는데 도움이 되며, 유지 보수를 쉽게 할 수 있도록 도와줍니다. 그러나 테스트 주도 개발의 단점이 있습니다. 테스트 주도 개발은 초기 테스트 작성 및 실행에 큰 비중을 두기 때문에, 비용 및 시간이 많이 들어갑니다. 또한 테스트 작성 시 버그를 찾기 어렵고, 테스트 코드 작성 능력이 없는 개발자는 사용하기 매우 어렵습니다.</p>
+
+<p><br /></p>
+
+<h3 id="3계층-아키텍처란">3계층 아키텍처란</h3>
+
+<p>3계층 아키텍처는 소프트웨어 구조를 통해 사용자 인터페이스, 비지니스 로직 및 데이터 저장 사이의 독립성을 제공하는 기본 구조를 의미합니다. 이 아키텍처는 데이터베이스, 서버 및 클라이언트로 구성됩니다. 이 세 단계는 서로 분리되어 있으며, 각 단계는 서로 다른 기능을 수행합니다. 가장 상위 레벨의 클라이언트 층은 사용자 인터페이스로, 사용자가 소프트웨어에 액세스하고 사용하는 데 사용합니다. 비지니스 로직 레벨은 사용자 인터페이스와 데이터베이스 사이의 중간 단계로, 데이터를 처리하고 사용자 요청에 응답하는 데 사용합니다. 가장 하위 레벨의 데이터베이스 단계는 데이터를 저장하고 사용하는 데 사용합니다. 각 레벨은 서로 독립적으로 운용되며, 각 레벨이 수행하는 기능이 명확하고 분리되어 있기 때문에 3계층 아키텍처는 소프트웨어 개발 및 유지 보수 등의 이점을 제공합니다.</p>
+
+<p><br /></p>
+
+<hr />
+
+<p><br /></p>
+
+<h2 id="end">End</h2>
+
+<p>NotionAI를 통해 CS 면접 질문을 몇 가지 정리해보았습니다.</p>
+
+<p>생각보다 너무 뛰어난 성능에 놀라움을 금치 못했던 것 같습니다.</p>
+
+<p><br /></p>
+
+<p>요즘 ChatGPT, NotionAI 등 AI 기술의 발달에 따라 많은 우려의 목소리가 들리고 있습니다.</p>
+
+<p>이것이 개발자를 대체할 수도 있다고 생각하는 사람들도 있지만, 저는 그렇게 생각하지 않습니다.</p>
+
+<p>새로운 기술에 두려움 없이 적응하고 적용하는 자세가 개발자에게 가장 중요하다고 생각합니다.</p>
+
+<p>앞으로 새롭게 개발될 기술들이 얼마나 세상을 놀라게 할지 설레고 기대됩니다.</p>]]></content><author><name>0126kjw</name></author><category term="CS" /><category term="CS" /><category term="NotionAI" /><summary type="html"><![CDATA[]]></summary></entry></feed>

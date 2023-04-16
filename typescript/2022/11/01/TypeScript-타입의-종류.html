@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>[TypeScript] 타입의 종류 | JIN’s SPACE</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="[TypeScript] 타입의 종류">
+<meta name="author" content="0126kjw">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Jin’s recording &amp; sharing Space.">
+<meta property="og:description" content="Jin’s recording &amp; sharing Space.">
+<link rel="canonical" href="https://0126kjw.github.io/jekyll-theme-yat/typescript/2022/11/01/TypeScript-%ED%83%80%EC%9E%85%EC%9D%98-%EC%A2%85%EB%A5%98.html">
+<meta property="og:url" content="https://0126kjw.github.io/jekyll-theme-yat/typescript/2022/11/01/TypeScript-%ED%83%80%EC%9E%85%EC%9D%98-%EC%A2%85%EB%A5%98.html">
+<meta property="og:site_name" content="JIN’s SPACE">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-11-01T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="[TypeScript] 타입의 종류">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"0126kjw"},"dateModified":"2022-11-01T00:00:00+00:00","datePublished":"2022-11-01T00:00:00+00:00","description":"Jin’s recording &amp; sharing Space.","headline":"[TypeScript] 타입의 종류","mainEntityOfPage":{"@type":"WebPage","@id":"https://0126kjw.github.io/jekyll-theme-yat/typescript/2022/11/01/TypeScript-%ED%83%80%EC%9E%85%EC%9D%98-%EC%A2%85%EB%A5%98.html"},"url":"https://0126kjw.github.io/jekyll-theme-yat/typescript/2022/11/01/TypeScript-%ED%83%80%EC%9E%85%EC%9D%98-%EC%A2%85%EB%A5%98.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="../assets/images/favicon/android-icon-192x192.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://0126kjw.github.io/jekyll-theme-yat/feed.xml" title="JIN's SPACE">
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack =
+      window.doNotTrack === "1" ||
+      navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" ||
+      navigator.msDoNotTrack === "1";
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      (function (i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r;
+        (i[r] =
+          i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(
+        window,
+        document,
+        "script",
+        "https://www.google-analytics.com/analytics.js",
+        "ga"
+      );
+
+      ga("create", "{ site.google_analytics }", "auto");
+      ga("send", "pageview");
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+</script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L72WRP127J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-L72WRP127J");
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5877350368014861" crossorigin="anonymous"></script>
+
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="57x57" href="../assets/images/favicon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="../assets/images/favicon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../assets/images/favicon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="../assets/images/favicon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../assets/images/favicon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="../assets/images/favicon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="../assets/images/favicon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="../assets/images/favicon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/favicon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/images/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="../assets/images/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="../assets/images/favicon/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="../assets/images/favicon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="JIN's SPACE" src="../assets/images/favicon/android-icon-192x192.png" onerror="this.style.display='none'">
+  JIN's SPACE
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">
+    [TypeScript] 타입의 종류
+  </h1>
+  <h2 class="post-subtitle">
+    
+  </h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2022-11-01T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 01, 2022
+    </time>
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 11 mins</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#TypeScript">#TypeScript</a></div>
+<a href="https://hits.sh/0126kjw.github.io/typescript/2022/11/01/TypeScript-%ED%83%80%EC%9E%85%EC%9D%98-%EC%A2%85%EB%A5%98.html"><img alt="Hits" src="https://hits.sh/0126kjw.github.io/typescript/2022/11/01/TypeScript-%ED%83%80%EC%9E%85%EC%9D%98-%EC%A2%85%EB%A5%98.html.svg?&style=flat-square&label=views&color=ff5100&labelColor=454545"></a>
+</header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p><img src="https://user-images.githubusercontent.com/108377235/216560590-a3b01972-1296-4ac5-9440-d9b0f641260e.png" alt="2560px-TypeScript_Logo_(Blue) svg"></p>
+
+<p><br></p>
+
+<p>본 게시물은 TypeScript-Handbook 한글 문서의 내용을 정리한 내용입니다.</p>
+
+<p>추가적인 정보를 원하신다면 아래의 링크를 참고하시길 바랍니다.</p>
+
+<p><a href="https://typescript-kr.github.io">https://typescript-kr.github.io</a></p>
+
+<hr>
+
+<p><br></p>
+
+<h2 id="boolean">Boolean</h2>
+
+<p>가장 기본적인 데이터 타입입니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">boolean</code>이라고 하는 참/거짓 값을 의미합니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">isDone</span><span class="p">:</span> <span class="nx">boolean</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h2 id="number">Number</h2>
+
+<p>JavaScript와 같이 TypeScript의 모든 숫자는 <a href="https://ko.wikipedia.org/wiki/%EB%B6%80%EB%8F%99%EC%86%8C%EC%88%98%EC%A0%90">부동 소수</a> 값입니다.</p>
+
+<p>이러한 부동 소수에는 <code class="language-plaintext highlighter-rouge">number</code>라는 Type이 붙혀집니다.</p>
+
+<p>TypeScript는 16진수, 10진수 리터럴과 더불어, ECMAScript 2015에 소개된 2진수와 8진수 리터럴도 지원합니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">decimail</span><span class="p">:</span> <span class="kr">number</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">hex</span><span class="p">:</span> <span class="kr">number</span> <span class="o">=</span> <span class="mh">0xf00d</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">binary</span><span class="p">:</span> <span class="kr">number</span> <span class="o">=</span> <span class="mb">0b1010</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">octal</span><span class="p">:</span> <span class="kr">number</span> <span class="o">=</span> <span class="mo">0o744</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h2 id="string">String</h2>
+
+<p>다른 언어들처럼, TypeScript에서는 텍스트 데이터 타입을 <code class="language-plaintext highlighter-rouge">String</code>으로 표현합니다.</p>
+
+<p>JavaScript와 같이 TypeScript도 큰따옴표(”)나 작은따옴표(’)를 문자열 데이터를 감싸는데 사용합니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">color</span><span class="p">:</span> <span class="kr">string</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">blue</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">color</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">red</span><span class="dl">"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<p>또한 템플릿 문자열을 사용하면 여러 줄에 걸쳐 문자열을 작성할 수 있으며, 표현식을 포함시킬 수 있습니다.</p>
+
+<p>이 문자열은 백틱(`) 문자로 감싸지며, <code class="language-plaintext highlighter-rouge">${ expr }</code>과 같은 형태로 표현식을 포함시킬 수 있습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">fullName</span><span class="p">:</span> <span class="kr">string</span> <span class="o">=</span> <span class="s2">`Bob Bobbington`</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">age</span><span class="p">:</span> <span class="kr">number</span> <span class="o">=</span> <span class="mi">37</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">sentence</span><span class="p">:</span> <span class="kr">string</span> <span class="o">=</span> <span class="s2">`Hello, my name is </span><span class="p">${</span><span class="nx">fullName</span><span class="p">}</span><span class="s2">.
+I'll be </span><span class="p">${</span><span class="nx">age</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}</span><span class="s2"> years old next month.`</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h2 id="array">Array</h2>
+
+<p>TypeScript는 JavaScipt처럼 값들을 배열로 다룰 수 있게 해줍니다.</p>
+
+<p>배열 타입은 두 가지 방법으로 쓸 수 있습니다.</p>
+
+<p>첫 번째 방법은, 배열 요소들을 나타내는 타입 뒤에 <code class="language-plaintext highlighter-rouge">[]</code>를 쓰는 것 입니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">list</span><span class="p">:</span> <span class="kr">number</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<p>두 번째 방법은, 제네릭 배열 타입 <code class="language-plaintext highlighter-rouge">(Array&lt;elemType&gt;)</code>을 쓰는 것입니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">list</span><span class="p">:</span> <span class="nb">Array</span><span class="o">&lt;</span><span class="kr">number</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h2 id="tuple">Tuple</h2>
+
+<p><code class="language-plaintext highlighter-rouge">tuple</code> 타입을 사용하면, 요소의 타입과 개수가 고정된 배열을 표현할 수 있습니다.</p>
+
+<p>단 요소들의 타입이 모두 같을 필요는 없습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 튜플 타입으로 선언</span>
+<span class="kd">let</span> <span class="nx">x</span><span class="p">:</span> <span class="p">[</span><span class="kr">string</span><span class="p">,</span> <span class="kr">number</span><span class="p">];</span>
+<span class="c1">// 초기화</span>
+<span class="nx">x</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">,</span> <span class="mi">10</span><span class="p">];</span> <span class="c1">// 성공</span>
+<span class="c1">// 잘못된 초기화</span>
+<span class="nx">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">];</span> <span class="c1">// 오류</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<p>정해진 인덱스에 위치한 요소에 접근하면 해당 타입이 나타납니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">x</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nf">substring</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span> <span class="c1">// 성공</span>
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">x</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nf">substring</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span> <span class="c1">// 오류, 'number'에는 'substring'이 없습니다.</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<p>정해진 인덱스 외에 다른 인덱스에 있는 요소에 접근하면, 오류가 발생하며 실패합니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">world</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// 오류, '[string, number]' 타입에는 프로퍼티 '3'이 없습니다.</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">x</span><span class="p">[</span><span class="mi">5</span><span class="p">].</span><span class="nf">toString</span><span class="p">());</span> <span class="c1">// '[string, number]' 타입에는 프로퍼티 '5'가 없습니다.</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h2 id="enum">Enum</h2>
+
+<p>JavaScript의 표준 자료형 집합과 사용하면 도움이 될만한 데이터 형은 <code class="language-plaintext highlighter-rouge">enum</code>입니다.</p>
+
+<p>C# 과 같은 언어처럼, <code class="language-plaintext highlighter-rouge">enum</code>은 값의 집합에 더 나은 이름을 붙여줄 수 있습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">enum</span> <span class="nx">Color</span> <span class="p">{</span>
+  <span class="nx">Red</span><span class="p">,</span>
+  <span class="nx">Green</span><span class="p">,</span>
+  <span class="nx">Blue</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="kd">let</span> <span class="nx">c</span><span class="p">:</span> <span class="nx">Color</span> <span class="o">=</span> <span class="nx">Color</span><span class="p">.</span><span class="nx">Green</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<p>기본적으로 <code class="language-plaintext highlighter-rouge">enum</code>은 0 부터 시작하여 멤버들의 번호를 매깁니다.</p>
+
+<p>멤버 중 하나의 값을 수동으로 설정하여 번호를 바꿀 수 있습니다.</p>
+
+<p>예를 들어, 위 예제를 <code class="language-plaintext highlighter-rouge">0</code> 대신 <code class="language-plaintext highlighter-rouge">1</code> 부터 시작해 번호를 매기도록 바꿀 수 있습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">enum</span> <span class="nx">Color</span> <span class="p">{</span>
+  <span class="nx">Red</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nx">Green</span><span class="p">,</span>
+  <span class="nx">Blue</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="kd">let</span> <span class="nx">c</span><span class="p">:</span> <span class="nx">Color</span> <span class="o">=</span> <span class="nx">Color</span><span class="p">.</span><span class="nx">Green</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<p>또한, 모든 값을 수동으로 설정할 수 있습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">enum</span> <span class="nx">Color</span> <span class="p">{</span>
+  <span class="nx">Red</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nx">Green</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="nx">Blue</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="kd">let</span> <span class="nx">c</span><span class="p">:</span> <span class="nx">Color</span> <span class="o">=</span> <span class="nx">Color</span><span class="p">.</span><span class="nx">Green</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<p><code class="language-plaintext highlighter-rouge">enum</code>의 유용한 기능 중 하나는 매겨진 값을 사용해 enum 멤버의 이름을 알아낼 수 있다는 것입니다.</p>
+
+<p>예를 들어, 위의 예제에서 <code class="language-plaintext highlighter-rouge">2</code>라는 값이 위의 어떤 <code class="language-plaintext highlighter-rouge">Color</code> enum 멤버와 매칭되는지 알 수 없을 때, 이에 일치하는 이름을 알아낼 수 있습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">enum</span> <span class="nx">Color</span> <span class="p">{</span>
+  <span class="nx">Red</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nx">Green</span><span class="p">,</span>
+  <span class="nx">Blue</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="kd">let</span> <span class="nx">colorName</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nx">Color</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">colorName</span><span class="p">);</span> <span class="c1">// 값이 2인 'Green'이 출력됩니다.</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h2 id="any">Any</h2>
+
+<p>애플리케이션을 만들 때, 알지 못하는 타입을 표현해야 하는 경우가 생깁니다.</p>
+
+<p>이 값들은 사용자로부터 받은 데이터나 서드 파티 라이브러리 같은 동적인 컨텐츠에서 올 수도 있습니다.</p>
+
+<p>이 경우 타입 검사를 하지 않고, 그 값들이 컴파일 시간에 검사를 통과하길 원합니다.</p>
+
+<p>이 때, <code class="language-plaintext highlighter-rouge">any</code> 타입을 사용할 수 있습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">notSure</span><span class="p">:</span> <span class="kr">any</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="nx">notSure</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">maybe a string instead</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">notSure</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span> <span class="c1">// 성공</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<p><code class="language-plaintext highlighter-rouge">any</code> 타입은 기존의 JavaScript로 작업할 수 있는 강력한 방법으로, 컴파일 중에 점진적으로 타입 검사를 하거나 하지 않을 수 있습니다.</p>
+
+<p>이때 <code class="language-plaintext highlighter-rouge">Object</code>가 비슷한 역할을 할 수 있을 것 같다고 생각할 수 있습니다.</p>
+
+<p>그런데, <code class="language-plaintext highlighter-rouge">Object</code>로 선언된 변수들은 오직 어떤 값이든 그 변수에 할당할 수 있게 해주지만 실제로 메서드가 존재하더라도, 임의로 호출할 수 없습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">notSure</span><span class="p">:</span> <span class="kr">any</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="nx">notSure</span><span class="p">.</span><span class="nf">ifItExists</span><span class="p">();</span> <span class="c1">// 성공, ifItExists 는 런타임엔 존재할 것입니다.</span>
+<span class="nx">notSure</span><span class="p">.</span><span class="nf">toFixed</span><span class="p">();</span> <span class="c1">// 성공, toFixed 는 존재합니다. (하지만 컴파일러는 검사하지 않음)</span>
+
+<span class="kd">let</span> <span class="nx">prettySure</span><span class="p">:</span> <span class="nb">Object</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="nx">prettySure</span><span class="p">.</span><span class="nf">toFixed</span><span class="p">();</span> <span class="c1">// 오류: 프로퍼티 'toFixed'는 'Object'에 존재하지 않습니다.</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<p>또한, <code class="language-plaintext highlighter-rouge">any</code> 타입은 타입의 일부만 알고 전체를 알지 못할 때 유용합니다.</p>
+
+<p>예를 들어, 여러 다른 타입이 섞인 배열을 다룰 수 있습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">list</span><span class="p">:</span> <span class="kr">any</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">"</span><span class="s2">free</span><span class="dl">"</span><span class="p">];</span>
+
+<span class="nx">list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h2 id="void">Void</h2>
+
+<p><code class="language-plaintext highlighter-rouge">void</code>는 어떤 타입도 존재할 수 없음을 나타내기 때문에 <code class="language-plaintext highlighter-rouge">any</code>의 반대 타입과 같습니다.</p>
+
+<p>보통 <code class="language-plaintext highlighter-rouge">void</code>는 함수에서 반환 값이 없을 때 반환 타입을 표현하기 위해 쓰이는 것을 볼 수 있습니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">warnUser</span><span class="p">():</span> <span class="k">void</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">This is my warning message</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<p><code class="language-plaintext highlighter-rouge">void</code>를 타입 변수로 선언하는 것은 유용하지 않은데, 왜냐하면 그 변수에는 <code class="language-plaintext highlighter-rouge">null</code>( —strictNullChecks 을 사용하지 않을 때만 해당) 또는 <code class="language-plaintext highlighter-rouge">undefined</code>만 할당할 수 있기 때문입니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">unusable</span><span class="p">:</span> <span class="k">void</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">;</span>
+<span class="nx">unusable</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">// 성공, '--strictNullChecks'을 사용하지 않을 때만</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h2 id="null-and-undefined">Null and Undefined</h2>
+
+<p>TypeScript는 <code class="language-plaintext highlighter-rouge">undefined</code>와 <code class="language-plaintext highlighter-rouge">null</code>은 각각 자신의 타입 이름으로 <code class="language-plaintext highlighter-rouge">undefined</code>과 <code class="language-plaintext highlighter-rouge">null</code>을 사용합니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 이 예제 이외에 이 변수들에 할당할 수 있는 값이 없습니다.</span>
+<span class="kd">let</span> <span class="nx">u</span><span class="p">:</span> <span class="kc">undefined</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">n</span><span class="p">:</span> <span class="kc">null</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<p>기본적으로 <code class="language-plaintext highlighter-rouge">null</code>과 <code class="language-plaintext highlighter-rouge">undefined</code>는 다른 모든 타입의 하위 타입입니다.</p>
+
+<p>즉, null 과 undefined 를 <code class="language-plaintext highlighter-rouge">number</code>와 같은 타입에 할당할 수 있다는 것을 의미합니다.</p>
+
+<p>하지만, <code class="language-plaintext highlighter-rouge">—strictNullChecks</code>를 사용하면, null 과 undefined 는 오직 any 와 각자 자신들의 타입에만 할당이 가능합니다.</p>
+
+<p>이것은 많은 일반적인 에러를 방지하는 데 도움을 줍니다.</p>
+
+<p>이 경우, string 또는 null 또는 undefined 를 허용하고 싶은 경우 유니언 타입인 <code class="language-plaintext highlighter-rouge">string | null | undefined</code>를 사용할 수 있습니다.</p>
+
+<p><br></p>
+
+<h2 id="never">Never</h2>
+
+<p><code class="language-plaintext highlighter-rouge">never</code> 타입은 절대 발생할 수 없는 타입을 나타냅니다.</p>
+
+<p>예를 들어, <code class="language-plaintext highlighter-rouge">never</code>은 함수 표현식이나 화살표 함수 표현식에서 항상 오류를 발생시키거나 절대 반환하지 않는 반환 타입으로 쓰입니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">never</code> 타입은 모든 타입에 할당이 가능한 하위 타입입니다.</p>
+
+<p>하지만 어떤 타입도 never에 할당할 수 있거나, 하위타입이 아닙니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// never를 반환하는 함수는 함수의 마지막에 도달할 수 없다.</span>
+<span class="kd">function</span> <span class="nf">error</span><span class="p">(</span><span class="nx">message</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">never</span> <span class="p">{</span>
+  <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// 반환 타입이 never로 추론된다.</span>
+<span class="kd">function</span> <span class="nf">fail</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nf">error</span><span class="p">(</span><span class="dl">"</span><span class="s2">Something failed</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// never를 반환하는 함수는 함수의 마지막에 도달할 수 없다.</span>
+<span class="kd">function</span> <span class="nf">infiniteLoop</span><span class="p">():</span> <span class="nx">never</span> <span class="p">{</span>
+  <span class="nf">while </span><span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h2 id="object">Object</h2>
+
+<p><code class="language-plaintext highlighter-rouge">object</code>는 원시 타입이 아닌 타입을 나타냅니다.</p>
+
+<p>예를 들어, <code class="language-plaintext highlighter-rouge">number</code>, <code class="language-plaintext highlighter-rouge">string</code>, <code class="language-plaintext highlighter-rouge">boolean</code>, <code class="language-plaintext highlighter-rouge">bigint</code>, <code class="language-plaintext highlighter-rouge">symbol</code>, <code class="language-plaintext highlighter-rouge">null</code> 또는 <code class="language-plaintext highlighter-rouge">undefined</code>가 아닌 나머지를 의미합니다.</p>
+
+<p>object 타입을 쓰면, Object.create 같은 API 가 더 잘 나타납니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">declare</span> <span class="kd">function</span> <span class="nf">create</span><span class="p">(</span><span class="nx">o</span><span class="p">:</span> <span class="nx">object</span> <span class="o">|</span> <span class="kc">null</span><span class="p">):</span> <span class="k">void</span><span class="p">;</span>
+
+<span class="nf">create</span><span class="p">({</span> <span class="na">prop</span><span class="p">:</span> <span class="mi">0</span> <span class="p">});</span> <span class="c1">// 성공</span>
+<span class="nf">create</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span> <span class="c1">// 성공</span>
+
+<span class="nf">create</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span> <span class="c1">// 오류</span>
+<span class="nf">create</span><span class="p">(</span><span class="dl">"</span><span class="s2">string</span><span class="dl">"</span><span class="p">);</span> <span class="c1">// 오류</span>
+<span class="nf">create</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span> <span class="c1">// 오류</span>
+<span class="nf">create</span><span class="p">(</span><span class="kc">undefined</span><span class="p">);</span> <span class="c1">// 오류</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<h2 id="type-assertions">Type assertions</h2>
+
+<p>타입 단언(Type assertions)은 컴파일러에게 “날 믿어, 난 내가 뭘 하고 있는지 알아”라고 말해주는 방법입니다.</p>
+
+<p>타입 단언은 다른 언어의 형 변환과 유사하지만, 다른 특별한 검사를 하거나 데이터를 재구성하지는 않습니다.</p>
+
+<p>이는 런타임에 영향을 미치지 않으며, 온전히 컴파일러만 이를 사용합니다.</p>
+
+<p>TypeScript는 개발자가 필요한 어떤 특정 검사를 수행했다고 인지합니다.</p>
+
+<p><br></p>
+
+<p>타입 단언에는 두 가지의 형태가 있습니다.</p>
+
+<p>하나는, <code class="language-plaintext highlighter-rouge">angle-bracket</code> 문법입니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">someValue</span><span class="p">:</span> <span class="kr">any</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">this is a string</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">strLength</span><span class="p">:</span> <span class="kr">number</span> <span class="o">=</span> <span class="p">(&lt;</span><span class="nt">string</span><span class="p">&gt;</span>someValue).length;
+</code></pre></div></div>
+
+<p><br></p>
+
+<p>다른 하나는 <code class="language-plaintext highlighter-rouge">as</code> 문법입니다.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">someValue</span><span class="p">:</span> <span class="kr">any</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">this is a string</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">strLength</span><span class="p">:</span> <span class="kr">number</span> <span class="o">=</span> <span class="p">(</span><span class="nx">someValue</span> <span class="k">as</span> <span class="kr">string</span><span class="p">).</span><span class="nx">length</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br></p>
+
+<p>이 두 예제는 동일하게 작동합니다.</p>
+
+<p>어떤 것을 사용할 지는 주소 선호에 따른 선택입니다.</p>
+
+<p>하지만 TypeScript를 JSX와 함께 사용할 때는 <code class="language-plaintext highlighter-rouge">as</code> 스타일의 타입 단언만 허용됩니다.</p>
+
+<p><br></p>
+
+<hr>
+
+<p>본 게시물은 TypeScript-Handbook 한글 문서의 내용을 정리한 내용입니다.</p>
+
+<p>추가적인 정보를 원하신다면 아래의 링크를 참고하시길 바랍니다.</p>
+
+<p><a href="https://typescript-kr.github.io">https://typescript-kr.github.io</a></p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/blog/2022/10/29/github-%EB%B8%94%EB%A1%9C%EA%B7%B8(jekyll)%EC%97%90-Google-Analytics-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0.html" title="Github 블로그(jekyll)에 Google Analytics 설정하기">Github 블로그(jekyll)에 Google Analytics 설정하기</a><a class="next" href="/jekyll-theme-yat/blog/2022/11/02/Github-%EB%B8%94%EB%A1%9C%EA%B7%B8%EC%97%90-%EB%8C%93%EA%B8%80-%EA%B8%B0%EB%8A%A5-%EC%B6%94%EA%B0%80%ED%95%98%EA%B8%B0(Utterances).html" title="Github 블로그에 댓글 기능 추가하기(utterances)">Github 블로그에 댓글 기능 추가하기(utterances)</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/nestjs/2023/01/12/NestJS-TypeORM-MySQL-Seeding_Error.html" title="Github 블로그에 댓글 기능 추가하기(utterances)">[NestJS] TypeORM-MySQL Seeding Error</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/django/2022/10/26/Django-REST-Framework_installation.html" title="Github 블로그에 댓글 기능 추가하기(utterances)">[Django-REST-Framework] Installation</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/nestjs/2023/04/06/NestJS%EC%97%90%EC%84%9C-GraphQL-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html" title="Github 블로그에 댓글 기능 추가하기(utterances)">[NestJS] GraphQL 사용해보기</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/cs/2023/03/12/%EB%B0%B1%EC%97%94%EB%93%9C-%EA%B8%B0%EC%88%A0-%EB%A9%B4%EC%A0%91-%EC%98%88%EC%83%81-%EC%A7%88%EB%AC%B8-Part2.html" title="Github 블로그에 댓글 기능 추가하기(utterances)">[CS] 백엔드 기술 면접 예상 질문 Part2</a></li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+  const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'title');
+  utterancesScript.setAttribute('label', 'utterances comment');
+  utterancesScript.setAttribute('repo', '0126kjw/0126kjw.github.io');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2022-2023 0126kjw</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+      <div><a href="https://github.com/0126kjw">0126kjw Github</a></div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>[CS] 면접 질문 + NotionAI | JIN’s SPACE</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="[CS] 면접 질문 + NotionAI">
+<meta name="author" content="0126kjw">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Jin’s recording &amp; sharing Space.">
+<meta property="og:description" content="Jin’s recording &amp; sharing Space.">
+<link rel="canonical" href="https://0126kjw.github.io/jekyll-theme-yat/cs/2023/02/12/CS-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-NotionAI.html">
+<meta property="og:url" content="https://0126kjw.github.io/jekyll-theme-yat/cs/2023/02/12/CS-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-NotionAI.html">
+<meta property="og:site_name" content="JIN’s SPACE">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-02-12T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="[CS] 면접 질문 + NotionAI">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"0126kjw"},"dateModified":"2023-02-12T00:00:00+00:00","datePublished":"2023-02-12T00:00:00+00:00","description":"Jin’s recording &amp; sharing Space.","headline":"[CS] 면접 질문 + NotionAI","mainEntityOfPage":{"@type":"WebPage","@id":"https://0126kjw.github.io/jekyll-theme-yat/cs/2023/02/12/CS-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-NotionAI.html"},"url":"https://0126kjw.github.io/jekyll-theme-yat/cs/2023/02/12/CS-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-NotionAI.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="../assets/images/favicon/android-icon-192x192.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://0126kjw.github.io/jekyll-theme-yat/feed.xml" title="JIN's SPACE">
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack =
+      window.doNotTrack === "1" ||
+      navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" ||
+      navigator.msDoNotTrack === "1";
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      (function (i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r;
+        (i[r] =
+          i[r] ||
+          function () {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(
+        window,
+        document,
+        "script",
+        "https://www.google-analytics.com/analytics.js",
+        "ga"
+      );
+
+      ga("create", "{ site.google_analytics }", "auto");
+      ga("send", "pageview");
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+</script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L72WRP127J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-L72WRP127J");
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5877350368014861" crossorigin="anonymous"></script>
+
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="57x57" href="../assets/images/favicon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="../assets/images/favicon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../assets/images/favicon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="../assets/images/favicon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../assets/images/favicon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="../assets/images/favicon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="../assets/images/favicon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="../assets/images/favicon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/favicon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/images/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="../assets/images/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon/favicon-16x16.png">
+<link rel="manifest" href="../assets/images/favicon/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="../assets/images/favicon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="JIN's SPACE" src="../assets/images/favicon/android-icon-192x192.png" onerror="this.style.display='none'">
+  JIN's SPACE
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">
+    [CS] 면접 질문 + NotionAI
+  </h1>
+  <h2 class="post-subtitle">
+    
+  </h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-02-12T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Feb 12, 2023
+    </time>
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#CS">#CS</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#NotionAI">#NotionAI</a>
+</div>
+<a href="https://hits.sh/0126kjw.github.io/cs/2023/02/12/CS-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-NotionAI.html"><img alt="Hits" src="https://hits.sh/0126kjw.github.io/cs/2023/02/12/CS-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-NotionAI.html.svg?&style=flat-square&label=views&color=ff5100&labelColor=454545"></a>
+</header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p><img src="https://user-images.githubusercontent.com/108377235/218323945-0e0f825c-11d5-4135-8dad-bd8e02cbd859.png" alt="header"></p>
+
+<p><br></p>
+
+<h2 id="intro">Intro</h2>
+
+<p>얼마 전 백엔드 개발 기술 면접을 다녀왔습니다.</p>
+
+<p>비록 원했던 결과는 얻지 못했지만 부족한 것이 무엇이고 어떤 부분을 더 준비해야할 지에 대해 알게되었던 뜻깊은 시간이었습니다.</p>
+
+<p>이번에는 제가 기억나는 면접의 질문들 중 몇 가지를 정리하고 그에 대한 답변을 <code class="language-plaintext highlighter-rouge">Notion AI</code>를 통해 간략하게 작성해보겠습니다.</p>
+
+<p><br></p>
+
+<p>Notion AI가 소개하는 Notion AI는 다음과 같습니다.</p>
+
+<blockquote>
+  <p>Notion AI는 자연어 처리 기술을 통해 문장을 분석하고 분석 된 내용을 문서로 작성해주는 기술로, 작업의 생산성을 높이고 글을 더 빠르고 정확하게 작성하는 데 도움을 줍니다. Notion AI는 사용자가 입력한 글을 실시간으로 분석하여 사용자가 원하는 내용을 더 빠르게 작성하는 데 도움을 줍니다. 또한 Notion AI는 여러개의 입력 데이터를 분석하여 다양한 문서의 작성을 돕는 기능도 제공합니다.</p>
+</blockquote>
+
+<p>아래 내용은 NotionAI를 통해 작성되었으므로, 잘못된 내용이 있을 수도 있으니 양해 바랍니다.</p>
+
+<hr>
+
+<p><br></p>
+
+<h2 id="question">Question</h2>
+
+<h3 id="http와-https의-차이점">http와 https의 차이점</h3>
+
+<p>HTTP와 HTTPS는 두가지 다른 프로토콜입니다. HTTP는 Hypertext Transfer Protocol의 약자로, 하이퍼텍스트를 통해 웹 서버와 클라이언트 간의 데이터를 주고 받는 데 사용됩니다. 하지만 HTTP는 데이터를 암호화하지 않습니다. HTTPS는 Hypertext Transfer Protocol Secure의 약자로, HTTP와 동일하게 사용되지만 데이터를 암호화하기 때문에 데이터의 보안을 더 강화합니다. HTTPS는 보통 금융 거래나 로그인 과정 등과 같이 데이터 보안이 중요한 분야에서 많이 사용됩니다.</p>
+
+<p><br></p>
+
+<h3 id="동기와-비동기의-차이점">동기와 비동기의 차이점</h3>
+
+<p>JavaScript는 동기와 비동기 두가지 방식의 처리 방식을 제공합니다. 동기 방식은 작업을 순차적으로 처리하는 방식으로, 한 번 작업이 완료되어야 다음 작업이 실행됩니다. 반면 비동기 방식은 여러개의 작업을 동시에 처리하는 방식으로, 작업의 실행 순서와 관계 없이 빠르게 작업이 실행됩니다. 따라서 동기 방식은 작업의 순서가 중요할 때 사용하고, 비동기 방식은 작업의 순서가 별로 중요하지 않을 때 사용합니다.</p>
+
+<p><br></p>
+
+<h3 id="객체지향프로그래밍이란">객체지향프로그래밍이란</h3>
+
+<p>객체 지향 프로그래밍(Object Oriented Programming, OOP)은 소프트웨어 개발을 위한 프로그래밍 패러다임으로, 프로그램의 작성을 객체에 집중하는 방법으로 이루어집니다. OOP는 소프트웨어 개발을 더 간단하게 만들고 코드를 반복해서 사용할 수 있도록 기능을 재사용할 수 있게 도와줍니다. OOP를 사용하면 개발 시간을 단축할 수 있고, 프로그램 유지 보수 및 업그레이드를 더 쉽게 수행할 수 있습니다.</p>
+
+<p><br></p>
+
+<h3 id="자바스크립트의-특징">자바스크립트의 특징</h3>
+
+<p>자바스크립트는 브라우저 내에서 실행되는 객체 기반의 스크립팅 언어입니다. 자바스크립트는 다양한 라이브러리를 지원하고, 비동기 방식으로 코딩하는 것을 지원합니다. 또한 자바스크립트는 동적인 웹 사이트를 만들기 위해 매우 유용한 언어로, 정적인 내용을 바꿔주는 등 다양한 기능을 제공합니다. 또한 자바스크립트는 객체 지향 프로그래밍을 지원하는데, 객체를 사용하기 때문에 프로그램의 작성이 더 간편해집니다.</p>
+
+<p><br></p>
+
+<h3 id="파이썬과-자바스크립트의-차이점">파이썬과 자바스크립트의 차이점</h3>
+
+<p>Python과 JavaScript는 두개의 다른 프로그래밍 언어로, 다양한 분야에서 사용되고 있습니다. 하지만 각각의 특징과 사용 방식이 다르기 때문에 두 언어를 구분하기도 합니다.</p>
+
+<p>Python은 객체 지향 프로그래밍 언어로, 동적 타이핑 방식을 사용합니다. 이 방식은 변수에 저장된 값이 변할 때 그 값에 따라 자동으로 변수 타입이 변합니다. 또한 매우 쉽게 읽고 쓸 수 있는 간결한 문법을 사용합니다.</p>
+
+<p>JavaScript는 스크립팅 언어로, 브라우저 내에서 실행됩니다. 이 언어는 비동기 방식으로 코딩하는 것을 지원하고, 다양한 라이브러리를 지원합니다. 또한 자바스크립트는 객체 기반의 스크립팅 언어로, 객체 지향 프로그래밍을 지원합니다.</p>
+
+<p>따라서 Python과 JavaScript는 다른 프로그래밍 언어로, 각각 다른 분야에 사용되고 있습니다. Python은 동적 타이핑 방식을 사용하고, 간결한 문법을 사용합니다. 반면 JavaScript는 비동기 방식으로 코딩하는 것을 지원하고, 다양한 라이브러리를 지원합니다.</p>
+
+<p><br></p>
+
+<h3 id="테스트주도개발에-대해">테스트주도개발에 대해</h3>
+
+<p>테스트 주도 개발(Test-Driven Development, TDD)은 개발 단계에서 테스트 작성과 개발이 순차적으로 이루어지는 개발 방법론입니다. TDD는 개발 단계에서 기능 요구 사항을 테스트 코드로 작성하고, 개발자가 작성한 코드로 테스트를 통과할 때까지 반복합니다. TDD는 개발 과정을 간결하고 효과적으로 진행할 수 있도록 도와줍니다. 또한 TDD는 버그를 발견하고 수정하는데 도움이 되며, 유지 보수를 쉽게 할 수 있도록 도와줍니다. 그러나 테스트 주도 개발의 단점이 있습니다. 테스트 주도 개발은 초기 테스트 작성 및 실행에 큰 비중을 두기 때문에, 비용 및 시간이 많이 들어갑니다. 또한 테스트 작성 시 버그를 찾기 어렵고, 테스트 코드 작성 능력이 없는 개발자는 사용하기 매우 어렵습니다.</p>
+
+<p><br></p>
+
+<h3 id="3계층-아키텍처란">3계층 아키텍처란</h3>
+
+<p>3계층 아키텍처는 소프트웨어 구조를 통해 사용자 인터페이스, 비지니스 로직 및 데이터 저장 사이의 독립성을 제공하는 기본 구조를 의미합니다. 이 아키텍처는 데이터베이스, 서버 및 클라이언트로 구성됩니다. 이 세 단계는 서로 분리되어 있으며, 각 단계는 서로 다른 기능을 수행합니다. 가장 상위 레벨의 클라이언트 층은 사용자 인터페이스로, 사용자가 소프트웨어에 액세스하고 사용하는 데 사용합니다. 비지니스 로직 레벨은 사용자 인터페이스와 데이터베이스 사이의 중간 단계로, 데이터를 처리하고 사용자 요청에 응답하는 데 사용합니다. 가장 하위 레벨의 데이터베이스 단계는 데이터를 저장하고 사용하는 데 사용합니다. 각 레벨은 서로 독립적으로 운용되며, 각 레벨이 수행하는 기능이 명확하고 분리되어 있기 때문에 3계층 아키텍처는 소프트웨어 개발 및 유지 보수 등의 이점을 제공합니다.</p>
+
+<p><br></p>
+
+<hr>
+
+<p><br></p>
+
+<h2 id="end">End</h2>
+
+<p>NotionAI를 통해 CS 면접 질문을 몇 가지 정리해보았습니다.</p>
+
+<p>생각보다 너무 뛰어난 성능에 놀라움을 금치 못했던 것 같습니다.</p>
+
+<p><br></p>
+
+<p>요즘 ChatGPT, NotionAI 등 AI 기술의 발달에 따라 많은 우려의 목소리가 들리고 있습니다.</p>
+
+<p>이것이 개발자를 대체할 수도 있다고 생각하는 사람들도 있지만, 저는 그렇게 생각하지 않습니다.</p>
+
+<p>새로운 기술에 두려움 없이 적응하고 적용하는 자세가 개발자에게 가장 중요하다고 생각합니다.</p>
+
+<p>앞으로 새롭게 개발될 기술들이 얼마나 세상을 놀라게 할지 설레고 기대됩니다.</p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/mongodb/2023/02/03/MongoDB-querySrv-ENODATA-%EC%97%90%EB%9F%AC.html" title="[MongoDB] querySrv ENODATA 에러">[MongoDB] querySrv ENODATA 에러</a><a class="next" href="/jekyll-theme-yat/cs/2023/03/09/%EB%B0%B1%EC%97%94%EB%93%9C-%EA%B8%B0%EC%88%A0-%EB%A9%B4%EC%A0%91-%EC%98%88%EC%83%81-%EC%A7%88%EB%AC%B8-Part1.html" title="[CS] 백엔드 기술 면접 예상 질문 Part1">[CS] 백엔드 기술 면접 예상 질문...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/nestjs/2022/11/18/NestJS-MongoDB-%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0.html" title="[CS] 백엔드 기술 면접 예상 질문 Part1">[NestJS] MongoDB 연결하기</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/typescript/2022/11/06/TypeScript-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4%EC%97%90-%EB%8C%80%ED%95%B4.html" title="[CS] 백엔드 기술 면접 예상 질문 Part1">[TypeScript] 인터페이스에 대해</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/story/2022/12/24/%EB%B6%80%ED%8A%B8%EC%BA%A0%ED%94%84-%EC%88%98%EB%A3%8C-%ED%9A%8C%EA%B3%A0%EB%A1%9D-%EC%97%98%EB%A6%AC%EC%8A%A4-AI-%ED%8A%B8%EB%9E%99-5%EA%B8%B0.html" title="[CS] 백엔드 기술 면접 예상 질문 Part1">부트캠프 수료 회고록 - 엘리스 AI 트랙 5기</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/nestjs/2023/01/12/NestJS-TypeORM-MySQL-Seeding_Error.html" title="[CS] 백엔드 기술 면접 예상 질문 Part1">[NestJS] TypeORM-MySQL Seeding Error</a></li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+  const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'title');
+  utterancesScript.setAttribute('label', 'utterances comment');
+  utterancesScript.setAttribute('repo', '0126kjw/0126kjw.github.io');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2022-2023 0126kjw</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+      <div><a href="https://github.com/0126kjw">0126kjw Github</a></div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
