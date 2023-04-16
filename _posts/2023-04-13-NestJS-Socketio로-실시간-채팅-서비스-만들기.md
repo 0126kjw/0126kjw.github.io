@@ -289,3 +289,5 @@ http://localhost:3000/
 <br/>
 
 코드를 참고하시려면 아래 깃허브 레포지토리에서 확인하실 수 있습니다.
+
+[GitHub - 0126kjw/chat-app: [NestJS] Socket.io로 간단한 실시간 채팅 서비스 만들기](https://github.com/0126kjw/chat-app)
